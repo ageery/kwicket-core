@@ -1,0 +1,80 @@
+= kWicket: DSL for Apache Wicket
+Andrew Geery <andrew.geery@gmail.com>
+
+= Goals
+
+The kWicket library is a Kotlin DSL for Wicket with the following goals:
+
+* Transparently add components to containers
+
+Rather than the complexity of having to create components and then add them to parent containers, kWicket provides _extension methods_ to create and add components in a single method call.
+
+Extension methods are essentially syntactic sugar for Java `static` methods where the the first parameter to the method is the object the extension method is called on. This allows for the creation of methods that appear to be instance methods (i.e., they are called on an object and work with the object) but that live outside of the class. To be clear: this is syntactic sugar that the Kotlin compiler enables; there is no class file manipulation involved.
+
+The `queue()` method, added to `MarkupContainer` in Wicket 7, enables components to be added to parent containers without having to follow the markup hierarchy as previously required by the `add()` method. This reduces the need to create local variables for storing references to a parent containers in order to add child components to them.
+
+These features of Kotlin and Wicket make kWicket look declarative rather than imperative when adding components to containers.
+
+* Transparently configure Wicket components
+
+Rather than explicitly calling methods to configure a Wicket component (e.g., `setVisible()`, `setOutputMarkupId()`, `setRenderBodyOnly()`, etc.), kWicket uses Kotlin's named and default parameters to configure components in a single method call.
+
+Further, kWicket uses the Kotlin feature that when a lambda is the last parameter in a method, the lambda can be placed outside of the method parenthesis, making it appear that the method has a "body". For example, the last parameter to the kWicket `listView` method is the `populateItem` lambda that is used to add the components in the `ListView`. The lambda can also have what looks like its own "context" by using the Kotlin https://kotlinlang.org/docs/reference/lambdas.html#function-literals-with-receiver[function type with receiver] lambda parameter.
+
+These features of Kotlin further make kWicket look declarative, with the named parameters looking a little like HTML tag attributes.
+
+* Transparently create a markup hierarchy
+
+A defining characteristic of Wicket is the firewall between HTML layout and the population of the layout. No logic is allowed in the markup; all logic is constrained to be in the Java/Kotlin code.
+
+This gives designers almost complete control over the markup without having to worry about or populate any special tags.
+
+While this may be true for the design of a page, many smaller components are often just a few unstyled `<div>` or `<span>` tags. In these cases, having to separate the layout into a separate file is more burdensome than helpful.
+
+With Kotlin's DSL functionality and the Kotlin https://github.com/Kotlin/kotlinx.html[`kotlinx.html`] DSL library, it is possible to infer the markup hierarchy from the _source code_. Rather than having a separate HTML file, the markup can be constructed from the nested kWicket HTML DSL.
+
+* Provide an easy-to-use, language-supported type-safe model implementation
+
+Most Java libraries that deal with properties (i.e., implicit getters and setters) have had to make  type-safety trade-offs in order to succinctly express the connection with UI elements. In Wicket, the `PropertyModel` and `CompoundPropertyModel` classes are common ways of binding components with backing bean properties in a succinct but type-_unsafe_ manner.
+
+Kotlin not only has support for properties but it makes the properties available as part of the static metamodel of the reflection library at _compile_ time. Finally, the kWicket library also uses Kotlin's operator overloading to make model creation not only type-safe but also succinct.
+
+* Provide extension methods and functions to make Wicket simpler to use
+
+In Kotlin, `object` is a reserved word and this makes using the `IModel<*>.`object` property a little ungainly (the `object` must be enclosed in back-ticks). kWicket provides an extension property that allows the property to be accessed with a different name.
+
+Finally, kWicket provides a collection of extension methods to make Wicket easier and more intuitive to use. For example, rather than explicitly creating a `ResourceModel` object, kWicket provides a method to create `ResourceModel` objects from `String` objects.
+
+== Models
+
+kWicket offers the following model-related functionality:
+
+* `Serializable`-to-`IModel` extension method
+
+```
+class Person(var name: String, val parent: Person? = null): Serializable
+val bob = Person(name = "Bob")
+val bobModel: IModel<Person> = bob.model()
+```
+
+* Null-to-model extension method
+
+```
+val unknownPersonModel = nullModel(Person::class) // IModel<Person?>
+```
+
+* `obj` extension method for `IModel` (`object` is a reserved word in Kotlin)
+
+```
+assert(bob == bobModel.obj)
+val bobName: String = bobModel.obj.name
+bobModel.obj.name = "Robert"
+```
+
+* Succinct creation of property models using `+` operator.
+
+```
+val bobNameModel: IModel<String> = bobModel + Person::name
+val bobParentNameModel: IModel<String?> = bobModel + Person::parent + Person::name
+
+```
