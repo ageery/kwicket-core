@@ -11,7 +11,7 @@ import org.apache.wicket.validation.IValidator
 /**
  * Queues the [component] in the [MarkupContainer] and returns the queued [component], allowing a [Component] to be
  * included in a * parent [MarkupContainer] and also assigned to a variable in one line of code
- * (e.g., `val c = q(MyComponent("wicketId")`).
+ * (e.g., `val c = q(MyComponent("id")`).
  *
  * Note that the return type is different from the [MarkupContainer.add] and [MarkupContainer.queue] methods which
  * return the [MarkupContainer] that the component was added to, not the component that was added. This is because add
@@ -33,8 +33,8 @@ internal fun <C : Component, M : MarkupContainer> M.q(component: C): C = compone
  *
  * Only non-null parameter values cause any change to the [Component].
 . *
- * @param outputMarkupId sets whether an wicketId is added to the markup if [outputMarkupId] is not null
- * @param outputMarkupPlaceholderTag sets whether a placeholder wicketId is added to markup if [outputMarkupPlaceholderTag] is not null
+ * @param outputMarkupId sets whether an id is added to the markup if [outputMarkupId] is not null
+ * @param outputMarkupPlaceholderTag sets whether a placeholder id is added to markup if [outputMarkupPlaceholderTag] is not null
  * @param visible sets whether the [Component] is visible if [visible] is not null
  * @param visibilityAllowed sets whether visibility is allowed on this [Component] if [visibilityAllowed] is not null
  * @param enabled sets whether the [Component] is enabled if [enabled] is not null
@@ -84,8 +84,8 @@ internal fun <C : Component> C.config(
  *
  * Only non-null parameter values cause any change to the [FormComponent].
 . *
- * @param outputMarkupId sets whether an wicketId is added to the markup if [outputMarkupId] is not null
- * @param outputMarkupPlaceholderTag sets whether a placeholder wicketId is added to markup if [outputMarkupPlaceholderTag] is not null
+ * @param outputMarkupId sets whether an id is added to the markup if [outputMarkupId] is not null
+ * @param outputMarkupPlaceholderTag sets whether a placeholder id is added to markup if [outputMarkupPlaceholderTag] is not null
  * @param visible sets whether the [Component] is visible if [visible] is not null
  * @param visibilityAllowed sets whether visibility is allowed on this [Component] if [visibilityAllowed] is not null
  * @param enabled sets whether the [Component] is enabled if [enabled] is not null
@@ -149,8 +149,8 @@ internal fun <T, C : FormComponent<T>> C.config(
  *
  * Only non-null parameter values cause any change to the [FormComponent].
 . *
- * @param outputMarkupId sets whether an wicketId is added to the markup if [outputMarkupId] is not null
- * @param outputMarkupPlaceholderTag sets whether a placeholder wicketId is added to markup if [outputMarkupPlaceholderTag] is not null
+ * @param outputMarkupId sets whether an id is added to the markup if [outputMarkupId] is not null
+ * @param outputMarkupPlaceholderTag sets whether a placeholder id is added to markup if [outputMarkupPlaceholderTag] is not null
  * @param visible sets whether the [Component] is visible if [visible] is not null
  * @param visibilityAllowed sets whether visibility is allowed on this [Component] if [visibilityAllowed] is not null
  * @param enabled sets whether the [Component] is enabled if [enabled] is not null
