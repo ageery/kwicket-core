@@ -13,11 +13,9 @@ import org.apache.wicket.MarkupContainer
  */
 internal class RegionItem(
     val parent: RegionItem? = null,
-    private val idHolder: IdHolder,
-    private val holder: ComponentHolder<*>
+    private val id: String,
+    private val builder: (String) -> Component
 ) {
-
-    // FIXME: allow the id to be retrieved
 
     private val children: MutableList<RegionItem> = mutableListOf()
 
@@ -28,8 +26,8 @@ internal class RegionItem(
      * @param builder lambda to use for creating the child Wicket component
      * @return the [RegionItem] constructed from the parameters
      */
-    fun add(idHolder: IdHolder, holder: ComponentHolder<*>): RegionItem =
-        RegionItem(parent = this, idHolder = idHolder, holder = holder)
+    fun add(id: String, builder: (String) -> Component): RegionItem =
+        RegionItem(parent = this, id = id, builder = builder)
             .also { children.add(it) }
 
     /**
@@ -39,7 +37,7 @@ internal class RegionItem(
      * @param parent the Wicket parent in the component hierarchy
      */
     fun addTo(parent: MarkupContainer) {
-        val c = holder.get(idHolder)
+        val c = builder.invoke(id)
         parent.add(c)
         children.forEach { it.addTo(c as MarkupContainer) }
     }

@@ -15,6 +15,11 @@ internal fun wicket(): TagConsumer<RegionDescriptor> = WicketTagConsumer(
 )
 
 /**
+ * Auto-generated component id prefix.
+ */
+private const val componentIdPrefix = "kw_"
+
+/**
  * [TagConsumer] for handling [ComponentBuilder] tags.
  */
 internal class WicketTagConsumer(
@@ -26,22 +31,39 @@ internal class WicketTagConsumer(
     private var regionItem: RegionItem? = null
     private val idGenerator: Iterator<String> = idStream.iterator()
 
+    /**
+     * This function should do the following:
+     * - determine the wicket id for the component
+     * - create a new region item object
+     * - if there is a previously created region item "in scope" add the newly created region item to it
+     * - if there isn't a previously created region item "in scope" add the newly created region to the list of roots
+     * - add the wicket id for the component to the map of attributes for the tag
+     * - call the downstream tag handler to handle the actual HTML tag info
+     *
+     * First question: what does this method need in order to accomplish the above?
+     * - id generator (does not need to leave this class)
+     * - lambda for creating a Wicket component that takes an id
+     * - or an already created component
+     *
+     * What happens when the component is added to the RegionItem -- what is stored? What is RegionItem?
+     *
+     */
     override fun onTagStart(tag: Tag) {
-        // FIXME: it feels like this could be replaced by using the functionality in ComponentBuilder
-        // FIXME: could it almost be a ComponentBuilder.toRegionItem function?
-        if (tag is ComponentBuilder<*>) {
-            // FIXME: we could do this id stuff in the tag handling...
-            val idHolder  = IdHolder(id = tag.id, idGenerator = idGenerator)
-            val wicketId = tag.id?.let { it } ?: idGenerator.next()
-            //val idHolder = { wicketId }
-            val holder = tag.holder
-            regionItem = (regionItem?.add(idHolder = idHolder, holder = holder)
-                    ?: RegionItem(idHolder = idHolder, holder = holder))
-                .also { if (it.parent == null) roots.add(it) }
-            if (!tag.attributes.containsKey(wicketIdAttr)) tag.attributes[wicketIdAttr] = wicketId
+        if (tag is WicketTag<*>) {
+            val (id, builder) =
+                    if (tag.isPreBuilt) tag.comp!!.id to { _ -> tag.comp!! }
+                    else getId(tag, tag.attributes[wicketIdAttr]) to tag.builder!!
+            regionItem = regionItem?.add(id = id, builder = builder) ?:
+                    RegionItem(parent = regionItem, id = id, builder = builder)
+                        .also { if (it.parent == null) roots.add(it) }
+            tag.attributes[wicketIdAttr] = id
         }
         downstream.onTagStart(tag)
     }
+
+    private fun getId(tag: WicketTag<*>, attrId: String?): String =
+        if (tag.isPreBuilt) tag.comp!!.id
+        else tag.id ?: attrId ?: idGenerator.next()
 
     override fun onTagAttributeChange(tag: Tag, attribute: String, value: String?) {
         downstream.onTagAttributeChange(tag = tag, attribute = attribute, value = value)
@@ -57,7 +79,7 @@ internal class WicketTagConsumer(
 
     override fun onTagEnd(tag: Tag) {
         downstream.onTagEnd(tag)
-        if (tag is ComponentBuilder<*>) {
+        if (tag is WicketTag<*>) {
             regionItem = regionItem?.parent
         }
     }

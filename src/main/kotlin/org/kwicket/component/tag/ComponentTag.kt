@@ -9,18 +9,12 @@ open class ComponentTag<T : Component>(
     tagName: String,
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
-    override val holder: ComponentHolder<T>,
-    override val idGenerator: IdGenerator
+    override val builder: ((String) -> T)? = null,
+    override val comp: T? = null
 ) : HTMLTag(
     tagName = tagName,
     consumer = consumer,
     inlineTag = false,
     emptyTag = false,
     initialAttributes = initialAttributes
-), ComponentBuilder<T> {
-
-    fun init(block: T.() -> Unit) {
-        block(component)
-    }
-
-}
+), WicketTag<T>
