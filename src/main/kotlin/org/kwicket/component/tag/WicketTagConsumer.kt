@@ -4,15 +4,16 @@ import kotlinx.html.Entities
 import kotlinx.html.Tag
 import kotlinx.html.TagConsumer
 import kotlinx.html.Unsafe
+import kotlinx.html.consumers.DelayedConsumer
 import kotlinx.html.consumers.onFinalizeMap
 import kotlinx.html.stream.HTMLStreamBuilder
 import org.kwicket.wicketIdAttr
 import org.w3c.dom.events.Event
 
 internal fun wicket(): TagConsumer<RegionDescriptor> = WicketTagConsumer(
-    downstream = HTMLStreamBuilder(out = StringBuilder(), prettyPrint = false, xhtmlCompatible = true)
+    downstream = DelayedConsumer(HTMLStreamBuilder(out = StringBuilder(), prettyPrint = false, xhtmlCompatible = true)
         .onFinalizeMap { sb, _ -> sb.toString() }
-)
+))
 
 /**
  * Auto-generated component id prefix.
@@ -66,7 +67,7 @@ internal class WicketTagConsumer(
         else tag.id ?: attrId ?: idGenerator.next()
 
     override fun onTagAttributeChange(tag: Tag, attribute: String, value: String?) {
-        downstream.onTagAttributeChange(tag = tag, attribute = attribute, value = value)
+        //downstream.onTagAttributeChange(tag = tag, attribute = attribute, value = value)
     }
 
     override fun onTagComment(content: CharSequence) {

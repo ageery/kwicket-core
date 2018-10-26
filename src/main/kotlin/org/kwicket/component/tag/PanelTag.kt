@@ -1,30 +1,20 @@
 package org.kwicket.component.tag
 
+import kotlinx.html.HTMLTag
 import kotlinx.html.TagConsumer
 import kotlinx.html.visitAndFinalize
-import org.apache.wicket.markup.html.panel.Panel
+import org.kwicket.wicketNamespacePrefix
 
-fun <T, C : TagConsumer<T>> C.panel(
-    id: String? = null,
-    tagName: String = "div",
-    initialAttributes: Map<String, String> = emptyMap(),
-    block: PanelTag.() -> Unit = {}
-): T =
-    PanelTag(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = this
-    ).visitAndFinalize(this, block)
+internal fun RegionDescriptor.build(id: String) = BuilderPanel(id = id, body = this)
 
-class PanelTag(
-    id: String? = null,
-    tagName: String = "div",
-    initialAttributes: Map<String, String> = emptyMap(),
-    consumer: TagConsumer<*>
-) : ComponentTag<Panel>(
-    id = id,
-    tagName = tagName,
-    initialAttributes = initialAttributes,
-    consumer = consumer
+fun <T, C : TagConsumer<T>> C.panel(block: PANEL.() -> Unit = {}): T = PANEL(
+    this
+).visitAndFinalize(this, block)
+
+class PANEL(consumer: TagConsumer<*>) : HTMLTag(
+    tagName = "$wicketNamespacePrefix:panel",
+    consumer = consumer,
+    inlineTag = false,
+    emptyTag = false,
+    initialAttributes = emptyMap()
 )
