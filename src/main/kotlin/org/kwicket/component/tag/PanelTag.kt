@@ -1,6 +1,7 @@
 package org.kwicket.component.tag
 
 import kotlinx.html.HTMLTag
+import kotlinx.html.HtmlBlockTag
 import kotlinx.html.TagConsumer
 import kotlinx.html.visitAndFinalize
 import org.kwicket.wicketNamespacePrefix
@@ -17,4 +18,4 @@ class PANEL(consumer: TagConsumer<*>) : HTMLTag(
     inlineTag = false,
     emptyTag = false,
     initialAttributes = emptyMap()
-)
+), HtmlBlockTag

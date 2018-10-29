@@ -28,6 +28,7 @@ internal class WicketTagConsumer(
     idStream: Sequence<String> = generateSequence(1) { it + 1 }.map { "$componentIdPrefix$it" }
 ) : TagConsumer<RegionDescriptor> {
 
+    private val sb: StringBuilder = StringBuilder()
     private var roots: MutableList<RegionItem> = mutableListOf()
     private var regionItem: RegionItem? = null
     private val idGenerator: Iterator<String> = idStream.iterator()
@@ -67,6 +68,7 @@ internal class WicketTagConsumer(
         else tag.id ?: attrId ?: idGenerator.next()
 
     override fun onTagAttributeChange(tag: Tag, attribute: String, value: String?) {
+        // FIXME: uncommenting the line below does not work...
         //downstream.onTagAttributeChange(tag = tag, attribute = attribute, value = value)
     }
 

@@ -9,12 +9,14 @@ open class ComponentTag<T : Component>(
     tagName: String,
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
+    inlineTag: Boolean = false,
+    emptyTag: Boolean = false,
     override val builder: ((String) -> T)? = null,
     override val comp: T? = null
 ) : HTMLTag(
     tagName = tagName,
     consumer = consumer,
-    inlineTag = false,
-    emptyTag = false,
+    inlineTag = inlineTag,
+    emptyTag = emptyTag,
     initialAttributes = initialAttributes
 ), WicketTag<T>

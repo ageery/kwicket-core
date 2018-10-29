@@ -1,17 +1,17 @@
 package org.kwicket.component.tag
 
 import kotlinx.html.HTMLTag
-import kotlinx.html.HtmlBlockInlineTag
+import kotlinx.html.HtmlBlockTag
 import kotlinx.html.TagConsumer
 import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.model.IModel
-import org.kwicket.component.wrapper.KLabel
+import org.kwicket.component.wrapper.KWebMarkupContainer
 
-fun HTMLTag.label(
+fun HTMLTag.webMarkupContainer(
     id: String? = null,
-    tagName: String = "span",
+    tagName: String = "div",
     model: IModel<*>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -23,11 +23,11 @@ fun HTMLTag.label(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Label.() -> Unit)? = null,
+    onConfig: (WebMarkupContainer.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: WicketLabel.() -> Unit = {}
+    block: WebMarkupContainerTag.() -> Unit = {}
 ): Unit =
-    WicketLabel(
+    WebMarkupContainerTag(
         id = id,
         tagName = tagName,
         model = model,
@@ -46,9 +46,9 @@ fun HTMLTag.label(
         consumer = consumer
     ).visit(block)
 
-open class WicketLabel(
+open class WebMarkupContainerTag(
     id: String? = null,
-    tagName: String = "span",
+    tagName: String = "div",
     model: IModel<*>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -60,19 +60,17 @@ open class WicketLabel(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Label.() -> Unit)? = null,
+    onConfig: (WebMarkupContainer.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-
     consumer: TagConsumer<*>
 ) :
-    ComponentTag<Label>(
+    ComponentTag<WebMarkupContainer>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,
         tagName = tagName,
-        emptyTag = true,
         builder = { cid ->
-            KLabel(
+            KWebMarkupContainer(
                 id = cid,
                 model = model,
                 markupId = markupId,
@@ -87,4 +85,4 @@ open class WicketLabel(
                 behaviors = behaviors,
                 onConfig = onConfig
             )
-        }), HtmlBlockInlineTag
+        }), HtmlBlockTag

@@ -39,7 +39,7 @@ internal class RegionItem(
     fun addTo(parent: MarkupContainer) {
         val c = builder.invoke(id)
         parent.add(c)
-        children.forEach { it.addTo(c as MarkupContainer) }
+        children.forEach { if (c is MarkupContainer) it.addTo(c) else it.addTo(parent) }
     }
 
 }
