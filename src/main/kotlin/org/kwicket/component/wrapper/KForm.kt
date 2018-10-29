@@ -24,7 +24,7 @@ import org.kwicket.component.config
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param block optional block to execute to configure the component
  */
-open class KForm<T>(
+class KForm<T>(
     id: String,
     model: IModel<T>? = null,
     markupId: String? = null,
@@ -37,9 +37,9 @@ open class KForm<T>(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    open val onConfig: (KForm<T>.() -> Unit)? = null,
-    open val onSubmit: (KForm<T>.() -> Unit)? = null,
-    open val onError: (KForm<T>.() -> Unit)? = null,
+    private val onConfig: (KForm<T>.() -> Unit)? = null,
+    private val onSubmit: (KForm<T>.() -> Unit)? = null,
+    private val onError: (KForm<T>.() -> Unit)? = null,
     block: (Form<T>.() -> Unit)? = null
 ) : Form<T>(id, model) {
     init {
