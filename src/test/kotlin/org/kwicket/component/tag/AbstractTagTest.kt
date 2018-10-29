@@ -1,8 +1,7 @@
 package org.kwicket.component.tag
 
 import kotlinx.html.br
-import kotlinx.html.div
-import kotlinx.html.i
+import kotlinx.html.onSubmit
 import kotlinx.html.span
 import org.junit.jupiter.api.Test
 import org.kwicket.component.AbstractWicketTest
@@ -19,6 +18,10 @@ class AbstractTagTest : AbstractWicketTest() {
             }
             br {
                 span { +"help!" }
+            }
+            form(model = "andrew".model()) {
+                onConfig = { println("here!") }
+                label(model = "blah".model())
             }
             label(model = "test".model())
             webMarkupContainer(tagName = "div") {

@@ -1,18 +1,17 @@
 package org.kwicket.component.tag
 
 import kotlinx.html.HTMLTag
-import kotlinx.html.HtmlBlockInlineTag
+import kotlinx.html.HtmlBlockTag
 import kotlinx.html.TagConsumer
 import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.IModel
-import org.kwicket.component.wrapper.KLabel
+import org.kwicket.component.wrapper.KForm
 
-fun HTMLTag.label(
-    model: IModel<*>? = null,
-    tagName: String = "span",
+fun <T> HTMLTag.form(
     id: String? = null,
+    tagName: String = "form",
+    model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -23,11 +22,10 @@ fun HTMLTag.label(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Label.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: WicketLabel.() -> Unit = {}
+    block: FormTag<T>.() -> Unit = {}
 ): Unit =
-    WicketLabel(
+    FormTag(
         id = id,
         tagName = tagName,
         model = model,
@@ -41,15 +39,14 @@ fun HTMLTag.label(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
-        onConfig = onConfig,
         initialAttributes = initialAttributes,
         consumer = consumer
     ).visit(block)
 
-open class WicketLabel(
+open class FormTag<T>(
     id: String? = null,
-    tagName: String = "span",
-    model: IModel<*>? = null,
+    tagName: String = "form",
+    model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -60,31 +57,35 @@ open class WicketLabel(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Label.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-
     consumer: TagConsumer<*>
 ) :
-    ComponentTag<Label>(
+    ComponentTag<KForm<T>>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,
-        tagName = tagName,
-        emptyTag = true,
-        builder = { cid ->
-            KLabel(
-                id = cid,
-                model = model,
-                markupId = markupId,
-                outputMarkupId = outputMarkupId,
-                outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-                visible = visible,
-                visibilityAllowed = visibilityAllowed,
-                enabled = enabled,
-                escapeModelStrings = escapeModelStrings,
-                renderBodyOnly = renderBodyOnly,
-                behavior = behavior,
-                behaviors = behaviors,
-                onConfig = onConfig
-            )
-        }), HtmlBlockInlineTag
+        tagName = tagName
+        ), HtmlBlockTag {
+
+    var onConfig: (KForm<T>.() -> Unit)? = null
+    var onSubmit: (KForm<T>.() -> Unit)? = null
+
+    override val builder: (String) -> KForm<T> = { cid ->
+        KForm(
+            id = cid,
+            model = model,
+            markupId = markupId,
+            outputMarkupId = outputMarkupId,
+            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+            visible = visible,
+            visibilityAllowed = visibilityAllowed,
+            enabled = enabled,
+            escapeModelStrings = escapeModelStrings,
+            renderBodyOnly = renderBodyOnly,
+            behavior = behavior,
+            behaviors = behaviors,
+            onConfig = onConfig,
+            onSubmit = onSubmit)
+    }
+
+}
