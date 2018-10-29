@@ -27,6 +27,10 @@ class AbstractTagTest : AbstractWicketTest() {
             label(model = "test".model())
             val x = KLabel(id = "xyz", model = "static".model())
             span(comp = x)
+            val y = KLabel(id = "dummy", model = "Geery".model())
+            comp(tagName = "label", comp = y) {
+                span { +"hi" }
+            }
             //label(compareBy() = x)
             webMarkupContainer(tagName = "div") {
                 label(id = "testing", model = "hello".model()) {
