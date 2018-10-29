@@ -62,7 +62,6 @@ open class WicketLabel(
     behaviors: List<Behavior>? = null,
     onConfig: (Label.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-
     consumer: TagConsumer<*>
 ) :
     ComponentTag<Label>(

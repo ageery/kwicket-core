@@ -6,6 +6,7 @@ import kotlinx.html.span
 import org.junit.jupiter.api.Test
 import org.kwicket.component.AbstractWicketTest
 import org.kwicket.component.render
+import org.kwicket.component.wrapper.KLabel
 import org.kwicket.model.model
 
 class AbstractTagTest : AbstractWicketTest() {
@@ -24,6 +25,9 @@ class AbstractTagTest : AbstractWicketTest() {
                 label(model = "blah".model())
             }
             label(model = "test".model())
+            val x = KLabel(id = "xyz", model = "static".model())
+            span(comp = x)
+            //label(compareBy() = x)
             webMarkupContainer(tagName = "div") {
                 label(id = "testing", model = "hello".model()) {
                     label(model = "bye".model())
