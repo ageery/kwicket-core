@@ -27,6 +27,11 @@ class AbstractTagTest : AbstractWicketTest() {
             form(model = "andrew".model()) {
                 onConfig = { println("here!") }
                 label(model = "blah".model())
+                button(model = "Click me!".model()) {
+                    onSubmit = {
+
+                    }
+                }
             }
             label(model = "test".model())
             val x = labelFactory(id = "xyz", model = "static".model(), outputMarkupPlaceholderTag = true) {
