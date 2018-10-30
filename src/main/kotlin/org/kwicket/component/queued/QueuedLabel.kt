@@ -4,6 +4,7 @@ import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.IModel
+import org.kwicket.component.factory.labelFactory
 import org.kwicket.component.q
 
 /**
@@ -42,7 +43,7 @@ fun MarkupContainer.label(
     onConfig: (Label.() -> Unit)? = null,
     postInit: (Label.() -> Unit)? = null
 ): Label = q(
-    label(
+    labelFactory(
         id = id,
         model = model,
         markupId = markupId,
