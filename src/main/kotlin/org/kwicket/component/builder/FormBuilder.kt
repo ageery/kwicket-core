@@ -11,22 +11,37 @@ interface IFormBuilder<T> : IComponentBuilder<Form<T>, T> {
 }
 
 class FormBuilder<T>(
-    override val model: IModel<T>? = null,
-    override var markupId: String? = null,
-    override var outputMarkupId: Boolean? = null,
-    override var outputMarkupPlaceholderTag: Boolean? = null,
-    override var isVisible: Boolean? = null,
-    override var isVisibilityAllowed: Boolean? = null,
-    override var isEnabled: Boolean? = null,
-    override var isEscapeModelStrings: Boolean? = null,
-    override var isRenderBodyOnly: Boolean? = null,
-    override var behavior: Behavior? = null,
-    override var behaviors: List<Behavior>? = null,
-    override var onConfig: (Form<T>.() -> Unit)? = null,
+    model: IModel<T>? = null,
+    markupId: String? = null,
+    outputMarkupId: Boolean? = null,
+    outputMarkupPlaceholderTag: Boolean? = null,
+    isVisible: Boolean? = null,
+    isVisibilityAllowed: Boolean? = null,
+    isEnabled: Boolean? = null,
+    escapeModelStrings: Boolean? = null,
+    renderBodyOnly: Boolean? = null,
+    behavior: Behavior? = null,
+    behaviors: List<Behavior>? = null,
+    onConfig: (Form<T>.() -> Unit)? = null,
     override var onSubmit: (Form<T>.() -> Unit)? = null,
     override var onError: (Form<T>.() -> Unit)? = null,
-    override var postInit: (Form<T>.() -> Unit)? = null
-) : IFormBuilder<T> {
+    postInit: (Form<T>.() -> Unit)? = null
+) : IFormBuilder<T>,
+    ComponentBuilder<Form<T>, T>(
+        model = model,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = isVisible,
+        isVisibilityAllowed = isVisibilityAllowed,
+        isEnabled = isEnabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        postInit = postInit
+    ) {
 
     override fun build(id: String): Form<T> =
         formFactory(
@@ -38,8 +53,8 @@ class FormBuilder<T>(
             visible = isVisible,
             visibilityAllowed = isVisibilityAllowed,
             enabled = isEnabled,
-            escapeModelStrings = isEscapeModelStrings,
-            renderBodyOnly = isRenderBodyOnly,
+            escapeModelStrings = escapeModelStrings,
+            renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors,
             onConfig = onConfig,

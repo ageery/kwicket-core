@@ -39,9 +39,9 @@ internal fun <C : Component, M : MarkupContainer> M.q(component: C): C = compone
  * @param visibilityAllowed sets whether visibility is allowed on this [Component] if [visibilityAllowed] is not null
  * @param enabled sets whether the [Component] is isEnabled if [enabled] is not null
  * @param escapeModelStrings sets whether the [IModel] String values are to be HTML escaped is isEnabled
- *      if [isEscapeModelStrings] is not null
+ *      if [escapeModelStrings] is not null
  * @param renderBodyOnly sets whether to only output the generated content or whether to also include the containing tag
- *      if [isRenderBodyOnly] is not null
+ *      if [renderBodyOnly] is not null
  * @param behavior single behavior to add to the [Component]
  * @param behaviors [List] of [Behavior]s to add to the [Component]
  *
@@ -90,9 +90,9 @@ internal fun <C : Component> C.config(
  * @param visibilityAllowed sets whether visibility is allowed on this [Component] if [visibilityAllowed] is not null
  * @param enabled sets whether the [Component] is isEnabled if [enabled] is not null
  * @param escapeModelStrings sets whether the [IModel] String values are to be HTML escaped is isEnabled
- *      if [isEscapeModelStrings] is not null
+ *      if [escapeModelStrings] is not null
  * @param renderBodyOnly sets whether to only output the generated content or whether to also include the containing tag
- *      if [isRenderBodyOnly] is not null
+ *      if [renderBodyOnly] is not null
  * @param behavior single behavior to add to the [Component]
  * @param behaviors [List] of [Behavior]s to add to the [Component]
  * @param required whether the [FormComponent] is required
@@ -155,9 +155,9 @@ internal fun <T, C : FormComponent<T>> C.config(
  * @param visibilityAllowed sets whether visibility is allowed on this [Component] if [visibilityAllowed] is not null
  * @param enabled sets whether the [Component] is isEnabled if [enabled] is not null
  * @param escapeModelStrings sets whether the [IModel] String values are to be HTML escaped is isEnabled
- *      if [isEscapeModelStrings] is not null
+ *      if [escapeModelStrings] is not null
  * @param renderBodyOnly sets whether to only output the generated content or whether to also include the containing tag
- *      if [isRenderBodyOnly] is not null
+ *      if [renderBodyOnly] is not null
  * @param behavior single behavior to add to the [Component]
  * @param behaviors [List] of [Behavior]s to add to the [Component]
  * @param required whether the [FormComponent] is required

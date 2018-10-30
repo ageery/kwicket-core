@@ -89,8 +89,8 @@ open class FormTag<T>(
             isVisible = visible,
             isVisibilityAllowed = visibilityAllowed,
             isEnabled = enabled,
-            isEscapeModelStrings = escapeModelStrings,
-            isRenderBodyOnly = renderBodyOnly,
+            escapeModelStrings = escapeModelStrings,
+            renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors
         )

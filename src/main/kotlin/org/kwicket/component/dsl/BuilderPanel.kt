@@ -20,8 +20,8 @@ import org.kwicket.component.wrapper.KPanel
 // * @param isVisible whether the component is isVisible
 // * @param isEnabled whether the component is isEnabled
 // * @param isVisibilityAllowed whether the component is allowed to be isVisible
-// * @param isEscapeModelStrings whether model strings should be escaped
-// * @param isRenderBodyOnly whether the tag associated with the component should be included in the markup
+// * @param escapeModelStrings whether model strings should be escaped
+// * @param renderBodyOnly whether the tag associated with the component should be included in the markup
 // * @param behavior [Behavior] to add to the component
 // * @param behaviors List of [Behavior]s to add to the component
 // * @param onConfig lambda to execute in the onConfigure lifecycle method
@@ -35,8 +35,8 @@ import org.kwicket.component.wrapper.KPanel
 //    isVisibilityAllowed: Boolean? = null,
 //    isVisible: Boolean? = null,
 //    isEnabled: Boolean? = null,
-//    isRenderBodyOnly: Boolean? = null,
-//    isEscapeModelStrings: Boolean? = null,
+//    renderBodyOnly: Boolean? = null,
+//    escapeModelStrings: Boolean? = null,
 //    behavior: Behavior? = null,
 //    behaviors: List<Behavior>? = null,
 //    onConfig: ((Panel) -> Unit)? = null,
@@ -50,8 +50,8 @@ import org.kwicket.component.wrapper.KPanel
 //        isVisible = isVisible,
 //        isVisibilityAllowed = isVisibilityAllowed,
 //        isEnabled = isEnabled,
-//        isEscapeModelStrings = isEscapeModelStrings,
-//        isRenderBodyOnly = isRenderBodyOnly,
+//        escapeModelStrings = escapeModelStrings,
+//        renderBodyOnly = renderBodyOnly,
 //        behavior = behavior,
 //        behaviors = behaviors,
 //        onConfig = onConfig

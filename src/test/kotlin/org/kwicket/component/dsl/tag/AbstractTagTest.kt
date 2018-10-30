@@ -4,7 +4,7 @@ import kotlinx.html.br
 import kotlinx.html.span
 import org.junit.jupiter.api.Test
 import org.kwicket.component.AbstractWicketTest
-import org.kwicket.component.dsl.wicket
+import org.kwicket.component.factory.labelFactory
 import org.kwicket.component.render
 import org.kwicket.component.wrapper.KLabel
 import org.kwicket.model.model
@@ -29,7 +29,9 @@ class AbstractTagTest : AbstractWicketTest() {
                 label(model = "blah".model())
             }
             label(model = "test".model())
-            val x = KLabel(id = "xyz", model = "static".model())
+            val x = labelFactory(id = "xyz", model = "static".model(), outputMarkupPlaceholderTag = true) {
+                isVisible = false
+            }
             span(comp = x)
             val y = KLabel(id = "dummy", model = "Geery".model())
             comp(tagName = "label", comp = y) {
@@ -37,6 +39,9 @@ class AbstractTagTest : AbstractWicketTest() {
             }
             //label(compareBy() = x)
             webMarkupContainer(tagName = "div") {
+                onConfig = {
+                    println("here!!!")
+                }
                 label(id = "testing", model = "hello".model()) {
                     label(model = "bye".model())
                 }
