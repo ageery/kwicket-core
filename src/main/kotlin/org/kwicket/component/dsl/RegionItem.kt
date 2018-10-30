@@ -1,4 +1,4 @@
-package org.kwicket.component.tag
+package org.kwicket.component.dsl
 
 import org.apache.wicket.Component
 import org.apache.wicket.MarkupContainer

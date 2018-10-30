@@ -77,7 +77,7 @@ abstract class AbstractQueuedTest<C : Component, M> {
                     }
                     ComponentTestType.VisibilityAllowed -> queueComponent(id = compWicketId, model = model, visibilityAllowed = true)
                     ComponentTestType.VisibilityNotAllowed -> queueComponent(id = compWicketId, model = model, visibilityAllowed = false)
-                    ComponentTestType.InvisibleByBlock -> queueComponent(id = compWicketId, model = model, block = { isVisible = false })
+                    ComponentTestType.InvisibleByBlock -> queueComponent(id = compWicketId, model = model, postInit = { isVisible = false })
                 }
             }
         }
@@ -146,7 +146,7 @@ abstract class AbstractQueuedTest<C : Component, M> {
         behavior: Behavior? = null,
         behaviors: List<Behavior>? = null,
         onConfig: (C.() -> Unit)? = null,
-        block: (C.() -> Unit)? = null
+        postInit: (C.() -> Unit)? = null
     ): C
 
     open val pathToComponent: String = compWicketId

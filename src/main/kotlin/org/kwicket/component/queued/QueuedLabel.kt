@@ -5,7 +5,6 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.IModel
 import org.kwicket.component.q
-import org.kwicket.component.wrapper.KLabel
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -15,10 +14,10 @@ import org.kwicket.component.wrapper.KLabel
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
- * component is not visible
- * @param visible whether the component is visible
- * @param enabled whether the component is enabled
- * @param visibilityAllowed whether the component is allowed to be visible
+ * component is not isVisible
+ * @param visible whether the component is isVisible
+ * @param enabled whether the component is isEnabled
+ * @param visibilityAllowed whether the component is allowed to be isVisible
  * @param escapeModelStrings whether model strings should be escaped
  * @param renderBodyOnly whether the tag associated with the component should be included in the markup
  * @param behavior optional [Behavior] to add to the component
@@ -41,9 +40,9 @@ fun MarkupContainer.label(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     onConfig: (Label.() -> Unit)? = null,
-    block: (Label.() -> Unit)? = null
+    postInit: (Label.() -> Unit)? = null
 ): Label = q(
-    KLabel(
+    label(
         id = id,
         model = model,
         markupId = markupId,
@@ -57,6 +56,6 @@ fun MarkupContainer.label(
         behavior = behavior,
         behaviors = behaviors,
         onConfig = onConfig,
-        block = block
+        postInit = postInit
     )
 )

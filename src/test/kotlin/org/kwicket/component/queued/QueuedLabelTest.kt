@@ -24,7 +24,7 @@ class QueuedLabelTest : AbstractQueuedTest<Label, String?>() {
         behavior: Behavior?,
         behaviors: List<Behavior>?,
         onConfig: (Label.() -> Unit)?,
-        block: (Label.() -> Unit)?
+        postInit: (Label.() -> Unit)?
     ): Label = label(
         id = id,
         model = model,
@@ -39,7 +39,7 @@ class QueuedLabelTest : AbstractQueuedTest<Label, String?>() {
         behavior = behavior,
         behaviors = behaviors,
         onConfig = onConfig,
-        block = block
+        postInit = postInit
     )
 
 }

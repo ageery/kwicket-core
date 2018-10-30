@@ -1,11 +1,14 @@
-package org.kwicket.component.tag
+package org.kwicket.component.dsl
 
 import org.apache.wicket.Component
 
 interface WicketTag<T: Component> {
     val id: String?
-    val builder: ((String) -> T)?
     val comp: T?
+    //val builder: ((String) -> T)?
     val isPreBuilt: Boolean
         get() = comp != null
+
+    fun build(id: String): T
+
 }

@@ -1,8 +1,11 @@
 package org.kwicket.model
 
 import org.apache.wicket.model.IModel
+import org.apache.wicket.model.LoadableDetachableModel
 import org.apache.wicket.model.Model
 import org.apache.wicket.model.PropertyModel
+import org.apache.wicket.model.ResourceModel
+import org.apache.wicket.model.util.CollectionModel
 import org.apache.wicket.model.util.ListModel
 import java.io.Serializable
 import kotlin.reflect.KProperty1
@@ -30,6 +33,28 @@ fun <T : Serializable?> T.model(): IModel<T> = Model.of(this)
  * @return model of the @receiver [List]
  */
 fun <T, L: List<T>> L.listModel(): IModel<List<T>> = ListModel(this)
+
+// FIXME: comment -- needed by Select2 components
+fun <T, L: Collection<T>> L.collectionModel(): IModel<Collection<T>> = CollectionModel(this)
+
+/**
+ * Creates a [LoadableDetachableModel] that uses the lambda to produce its value.
+ *
+ * @param T type returned by the model
+ * @receiver producer that returns objects of type [T]
+ * @return [LoadableDetachableModel] of type [T]
+ */
+fun <T> (() -> T).ldm(): IModel<T> = LoadableDetachableModel.of(this)
+
+/**
+ * Creates a [ResourceModel] using the resource key and the optional default value.
+ *
+ * @param defaultValue String to use if no resource is found for the @receiver
+ * @receiver resource key
+ * @return [IModel<String>] where the value comes from a property file with the given resource key or the String
+ * is the @receiver itself
+ */
+fun String.res(defaultValue: String = this): IModel<String> = ResourceModel(this, defaultValue)
 
 /**
  * Read/Write extension property alias for [IModel.getObject].

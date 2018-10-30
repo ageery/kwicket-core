@@ -1,10 +1,11 @@
-package org.kwicket.component.tag
+package org.kwicket.component.dsl.tag
 
 import kotlinx.html.HTMLTag
 import kotlinx.html.SPAN
 import kotlinx.html.TagConsumer
 import kotlinx.html.visit
 import org.apache.wicket.Component
+import org.kwicket.component.dsl.WicketTag
 import org.kwicket.wicketIdAttr
 
 fun <T : Component> HTMLTag.span(
@@ -20,6 +21,6 @@ class SpanTag<T : Component>(override val comp: T, consumer: TagConsumer<*>) :
     WicketTag<T> {
 
     override val id: String = comp.id
-    override val builder: ((String) -> T)? = null
+    override fun build(id: String): T = comp!!
 
 }

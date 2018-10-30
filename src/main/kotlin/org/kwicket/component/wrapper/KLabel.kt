@@ -13,10 +13,10 @@ import org.kwicket.component.config
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
- * component is not visible
- * @param visible whether the component is visible
- * @param enabled whether the component is enabled
- * @param visibilityAllowed whether the component is allowed to be visible
+ * component is not isVisible
+ * @param visible whether the component is isVisible
+ * @param enabled whether the component is isEnabled
+ * @param visibilityAllowed whether the component is allowed to be isVisible
  * @param escapeModelStrings whether model strings should be escaped
  * @param renderBodyOnly whether the tag associated with the component should be included in the markup
  * @param behavior optional [Behavior] to add to the component

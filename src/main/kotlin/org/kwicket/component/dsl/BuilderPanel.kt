@@ -1,4 +1,4 @@
-package org.kwicket.component.tag
+package org.kwicket.component.dsl
 
 import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
@@ -16,12 +16,12 @@ import org.kwicket.component.wrapper.KPanel
 // * @param markupId wicketId of the tag to use in the associated markup
 // * @param outputMarkupId whether to include an HTML wicketId for the component in the markup
 // * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
-// * component is not visible
-// * @param visible whether the component is visible
-// * @param enabled whether the component is enabled
-// * @param visibilityAllowed whether the component is allowed to be visible
-// * @param escapeModelStrings whether model strings should be escaped
-// * @param renderBodyOnly whether the tag associated with the component should be included in the markup
+// * component is not isVisible
+// * @param isVisible whether the component is isVisible
+// * @param isEnabled whether the component is isEnabled
+// * @param isVisibilityAllowed whether the component is allowed to be isVisible
+// * @param isEscapeModelStrings whether model strings should be escaped
+// * @param isRenderBodyOnly whether the tag associated with the component should be included in the markup
 // * @param behavior [Behavior] to add to the component
 // * @param behaviors List of [Behavior]s to add to the component
 // * @param onConfig lambda to execute in the onConfigure lifecycle method
@@ -32,11 +32,11 @@ import org.kwicket.component.wrapper.KPanel
 //    markupId: String? = null,
 //    outputMarkupId: Boolean? = null,
 //    outputMarkupPlaceholderTag: Boolean? = null,
-//    visibilityAllowed: Boolean? = null,
-//    visible: Boolean? = null,
-//    enabled: Boolean? = null,
-//    renderBodyOnly: Boolean? = null,
-//    escapeModelStrings: Boolean? = null,
+//    isVisibilityAllowed: Boolean? = null,
+//    isVisible: Boolean? = null,
+//    isEnabled: Boolean? = null,
+//    isRenderBodyOnly: Boolean? = null,
+//    isEscapeModelStrings: Boolean? = null,
 //    behavior: Behavior? = null,
 //    behaviors: List<Behavior>? = null,
 //    onConfig: ((Panel) -> Unit)? = null,
@@ -47,11 +47,11 @@ import org.kwicket.component.wrapper.KPanel
 //        markupId = markupId,
 //        outputMarkupId = outputMarkupId,
 //        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-//        visible = visible,
-//        visibilityAllowed = visibilityAllowed,
-//        enabled = enabled,
-//        escapeModelStrings = escapeModelStrings,
-//        renderBodyOnly = renderBodyOnly,
+//        isVisible = isVisible,
+//        isVisibilityAllowed = isVisibilityAllowed,
+//        isEnabled = isEnabled,
+//        isEscapeModelStrings = isEscapeModelStrings,
+//        isRenderBodyOnly = isRenderBodyOnly,
 //        behavior = behavior,
 //        behaviors = behaviors,
 //        onConfig = onConfig
@@ -66,10 +66,10 @@ import org.kwicket.component.wrapper.KPanel
  * @param markupId wicketId of the tag to use in the associated markup
  * @param outputMarkupId whether to include an HTML wicketId for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
- * component is not visible
- * @param visible whether the component is visible
- * @param enabled whether the component is enabled
- * @param visibilityAllowed whether the component is allowed to be visible
+ * component is not isVisible
+ * @param visible whether the component is isVisible
+ * @param enabled whether the component is isEnabled
+ * @param visibilityAllowed whether the component is allowed to be isVisible
  * @param escapeModelStrings whether model strings should be escaped
  * @param renderBodyOnly whether the tag associated with the component should be included in the markup
  * @param behavior [Behavior] to add to the component

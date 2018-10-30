@@ -35,13 +35,13 @@ internal fun <C : Component, M : MarkupContainer> M.q(component: C): C = compone
 . *
  * @param outputMarkupId sets whether an id is added to the markup if [outputMarkupId] is not null
  * @param outputMarkupPlaceholderTag sets whether a placeholder id is added to markup if [outputMarkupPlaceholderTag] is not null
- * @param visible sets whether the [Component] is visible if [visible] is not null
+ * @param visible sets whether the [Component] is isVisible if [visible] is not null
  * @param visibilityAllowed sets whether visibility is allowed on this [Component] if [visibilityAllowed] is not null
- * @param enabled sets whether the [Component] is enabled if [enabled] is not null
- * @param escapeModelStrings sets whether the [IModel] String values are to be HTML escaped is enabled
- *      if [escapeModelStrings] is not null
+ * @param enabled sets whether the [Component] is isEnabled if [enabled] is not null
+ * @param escapeModelStrings sets whether the [IModel] String values are to be HTML escaped is isEnabled
+ *      if [isEscapeModelStrings] is not null
  * @param renderBodyOnly sets whether to only output the generated content or whether to also include the containing tag
- *      if [renderBodyOnly] is not null
+ *      if [isRenderBodyOnly] is not null
  * @param behavior single behavior to add to the [Component]
  * @param behaviors [List] of [Behavior]s to add to the [Component]
  *
@@ -86,13 +86,13 @@ internal fun <C : Component> C.config(
 . *
  * @param outputMarkupId sets whether an id is added to the markup if [outputMarkupId] is not null
  * @param outputMarkupPlaceholderTag sets whether a placeholder id is added to markup if [outputMarkupPlaceholderTag] is not null
- * @param visible sets whether the [Component] is visible if [visible] is not null
+ * @param visible sets whether the [Component] is isVisible if [visible] is not null
  * @param visibilityAllowed sets whether visibility is allowed on this [Component] if [visibilityAllowed] is not null
- * @param enabled sets whether the [Component] is enabled if [enabled] is not null
- * @param escapeModelStrings sets whether the [IModel] String values are to be HTML escaped is enabled
- *      if [escapeModelStrings] is not null
+ * @param enabled sets whether the [Component] is isEnabled if [enabled] is not null
+ * @param escapeModelStrings sets whether the [IModel] String values are to be HTML escaped is isEnabled
+ *      if [isEscapeModelStrings] is not null
  * @param renderBodyOnly sets whether to only output the generated content or whether to also include the containing tag
- *      if [renderBodyOnly] is not null
+ *      if [isRenderBodyOnly] is not null
  * @param behavior single behavior to add to the [Component]
  * @param behaviors [List] of [Behavior]s to add to the [Component]
  * @param required whether the [FormComponent] is required
@@ -151,13 +151,13 @@ internal fun <T, C : FormComponent<T>> C.config(
 . *
  * @param outputMarkupId sets whether an id is added to the markup if [outputMarkupId] is not null
  * @param outputMarkupPlaceholderTag sets whether a placeholder id is added to markup if [outputMarkupPlaceholderTag] is not null
- * @param visible sets whether the [Component] is visible if [visible] is not null
+ * @param visible sets whether the [Component] is isVisible if [visible] is not null
  * @param visibilityAllowed sets whether visibility is allowed on this [Component] if [visibilityAllowed] is not null
- * @param enabled sets whether the [Component] is enabled if [enabled] is not null
- * @param escapeModelStrings sets whether the [IModel] String values are to be HTML escaped is enabled
- *      if [escapeModelStrings] is not null
+ * @param enabled sets whether the [Component] is isEnabled if [enabled] is not null
+ * @param escapeModelStrings sets whether the [IModel] String values are to be HTML escaped is isEnabled
+ *      if [isEscapeModelStrings] is not null
  * @param renderBodyOnly sets whether to only output the generated content or whether to also include the containing tag
- *      if [renderBodyOnly] is not null
+ *      if [isRenderBodyOnly] is not null
  * @param behavior single behavior to add to the [Component]
  * @param behaviors [List] of [Behavior]s to add to the [Component]
  * @param required whether the [FormComponent] is required

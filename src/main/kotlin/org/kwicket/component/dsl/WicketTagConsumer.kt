@@ -1,4 +1,4 @@
-package org.kwicket.component.tag
+package org.kwicket.component.dsl
 
 import kotlinx.html.Entities
 import kotlinx.html.Tag
@@ -10,10 +10,15 @@ import kotlinx.html.stream.HTMLStreamBuilder
 import org.kwicket.wicketIdAttr
 import org.w3c.dom.events.Event
 
-internal fun wicket(): TagConsumer<RegionDescriptor> = WicketTagConsumer(
-    downstream = DelayedConsumer(HTMLStreamBuilder(out = StringBuilder(), prettyPrint = false, xhtmlCompatible = true)
-        .onFinalizeMap { sb, _ -> sb.toString() }
-))
+internal fun wicket(): TagConsumer<RegionDescriptor> =
+    WicketTagConsumer(
+        downstream = DelayedConsumer(HTMLStreamBuilder(
+            out = StringBuilder(),
+            prettyPrint = false,
+            xhtmlCompatible = true
+        )
+            .onFinalizeMap { sb, _ -> sb.toString() }
+        ))
 
 /**
  * Auto-generated component id prefix.
@@ -21,7 +26,7 @@ internal fun wicket(): TagConsumer<RegionDescriptor> = WicketTagConsumer(
 private const val componentIdPrefix = "kw_"
 
 /**
- * [TagConsumer] for handling [ComponentBuilder] tags.
+ * [TagConsumer] for handling [Builder] tags.
  */
 internal class WicketTagConsumer(
     private val downstream: TagConsumer<String>,
@@ -53,9 +58,9 @@ internal class WicketTagConsumer(
     override fun onTagStart(tag: Tag) {
         if (tag is WicketTag<*>) {
             val (id, builder) =
-                    if (tag.isPreBuilt) tag.comp!!.id to { _ -> tag.comp!! }
-                    else getId(tag, tag.attributes[wicketIdAttr]) to tag.builder!!
-            regionItem = regionItem?.add(id = id, builder = builder) ?:
+                    if (tag.isPreBuilt) tag.comp!!.id to { _: String -> tag.comp!! }
+                    else getId(tag, tag.attributes[wicketIdAttr]) to tag::build
+            regionItem = regionItem?.add(id = id, builder = tag::build) ?:
                     RegionItem(parent = regionItem, id = id, builder = builder)
                         .also { if (it.parent == null) roots.add(it) }
             tag.attributes[wicketIdAttr] = id

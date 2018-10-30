@@ -1,10 +1,10 @@
-package org.kwicket.component.tag
+package org.kwicket.component.dsl.tag
 
 import kotlinx.html.br
-import kotlinx.html.onSubmit
 import kotlinx.html.span
 import org.junit.jupiter.api.Test
 import org.kwicket.component.AbstractWicketTest
+import org.kwicket.component.dsl.wicket
 import org.kwicket.component.render
 import org.kwicket.component.wrapper.KLabel
 import org.kwicket.model.model
@@ -13,7 +13,11 @@ class AbstractTagTest : AbstractWicketTest() {
 
     @Test
     fun f() {
-        val panel = wicket().panel {
+        val panel = /*wicket().*/ panel {
+            label(1.model(), visible = false) {
+                isVisible = true
+                //isEnabled = true
+            }
             span {
                 +"hi"
             }

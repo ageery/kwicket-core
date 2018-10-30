@@ -1,4 +1,4 @@
-package org.kwicket.component.tag
+package org.kwicket.component.dsl
 
 /**
  * Describes how to create a Wicket "region" (e.g., Panel or Border): the HTML plus how to build the associated components.
