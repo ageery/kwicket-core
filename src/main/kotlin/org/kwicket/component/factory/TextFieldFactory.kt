@@ -1,14 +1,22 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.form.Form
+import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.model.IModel
+import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config
 import org.kwicket.hasNonNull
+import org.kwicket.toJavaType
+import kotlin.reflect.KClass
 
-fun <T> formFactory(
+fun <T: Any> textFieldFactory(
     id: String,
-    model: IModel<T>? = null,
+    model: IModel<T?>? = null,
+    type: KClass<T>? = null,
+    label: IModel<String>? = null,
+    isRequired: Boolean? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -19,32 +27,19 @@ fun <T> formFactory(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Form<T>.() -> Unit)? = null,
-    onSubmit: (Form<T>.() -> Unit)? = null,
-    onError: (Form<T>.() -> Unit)? = null,
-    postInit: (Form<T>.() -> Unit)? = null
-): Form<T> =
-    if (hasNonNull(onConfig, onSubmit, onError)) {
-        object : Form<T>(id, model) {
+    onConfig: (TextField<T>.() -> Unit)? = null,
+    postInit: (TextField<T>.() -> Unit)? = null
+): TextField<T> =
+    if (hasNonNull(onConfig)) {
+        object : TextField<T>(id, model, type.toJavaType(isRequired = isRequired)) {
 
             override fun onConfigure() {
                 super.onConfigure()
                 onConfig?.invoke(this)
             }
-
-            override fun onSubmit() {
-                super.onConfigure()
-                onSubmit?.invoke(this)
-            }
-
-            override fun onError() {
-                super.onConfigure()
-                onError?.invoke(this)
-            }
-
         }
     } else {
-        Form<T>(id, model)
+        TextField<T>(id, model, type.toJavaType(isRequired = isRequired))
     }.config(
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -55,5 +50,9 @@ fun <T> formFactory(
         escapeModelStrings = escapeModelStrings,
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
-        behaviors = behaviors
+        behaviors = behaviors,
+        isRequired = isRequired,
+        label = label,
+        validator = validator,
+        validators = validators
     ).also { postInit?.invoke(it) }

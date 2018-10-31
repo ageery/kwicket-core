@@ -95,7 +95,7 @@ internal fun <C : Component> C.config(
  *      if [renderBodyOnly] is not null
  * @param behavior single behavior to add to the [Component]
  * @param behaviors [List] of [Behavior]s to add to the [Component]
- * @param required whether the [FormComponent] is required
+ * @param isRequired whether the [FormComponent] is isRequired
  * @param label name of the [FormComponent] that is used for a label and in validator messages
  * @param validator [IValidator] to add to the [FormComponent]
  * @param validators list of [IValidator]s to add to the [FormComponent]
@@ -114,7 +114,7 @@ internal fun <T, C : FormComponent<T>> C.config(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    required: Boolean? = null,
+    isRequired: Boolean? = null,
     label: IModel<String>? = null,
     validator: IValidator<T>? = null,
     validators: List<IValidator<T>>? = null
@@ -131,7 +131,7 @@ internal fun <T, C : FormComponent<T>> C.config(
         behavior = behavior,
         behaviors = behaviors
     )
-    required?.let { this.isRequired = it }
+    isRequired?.let { this.isRequired = it }
     label?.let { this.label = it }
     when {
         validator != null -> listOf(validator) + (validators ?: emptyList())
@@ -196,7 +196,7 @@ internal fun <B : Button> B.config(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
-        required = required,
+        isRequired = required,
         label = label,
         validator = validator,
         validators = validators

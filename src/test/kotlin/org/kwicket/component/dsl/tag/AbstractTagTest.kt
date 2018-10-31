@@ -8,12 +8,23 @@ import org.kwicket.component.factory.labelFactory
 import org.kwicket.component.render
 import org.kwicket.component.wrapper.KLabel
 import org.kwicket.model.model
+import org.kwicket.model.plus
+import org.kwicket.model.res
+import java.io.Serializable
 
 class AbstractTagTest : AbstractWicketTest() {
 
     @Test
     fun f() {
+        class Person(var name: String? = null) : Serializable
         val panel = /*wicket().*/ panel {
+            val formModel = Person().model()
+            form(model = formModel) {
+                textField(model = formModel + Person::name, isRequired = true) {
+                    isVisible = true
+                }
+                label(model = "hi".res())
+            }
             label(1.model(), visible = false) {
                 isVisible = true
                 //isEnabled = true
