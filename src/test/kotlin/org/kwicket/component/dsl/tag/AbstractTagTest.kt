@@ -43,6 +43,11 @@ class AbstractTagTest : AbstractWicketTest() {
 
                     }
                 }
+                ajaxButton(model = "Ajax submit".model()) {
+                    onSubmit = { target ->
+                        println(target)
+                    }
+                }
             }
             label(model = "test".model())
             val x = labelFactory(id = "xyz", model = "static".model(), outputMarkupPlaceholderTag = true) {

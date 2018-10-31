@@ -58,6 +58,14 @@ class QueueButtonTest : AbstractQueuedTest<Label, String?>() {
                         isVisible = false
                     }
                 }
+                ajaxButton(id = "ajaxButton", model = "here".model()) {
+                    onSubmit = { target ->
+                        println(target)
+                    }
+                    onError = {
+
+                    }
+                }
             }
         }
         tester.render(x) {
