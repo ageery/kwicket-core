@@ -32,10 +32,10 @@ fun <T : Serializable?> T.model(): IModel<T> = Model.of(this)
  * @receiver [List] of type [T]
  * @return model of the @receiver [List]
  */
-fun <T, L: List<T>> L.listModel(): IModel<List<T>> = ListModel(this)
+fun <T, L : List<T>> L.listModel(): IModel<List<T>> = ListModel(this)
 
 // FIXME: comment -- needed by Select2 components
-fun <T, L: Collection<T>> L.collectionModel(): IModel<Collection<T>> = CollectionModel(this)
+fun <T, L : Collection<T>> L.collectionModel(): IModel<Collection<T>> = CollectionModel(this)
 
 /**
  * Creates a [LoadableDetachableModel] that uses the lambda to produce its value.
@@ -45,6 +45,17 @@ fun <T, L: Collection<T>> L.collectionModel(): IModel<Collection<T>> = Collectio
  * @return [LoadableDetachableModel] of type [T]
  */
 fun <T> (() -> T).ldm(): IModel<T> = LoadableDetachableModel.of(this)
+
+/**
+ * Creates an [IModel] where the value is obtained from applying the [lambda] to the @receiver [IModel] value/object.
+ *
+ * @receiver [IModel] where the value is used when generating the value of the returned [IModel]
+ * @param lambda the lambda to apply to the @receiver for creating a new [IModel]
+ * @return [IModel] where the value comes from applying the [lambda] to the @receiver [IModel] value/object
+ */
+infix operator fun <M, T> IModel<M>.plus(lambda: (M) -> T): IModel<T> = object : LoadableDetachableModel<T>() {
+    override fun load(): T = lambda(this@plus.obj)
+}
 
 /**
  * Creates a [ResourceModel] using the resource key and the optional default value.
@@ -111,5 +122,5 @@ operator fun <C, T> IModel<C?>.plus(property: KProperty1<C, T>): PropertyModel<T
  * @receiver the model the [property] is being applied to
  * @return IModel<T> constructed from the @receiver and the [property] info
  */
-operator fun <C, T> IModel<C>.plus(property: KProperty1<C, T>): IModel<T> =
+infix operator fun <C, T> IModel<C>.plus(property: KProperty1<C, T>): IModel<T> =
     KPropertyModel(this, property)

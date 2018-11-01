@@ -1,0 +1,11 @@
+Kotlin has the following characteristics that make developing Wicket applications easier.
+
+- named parameters
+- default parameters
+- no `new` keyword
+- semicolon not needed to terminate a statement
+- extension functions to add functionality
+- function literals with receiver
+- operator overloading
+- infix operators
+- generic reification (inlining)

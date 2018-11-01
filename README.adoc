@@ -1,9 +1,9 @@
-= kWicket: DSL for Apache Wicket
+= kWicket: Apache Wicket with Kotlin Characteristics
 Andrew Geery <andrew.geery@gmail.com>
 
 = Goals
 
-The kWicket library is a Kotlin DSL for Wicket with the following goals:
+Using functionality in Kotlin, the kWicket library reduces the amount of code required to develop Wicket applications in Kotlin.
 
 * Transparently add components to containers
 

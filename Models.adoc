@@ -1,0 +1,20 @@
+= Models
+
+* .obj
+
+* .model()
+* .res()
+* .listModel()
+* .collectionModel()
+* .ldm()
+
+* model + prop
+* model + lambda
+
+== Future ideas
+
+- .srm() = StringResourceModel
+
+
+
+
