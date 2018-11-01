@@ -16,7 +16,7 @@ class AbstractTagTest : AbstractWicketTest() {
 
     @Test
     fun f() {
-        class Person(var name: String? = null) : Serializable
+        class Person(var name: String? = null, var id: String = "0") : Serializable
         val panel = /*wicket().*/ panel {
             val formModel = Person().model()
             form(model = formModel) {
@@ -26,6 +26,8 @@ class AbstractTagTest : AbstractWicketTest() {
                 label(model = formModel + Person::name)
                 label(model = "hi".res())
                 checkBox(model = true.model(), label = "Check Me!".model())
+                // FIXME: this doesn't work -- not nullable -- the signature is wrong... -- works if explicitly typed
+                textField(model = formModel + Person::id)
             }
             label(1.model(), visible = false) {
                 isVisible = true

@@ -7,7 +7,7 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.factory.textFieldFactory
 import kotlin.reflect.KClass
 
-interface ITextFieldBuilder<T: Any> : IComponentBuilder<TextField<T>, T?> {
+interface ITextFieldBuilder<T : Any> : IComponentBuilder<TextField<T>, T?> {
     val type: KClass<T>?
     var label: IModel<String>?
     var isRequired: Boolean?
@@ -15,7 +15,7 @@ interface ITextFieldBuilder<T: Any> : IComponentBuilder<TextField<T>, T?> {
     var validators: List<IValidator<T>>?
 }
 
-class TextFieldBuilder<T: Any>(
+class TextFieldBuilder<T : Any>(
     model: IModel<T?>? = null,
     override val type: KClass<T>? = null,
     override var label: IModel<String>? = null,
