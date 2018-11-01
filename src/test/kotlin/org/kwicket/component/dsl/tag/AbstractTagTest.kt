@@ -23,7 +23,9 @@ class AbstractTagTest : AbstractWicketTest() {
                 textField(model = formModel + Person::name, isRequired = true) {
                     isVisible = true
                 }
+                label(model = formModel + Person::name)
                 label(model = "hi".res())
+                checkBox(model = true.model(), label = "Check Me!".model())
             }
             label(1.model(), visible = false) {
                 isVisible = true

@@ -5,22 +5,20 @@ import kotlinx.html.HtmlBlockTag
 import kotlinx.html.TagConsumer
 import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.form.TextField
+import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.ITextFieldBuilder
-import org.kwicket.component.builder.TextFieldBuilder
+import org.kwicket.component.builder.CheckBoxBuilder
+import org.kwicket.component.builder.ICheckBoxBuilder
 import org.kwicket.component.dsl.ComponentTag
-import kotlin.reflect.KClass
 
-fun <T: Any> HTMLTag.textField(
+fun HTMLTag.checkBox(
     id: String? = null,
     tagName: String = "input",
     label: IModel<String>? = null,
-    isRequired: Boolean? = null,
-    validator: IValidator<T>? = null,
-    validators: List<IValidator<T>>? = null,
-    model: IModel<T?>? = null,
+    validator: IValidator<Boolean>? = null,
+    validators: List<IValidator<Boolean>>? = null,
+    model: IModel<Boolean>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -31,14 +29,13 @@ fun <T: Any> HTMLTag.textField(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    initialAttributes: Map<String, String> = mapOf("type" to "text"),
-    block: TextFieldTag<T>.() -> Unit = {}
+    initialAttributes: Map<String, String> = mapOf("type" to "checkbox"),
+    block: CheckBoxTag.() -> Unit = {}
 ): Unit =
-    TextFieldTag(
+    CheckBoxTag(
         id = id,
         tagName = tagName,
         label = label,
-        isRequired = isRequired,
         validator = validator,
         validators = validators,
         model = model,
@@ -56,14 +53,14 @@ fun <T: Any> HTMLTag.textField(
         consumer = consumer
     ).visit(block)
 
-open class TextFieldTag<T: Any>(
+open class CheckBoxTag(
     id: String? = null,
     tagName: String = "input",
-    initialAttributes: Map<String, String> = mapOf("type" to "text"),
+    initialAttributes: Map<String, String> = mapOf("type" to "checkbox"),
     consumer: TagConsumer<*>,
-    val builder: TextFieldBuilder<T>
-) : ITextFieldBuilder<T> by builder,
-    ComponentTag<TextField<T>>(
+    val builder: CheckBoxBuilder
+) : ICheckBoxBuilder by builder,
+    ComponentTag<CheckBox>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,
@@ -72,15 +69,13 @@ open class TextFieldTag<T: Any>(
 
     constructor(
         id: String? = null,
-        type: KClass<T>? = null,
         label: IModel<String>? = null,
-        isRequired: Boolean? = null,
-        validator: IValidator<T>? = null,
-        validators: List<IValidator<T>>? = null,
+        validator: IValidator<Boolean>? = null,
+        validators: List<IValidator<Boolean>>? = null,
         tagName: String = "input",
-        initialAttributes: Map<String, String> = mapOf("type" to "text"),
+        initialAttributes: Map<String, String> = mapOf("type" to "checkbox"),
         consumer: TagConsumer<*>,
-        model: IModel<T?>? = null,
+        model: IModel<Boolean>? = null,
         markupId: String? = null,
         outputMarkupId: Boolean? = null,
         outputMarkupPlaceholderTag: Boolean? = null,
@@ -96,13 +91,11 @@ open class TextFieldTag<T: Any>(
         tagName = tagName,
         initialAttributes = initialAttributes,
         consumer = consumer,
-        builder = TextFieldBuilder(
+        builder = CheckBoxBuilder(
             model = model,
-            type = type,
             validators = validators,
             validator = validator,
             label = label,
-            isRequired = isRequired,
             markupId = markupId,
             outputMarkupId = outputMarkupId,
             outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
