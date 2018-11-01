@@ -4,10 +4,13 @@ import kotlinx.html.br
 import kotlinx.html.span
 import org.junit.jupiter.api.Test
 import org.kwicket.component.AbstractWicketTest
+import org.kwicket.component.KChoiceRenderer
 import org.kwicket.component.factory.labelFactory
 import org.kwicket.component.render
 import org.kwicket.component.wrapper.KLabel
+import org.kwicket.model.listModel
 import org.kwicket.model.model
+import org.kwicket.model.obj
 import org.kwicket.model.plus
 import org.kwicket.model.res
 import java.io.Serializable
@@ -16,9 +19,10 @@ class AbstractTagTest : AbstractWicketTest() {
 
     @Test
     fun f() {
-        class Person(var name: String? = null, var id: String = "0") : Serializable
+        class Person(var name: String? = null, var id: String = "0", var parent: Person? = null) : Serializable
         val panel = /*wicket().*/ panel {
             val formModel = Person().model()
+            val parents = listOf(Person(id = "1", name = "Andrew"), Person(id = "2", name = "Bill"))
             form(model = formModel) {
                 textField(model = formModel + Person::name, isRequired = true) {
                     isVisible = true
@@ -27,6 +31,13 @@ class AbstractTagTest : AbstractWicketTest() {
                 label(model = "hi".res())
                 checkBox(model = true.model(), label = "Check Me!".model())
                 textField(model = formModel + Person::id)
+                dropDownChoice(model = formModel + Person::parent, choices = parents.listModel(),
+                    choiceRenderer = KChoiceRenderer(
+                        toDisplayObj = { it.name ?: "No name" },
+                        toId = { person, _ -> person.id },
+                        toObj = { id, choices -> choices.obj.first { parent -> parent.id == id } }),
+                    label = "andrew".model())
+
             }
             label(1.model(), visible = false) {
                 isVisible = true
