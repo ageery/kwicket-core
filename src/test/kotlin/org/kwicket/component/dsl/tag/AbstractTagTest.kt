@@ -26,7 +26,6 @@ class AbstractTagTest : AbstractWicketTest() {
                 label(model = formModel + Person::name)
                 label(model = "hi".res())
                 checkBox(model = true.model(), label = "Check Me!".model())
-                // FIXME: this doesn't work -- not nullable -- the signature is wrong... -- works if explicitly typed
                 textField(model = formModel + Person::id)
             }
             label(1.model(), visible = false) {

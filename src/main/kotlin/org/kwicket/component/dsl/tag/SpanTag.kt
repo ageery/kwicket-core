@@ -21,6 +21,6 @@ class SpanTag<T : Component>(override val comp: T, consumer: TagConsumer<*>) :
     WicketTag<T> {
 
     override val id: String = comp.id
-    override fun build(id: String): T = comp!!
+    override fun build(id: String): T = comp
 
 }

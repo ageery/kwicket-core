@@ -9,7 +9,7 @@ val servletApiVersion = "3.1.0"
 val kotlinxHtmlVersion = "0.6.10"
 
 plugins {
-    kotlin("jvm") version "1.2.71"
+    kotlin("jvm") version "1.3.0"
     id("jacoco")
     id("org.jetbrains.dokka") version "0.9.16"
 }
