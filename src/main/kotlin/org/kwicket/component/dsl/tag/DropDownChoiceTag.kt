@@ -16,7 +16,7 @@ import org.kwicket.component.dsl.ComponentTag
 fun <T> HTMLTag.dropDownChoice(
     id: String? = null,
     choices: IModel<List<T>>,
-    choiceRenderer: IChoiceRenderer<T>,
+    choiceRenderer: IChoiceRenderer<T>? = null,
     tagName: String = "select",
     label: IModel<String>? = null,
     validator: IValidator<T>? = null,
@@ -120,7 +120,7 @@ open class DropDownChoiceTag<T>(
     constructor(
         id: String? = null,
         choices: IModel<List<T>>,
-        choiceRenderer: IChoiceRenderer<T>,
+        choiceRenderer: IChoiceRenderer<T>? = null,
         label: IModel<String>? = null,
         validator: IValidator<T>? = null,
         validators: List<IValidator<T>>? = null,

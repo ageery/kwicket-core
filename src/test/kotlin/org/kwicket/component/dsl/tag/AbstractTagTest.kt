@@ -23,6 +23,7 @@ class AbstractTagTest : AbstractWicketTest() {
         val panel = /*wicket().*/ panel {
             val formModel = Person().model()
             val parents = listOf(Person(id = "1", name = "Andrew"), Person(id = "2", name = "Bill"))
+            val childModel = Person("test").model()
             form(model = formModel) {
                 textField(model = formModel + Person::name, isRequired = true) {
                     isVisible = true
@@ -32,6 +33,12 @@ class AbstractTagTest : AbstractWicketTest() {
                 checkBox(model = true.model(), label = "Check Me!".model())
                 textField(model = formModel + Person::id)
                 dropDownChoice(model = formModel + Person::parent, choices = parents.listModel(),
+                    choiceRenderer = KChoiceRenderer(
+                        toDisplayObj = { it.name ?: "No name" },
+                        toId = { person, _ -> person.id },
+                        toObj = { id, choices -> choices.obj.first { parent -> parent.id == id } }),
+                    label = "andrew".model())
+                dropDownChoice(model = childModel, choices = parents.listModel(),
                     choiceRenderer = KChoiceRenderer(
                         toDisplayObj = { it.name ?: "No name" },
                         toId = { person, _ -> person.id },
