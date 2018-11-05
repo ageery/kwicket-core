@@ -1,7 +1,7 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.form.Form
+import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.model.IModel
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -13,27 +13,29 @@ import org.kwicket.component.render
 import org.kwicket.model.model
 import org.kwicket.model.plus
 
-class FormFactoryTest : AbstractFactoryTest<Form<String>, String>() {
+class ButtonFactoryTest : AbstractFactoryTest<Button, String>() {
 
-    override val tagName: String = "form"
+    override val tagName: String = "button"
     override val model: IModel<String> = "test label".model()
 
     companion object {
         val formMarkup = """
             <form wicket:id="form">
                 <input type="text" wicket:id="field"/>
+                <button wicket:id="button"></button>
             </form>
         """.trimIndent()
 
         fun makePanel(
             id: String,
             model: IModel<Person>,
-            onSubmit: (Form<Person>.() -> Unit)? = null,
-            onError: (Form<Person>.() -> Unit)? = null
+            onSubmit: (Button.() -> Unit)? = null,
+            onError: (Button.() -> Unit)? = null
         ) =
             TestPanel(id = id, markup = formMarkup) {
-                q(formFactory(id = "form", model = model, onSubmit = onSubmit, onError = onError))
+                q(formFactory(id = "form", model = model))
                 q(textFieldFactory(id = "field", model = model + Person::name, isRequired = true))
+                q(buttonFactory(id = "button", onSubmit = onSubmit, onError = onError))
             }
     }
 
@@ -50,9 +52,9 @@ class FormFactoryTest : AbstractFactoryTest<Form<String>, String>() {
         renderBodyOnly: Boolean?,
         behavior: Behavior?,
         behaviors: List<Behavior>?,
-        onConfig: (Form<String>.() -> Unit)?,
-        postInit: (Form<String>.() -> Unit)?
-    ) = formFactory(
+        onConfig: (Button.() -> Unit)?,
+        postInit: (Button.() -> Unit)?
+    ) = buttonFactory(
         id = id,
         model = model,
         markupId = markupId,
@@ -81,7 +83,7 @@ class FormFactoryTest : AbstractFactoryTest<Form<String>, String>() {
         tester.render(panel) {
             val formTester = newFormTester("panel:form")
             formTester.setValue("field", "Name")
-            formTester.submit()
+            formTester.submit("button")
             assertTrue(onSubmitCalled)
             assertFalse(onErrorCalled)
         }
@@ -99,7 +101,7 @@ class FormFactoryTest : AbstractFactoryTest<Form<String>, String>() {
         tester.render(panel) {
             val formTester = newFormTester("panel:form")
             formTester.setValue("field", null)
-            formTester.submit()
+            formTester.submit("button")
             assertFalse(onSubmitCalled)
             assertTrue(onErrorCalled)
         }

@@ -24,7 +24,7 @@ abstract class AbstractWicketTest {
 
 }
 
-internal class TestPanel(id: String, model: IModel<*>? = null, val markup: String, val body: (Panel.() -> Unit)?) : Panel(id, model),
+class TestPanel(id: String, model: IModel<*>? = null, val markup: String, val body: (Panel.() -> Unit)?) : Panel(id, model),
     IMarkupResourceStreamProvider, IMarkupCacheKeyProvider {
 
     init {
