@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.model.IModel
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -11,6 +12,7 @@ import org.kwicket.component.TestPanel
 import org.kwicket.component.q
 import org.kwicket.component.render
 import org.kwicket.model.model
+import org.kwicket.model.obj
 import org.kwicket.model.plus
 
 class ButtonFactoryTest : AbstractFactoryTest<Button, String>() {
@@ -29,13 +31,14 @@ class ButtonFactoryTest : AbstractFactoryTest<Button, String>() {
         fun makePanel(
             id: String,
             model: IModel<Person>,
+            defaultFormProcessing: Boolean? = null,
             onSubmit: (Button.() -> Unit)? = null,
             onError: (Button.() -> Unit)? = null
         ) =
             TestPanel(id = id, markup = formMarkup) {
                 q(formFactory(id = "form", model = model))
                 q(textFieldFactory(id = "field", model = model + Person::name, isRequired = true))
-                q(buttonFactory(id = "button", onSubmit = onSubmit, onError = onError))
+                q(buttonFactory(id = "button", onSubmit = onSubmit, onError = onError, defaultFormProcessing = defaultFormProcessing))
             }
     }
 
@@ -104,6 +107,91 @@ class ButtonFactoryTest : AbstractFactoryTest<Button, String>() {
             formTester.submit("button")
             assertFalse(onSubmitCalled)
             assertTrue(onErrorCalled)
+        }
+    }
+
+    @Test
+    fun `test valid input defaultFormProcessing=false`() {
+        var onSubmitCalled = false
+        var onErrorCalled = false
+        val model = Person().model()
+        val panel = AjaxButtonFactoryTest.makePanel(
+            id = panelWicketId,
+            model = model,
+            defaultFormProcessing = false,
+            onSubmit = { onSubmitCalled = true },
+            onError = { onErrorCalled = true })
+        tester.render(panel) {
+            val formTester = newFormTester("panel:form")
+            formTester.setValue("field", "test")
+            formTester.submit("button")
+            assertTrue(onSubmitCalled)
+            assertFalse(onErrorCalled)
+            Assertions.assertNull(model.obj.name)
+        }
+    }
+
+    @Test
+    fun `test invalid input defaultFormProcessing=false`() {
+        var onSubmitCalled = false
+        var onErrorCalled = false
+        val model = Person().model()
+        val panel = makePanel(
+            id = panelWicketId,
+            model = model,
+            defaultFormProcessing = false,
+            onSubmit = { onSubmitCalled = true },
+            onError = { onErrorCalled = true })
+        tester.render(panel) {
+            val formTester = newFormTester("panel:form")
+            formTester.setValue("field", null)
+            formTester.submit("button")
+            assertTrue(onSubmitCalled)
+            assertFalse(onErrorCalled)
+            Assertions.assertNull(model.obj.name)
+        }
+    }
+
+    @Test
+    fun `test valid input defaultFormProcessing=true`() {
+        var onSubmitCalled = false
+        var onErrorCalled = false
+        val model = Person().model()
+        val panel = makePanel(
+            id = panelWicketId,
+            model = model,
+            defaultFormProcessing = true,
+            onSubmit = { onSubmitCalled = true },
+            onError = { onErrorCalled = true })
+        val name = "test"
+        tester.render(panel) {
+            val formTester = newFormTester("panel:form")
+            formTester.setValue("field", name)
+            formTester.submit("button")
+            assertTrue(onSubmitCalled)
+            assertFalse(onErrorCalled)
+            Assertions.assertEquals(name, model.obj.name)
+        }
+    }
+
+    @Test
+    fun `test invalid input defaultFormProcessing=true`() {
+        var onSubmitCalled = false
+        var onErrorCalled = false
+        val model = Person().model()
+        val panel = makePanel(
+            id = panelWicketId,
+            model = model,
+            defaultFormProcessing = true,
+            onSubmit = { onSubmitCalled = true },
+            onError = { onErrorCalled = true })
+        tester.render(panel) {
+            val formTester = newFormTester("panel:form")
+            formTester.setValue("field", null)
+            formTester.submit("button")
+            assertFalse(onSubmitCalled)
+            assertTrue(onErrorCalled)
+            Assertions.assertNull(model.obj.name)
         }
     }
 

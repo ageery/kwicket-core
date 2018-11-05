@@ -7,11 +7,10 @@ import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 
-// FIXME: default submittions type
-
 fun ajaxButtonFactory(
     id: String,
     model: IModel<String>? = null,
+    defaultFormProcessing: Boolean? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -56,4 +55,8 @@ fun ajaxButtonFactory(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors
-    ).also { postInit?.invoke(it) }
+    ).apply {
+        defaultFormProcessing?.let { this.defaultFormProcessing = it }
+    }.also {
+        postInit?.invoke(it)
+    }
