@@ -5,20 +5,20 @@ import kotlinx.html.HtmlBlockTag
 import kotlinx.html.TagConsumer
 import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.form.CheckGroup
+import org.apache.wicket.markup.html.form.RadioGroup
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.CheckGroupBuilder
-import org.kwicket.component.builder.ICheckGroupBuilder
+import org.kwicket.component.builder.IRadioGroupBuilder
+import org.kwicket.component.builder.RadioGroupBuilder
 import org.kwicket.component.dsl.ComponentTag
 
-fun <T> HTMLTag.checkGroup(
+fun <T> HTMLTag.radioGroup(
     id: String? = null,
     tagName: String = "input",
     label: IModel<String>? = null,
-    validator: IValidator<MutableCollection<T>>? = null,
-    validators: List<IValidator<MutableCollection<T>>>? = null,
-    model: IModel<MutableCollection<T>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
+    model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -30,9 +30,9 @@ fun <T> HTMLTag.checkGroup(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: CheckGroupTag<T>.() -> Unit = {}
+    block: RadioGroupTag<T>.() -> Unit = {}
 ): Unit =
-    CheckGroupTag(
+    RadioGroupTag(
         id = id,
         tagName = tagName,
         label = label,
@@ -53,14 +53,14 @@ fun <T> HTMLTag.checkGroup(
         consumer = consumer
     ).visit(block)
 
-open class CheckGroupTag<T>(
+open class RadioGroupTag<T>(
     id: String? = null,
     tagName: String = "span",
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
-    val builder: CheckGroupBuilder<T>
-) : ICheckGroupBuilder<T> by builder,
-    ComponentTag<CheckGroup<T>>(
+    val builder: RadioGroupBuilder<T>
+) : IRadioGroupBuilder<T> by builder,
+    ComponentTag<RadioGroup<T>>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,
@@ -70,12 +70,12 @@ open class CheckGroupTag<T>(
     constructor(
         id: String? = null,
         label: IModel<String>? = null,
-        validator: IValidator<MutableCollection<T>>? = null,
-        validators: List<IValidator<MutableCollection<T>>>? = null,
+        validator: IValidator<T>? = null,
+        validators: List<IValidator<T>>? = null,
         tagName: String = "span",
         initialAttributes: Map<String, String> = emptyMap(),
         consumer: TagConsumer<*>,
-        model: IModel<MutableCollection<T>>? = null,
+        model: IModel<T>? = null,
         markupId: String? = null,
         outputMarkupId: Boolean? = null,
         outputMarkupPlaceholderTag: Boolean? = null,
@@ -91,7 +91,7 @@ open class CheckGroupTag<T>(
         tagName = tagName,
         initialAttributes = initialAttributes,
         consumer = consumer,
-        builder = CheckGroupBuilder(
+        builder = RadioGroupBuilder(
             model = model,
             validators = validators,
             validator = validator,
