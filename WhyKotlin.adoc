@@ -9,3 +9,4 @@ Kotlin has the following characteristics that make developing Wicket application
 - operator overloading
 - infix operators
 - generic reification (inlining)
+- compact constructor/property definitions
