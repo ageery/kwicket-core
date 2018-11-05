@@ -5,7 +5,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
-import org.kwicket.component.factory.ajaxBbuttonFactory
+import org.kwicket.component.factory.ajaxButtonFactory
 
 interface IAjaxButtonBuilder : IComponentBuilder<AjaxButton, String> {
     var onSubmit: (AjaxButton.(AjaxRequestTarget) -> Unit)?
@@ -48,7 +48,7 @@ class AjaxButtonBuilder(
     ) {
 
     override fun build(id: String): AjaxButton =
-        ajaxBbuttonFactory(
+        ajaxButtonFactory(
             id = id,
             model = model,
             markupId = markupId,

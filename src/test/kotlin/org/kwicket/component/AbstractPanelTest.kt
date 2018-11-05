@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.EnumSource
 abstract class AbstractPanelTest<C : Component, M> : AbstractWicketTest() {
 
     protected val panelWicketId = "panel"
-    private val compWicketId = "comp"
+    protected val compWicketId = "comp"
     private val compPath = "$panelWicketId:$compWicketId"
     private val labelNeedingEscapingText = "<1"
     private val escapedLabelText = "&lt;1"
@@ -30,6 +30,7 @@ abstract class AbstractPanelTest<C : Component, M> : AbstractWicketTest() {
 
     protected open fun Panel.queueAdditional() {}
     protected abstract val model: IModel<M>
+    protected open val baseBehaviorCount: Int = 0
 
     private fun createTestPanel(type: ComponentTestType): Panel =
         TestPanel(id = panelWicketId, markup = componentsTestMarkup(id = compWicketId), body = {
@@ -90,30 +91,30 @@ abstract class AbstractPanelTest<C : Component, M> : AbstractWicketTest() {
                 Assertions.assertFalse(comp.isVisible)
             }
             ComponentTestType.SingleBehavior -> {
-                Assertions.assertEquals(1, comp.behaviors.size)
+                Assertions.assertEquals(baseBehaviorCount + 1, comp.behaviors.size)
                 Assertions.assertEquals(behavior1, comp.behaviors[0])
             }
             ComponentTestType.OneBehaviors -> {
-                Assertions.assertEquals(1, comp.behaviors.size)
+                Assertions.assertEquals(baseBehaviorCount + 1, comp.behaviors.size)
                 Assertions.assertEquals(behavior1, comp.behaviors[0])
             }
             ComponentTestType.MultiBehaviors -> {
-                Assertions.assertEquals(2, comp.behaviors.size)
+                Assertions.assertEquals(baseBehaviorCount + 2, comp.behaviors.size)
                 Assertions.assertEquals(behavior1, comp.behaviors[0])
                 Assertions.assertEquals(behavior2, comp.behaviors[1])
             }
             ComponentTestType.BehaviorWithBehaviors -> {
-                Assertions.assertEquals(2, comp.behaviors.size)
+                Assertions.assertEquals(baseBehaviorCount + 2, comp.behaviors.size)
                 Assertions.assertEquals(behavior1, comp.behaviors[0])
                 Assertions.assertEquals(behavior2, comp.behaviors[1])
             }
-            ComponentTestType.OnConfigInvisible -> tester.assertInvisible(compPath)
+            ComponentTestType.OnConfigInvisible -> tester.assertInvisible("panel:$pathToComponent")
             ComponentTestType.VisibilityAllowed -> {
-                tester.assertVisible(compPath)
+                tester.assertVisible("panel:$pathToComponent")
                 Assertions.assertTrue(comp.isVisibilityAllowed)
             }
             ComponentTestType.VisibilityNotAllowed -> {
-                tester.assertInvisible(compPath)
+                tester.assertInvisible("panel:$pathToComponent")
                 Assertions.assertFalse(comp.isVisibleInHierarchy)
                 Assertions.assertFalse(comp.isVisibilityAllowed)
             }
@@ -142,13 +143,17 @@ abstract class AbstractPanelTest<C : Component, M> : AbstractWicketTest() {
 
     open val pathToComponent: String = compWicketId
 
+    protected open val isNoMarkupIdValid: Boolean = true
+
     @ParameterizedTest
     @EnumSource(ComponentTestType::class)
     fun testComponent(type: ComponentTestType) {
-        val panel = createTestPanel(type)
-        tester.render(panel) {
-            val comp = panel.get(pathToComponent)
-            check(type, comp)
+        if (type != ComponentTestType.NoMarkupId || isNoMarkupIdValid) {
+            val panel = createTestPanel(type)
+            tester.render(panel) {
+                val comp = panel.get(pathToComponent)
+                check(type, comp)
+            }
         }
     }
 

@@ -9,7 +9,7 @@ import org.kwicket.component.config
 
 // FIXME: default submittions type
 
-fun ajaxBbuttonFactory(
+fun ajaxButtonFactory(
     id: String,
     model: IModel<String>? = null,
     markupId: String? = null,
