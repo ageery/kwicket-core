@@ -7,6 +7,8 @@ import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 
+// FIXME: default submittions type
+
 fun ajaxBbuttonFactory(
     id: String,
     model: IModel<String>? = null,

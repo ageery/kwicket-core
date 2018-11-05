@@ -43,13 +43,13 @@ class LabelNullableModelFactoryTest : AbstractFactoryTest<Label, String?>() {
 
 }
 
-class LabelNonNullableModelFactoryTest : AbstractFactoryTest<Label, String>() {
+class LabelNonNullableModelFactoryTest : AbstractFactoryTest<Label, Int>() {
 
-    override val model: IModel<String> = "test label".model()
+    override val model: IModel<Int> = 1.model()
 
     override fun factoryCreate(
         id: String,
-        model: IModel<String>?,
+        model: IModel<Int>?,
         markupId: String?,
         outputMarkupId: Boolean?,
         outputMarkupPlaceholderTag: Boolean?,
