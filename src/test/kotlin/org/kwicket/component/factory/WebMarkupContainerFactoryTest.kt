@@ -1,13 +1,18 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.model.IModel
+import org.junit.jupiter.api.Test
+import org.kwicket.component.TestPanel
+import org.kwicket.component.q
+import org.kwicket.component.render
+import org.kwicket.model.ldm
 import org.kwicket.model.model
 
-class LabelNullableModelFactoryTest : AbstractFactoryTest<Label, String?>() {
+class WebMarkupContainerNullableModelFactoryTest : AbstractFactoryTest<WebMarkupContainer, String?>() {
 
-    override val model: IModel<String?> = "test label".model()
+    override val model: IModel<String?> = "test container".model()
 
     override fun factoryCreate(
         id: String,
@@ -22,9 +27,9 @@ class LabelNullableModelFactoryTest : AbstractFactoryTest<Label, String?>() {
         renderBodyOnly: Boolean?,
         behavior: Behavior?,
         behaviors: List<Behavior>?,
-        onConfig: (Label.() -> Unit)?,
-        postInit: (Label.() -> Unit)?
-    ) = labelFactory(
+        onConfig: (WebMarkupContainer.() -> Unit)?,
+        postInit: (WebMarkupContainer.() -> Unit)?
+    ) = webMarkupContainerFactory(
         id = id,
         model = model,
         markupId = markupId,
@@ -41,15 +46,25 @@ class LabelNullableModelFactoryTest : AbstractFactoryTest<Label, String?>() {
         postInit = postInit
     )
 
+    @Test
+    fun `no model test`() {
+        val panel = TestPanel(id = panelWicketId, markup = componentsTestMarkup(id = "comp")) { //}, body = {
+            q(webMarkupContainerFactory(id = "comp"))
+        } //)
+        tester.render(panel) {
+            assertModelValue("panel:comp", null)
+        }
+    }
+
 }
 
-class LabelNonNullableModelFactoryTest : AbstractFactoryTest<Label, String>() {
+class WebMarkupContainerUnitModelFactoryTest : AbstractFactoryTest<WebMarkupContainer, Unit>() {
 
-    override val model: IModel<String> = "test label".model()
+    override val model: IModel<Unit> = { Unit }.ldm()
 
     override fun factoryCreate(
         id: String,
-        model: IModel<String>?,
+        model: IModel<Unit>?,
         markupId: String?,
         outputMarkupId: Boolean?,
         outputMarkupPlaceholderTag: Boolean?,
@@ -60,9 +75,9 @@ class LabelNonNullableModelFactoryTest : AbstractFactoryTest<Label, String>() {
         renderBodyOnly: Boolean?,
         behavior: Behavior?,
         behaviors: List<Behavior>?,
-        onConfig: (Label.() -> Unit)?,
-        postInit: (Label.() -> Unit)?
-    ) = labelFactory(
+        onConfig: (WebMarkupContainer.() -> Unit)?,
+        postInit: (WebMarkupContainer.() -> Unit)?
+    ) = webMarkupContainerFactory(
         id = id,
         model = model,
         markupId = markupId,

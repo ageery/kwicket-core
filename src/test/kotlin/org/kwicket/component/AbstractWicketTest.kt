@@ -1,12 +1,11 @@
 package org.kwicket.component
 
 import org.apache.wicket.MarkupContainer
-import org.apache.wicket.Page
+import org.apache.wicket.markup.IMarkupCacheKeyProvider
 import org.apache.wicket.markup.IMarkupResourceStreamProvider
 import org.apache.wicket.markup.html.WebPage
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.IModel
-import org.apache.wicket.protocol.http.WebApplication
 import org.apache.wicket.util.resource.IResourceStream
 import org.apache.wicket.util.resource.StringResourceStream
 import org.apache.wicket.util.tester.TagTester
@@ -25,13 +24,21 @@ abstract class AbstractWicketTest {
 
 }
 
-internal abstract class TestPanel(id: String, model: IModel<*>? = null, val markup: String) : Panel(id, model),
-    IMarkupResourceStreamProvider {
+internal class TestPanel(id: String, model: IModel<*>? = null, val markup: String, val body: (Panel.() -> Unit)?) : Panel(id, model),
+    IMarkupResourceStreamProvider, IMarkupCacheKeyProvider {
+
+    init {
+        body?.invoke(this)
+    }
 
     override fun getMarkupResourceStream(container: MarkupContainer, containerClass: Class<*>): IResourceStream =
         StringResourceStream("<wicket:panel>$markup</wicket:panel>")
+
+    override fun getCacheKey(container: MarkupContainer, containerClass: Class<*>): String? = null
 }
 
 internal class HomePage : WebPage()
 
 internal class TestApp : KWebApplication(homePage = HomePage::class)
+
+operator fun WicketTester.get(path: String) = this.getComponentFromLastRenderedPage(path, false)

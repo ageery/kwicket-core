@@ -42,8 +42,7 @@ abstract class AbstractQueuedTest<C : Component, M> {
     abstract protected val model: IModel<M>
 
     private fun createTestPanel(type: ComponentTestType): Panel =
-        object : TestPanel(id = panelWicketId, markup = componentsTestMarkup(id = compWicketId)) {
-            init {
+        TestPanel(id = panelWicketId, markup = componentsTestMarkup(id = compWicketId)) {
                 queueAdditional()
                 when (type) {
                     ComponentTestType.Enabled -> queueComponent(id = compWicketId, model = model, enabled = true)
@@ -80,7 +79,6 @@ abstract class AbstractQueuedTest<C : Component, M> {
                     ComponentTestType.InvisibleByBlock -> queueComponent(id = compWicketId, model = model, postInit = { isVisible = false })
                 }
             }
-        }
 
     private fun check(type: ComponentTestType, comp: Component) {
         when (type) {

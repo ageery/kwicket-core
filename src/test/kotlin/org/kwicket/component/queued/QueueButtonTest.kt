@@ -49,8 +49,7 @@ class QueueButtonTest : AbstractQueuedTest<Label, String?>() {
 
     @Test
     fun f() {
-        val x = object : TestPanel(id = panelWicketId, markup = """<form wicket:id="form"><button wicket:id="button"></button></form>""") {
-            init {
+        val x = TestPanel(id = panelWicketId, markup = """<form wicket:id="form"><button wicket:id="button"></button></form>""") {
                 q(Form("form", "andrew".model()))
                 button("button", model = "andrew".model()) {
                     onConfig = {
@@ -66,7 +65,6 @@ class QueueButtonTest : AbstractQueuedTest<Label, String?>() {
 //
 //                    }
 //                }
-            }
         }
         tester.render(x) {
             println(lastResponseAsString)

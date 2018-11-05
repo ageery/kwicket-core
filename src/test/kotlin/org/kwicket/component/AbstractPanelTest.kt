@@ -1,25 +1,15 @@
-package org.kwicket.component.wrapper
+package org.kwicket.component
 
 import org.apache.wicket.Component
 import org.apache.wicket.behavior.AttributeAppender
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.IModel
-import org.apache.wicket.util.tester.WicketTester
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
-import org.kwicket.component.ComponentTestType
-import org.kwicket.component.TestApp
-import org.kwicket.component.TestPanel
-import org.kwicket.component.q
-import org.kwicket.component.render
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-abstract class AbstractWrapperTest<C : Component, M> {
+abstract class AbstractPanelTest<C : Component, M> : AbstractWicketTest() {
 
     protected val panelWicketId = "panel"
     private val compWicketId = "comp"
@@ -35,19 +25,16 @@ abstract class AbstractWrapperTest<C : Component, M> {
     private val behavior1 = AttributeAppender(attr1Name, attr1Value, " ")
     private val behavior2 = AttributeAppender(attr1Name, attr2Value, " ")
 
-    protected val tester: WicketTester = WicketTester(TestApp())
-
     protected open val tagName: String = "span"
     protected open fun componentsTestMarkup(id: String) = """<$tagName wicket:id="$id">[COMPONENT]</$tagName>"""
 
     protected open fun Panel.queueAdditional() {}
-
     protected abstract val model: IModel<M>
 
     private fun createTestPanel(type: ComponentTestType): Panel =
-        TestPanel(id = panelWicketId, markup = componentsTestMarkup(id = compWicketId)) {
+        TestPanel(id = panelWicketId, markup = componentsTestMarkup(id = compWicketId), body = {
                 queueAdditional()
-                q(when (type) {
+                val c = when (type) {
                     ComponentTestType.Enabled -> createComponent(id = compWicketId, model = model, enabled = true)
                     ComponentTestType.Disabled -> createComponent(id = compWicketId, model = model, enabled = false)
                     ComponentTestType.Invisible -> createComponent(id = compWicketId, model = model, visible = false)
@@ -61,8 +48,7 @@ abstract class AbstractWrapperTest<C : Component, M> {
                     ComponentTestType.NoMarkupId -> createComponent(id = compWicketId, model = model, outputMarkupId = false)
                     ComponentTestType.PlaceholderTag -> createComponent(id = compWicketId, model = model, outputMarkupPlaceholderTag = true)
                     ComponentTestType.InvisiblePlaceholderTag -> createComponent(
-                        id = compWicketId, model = model,
-                        outputMarkupPlaceholderTag = true, visible = false
+                        id = compWicketId, model = model, outputMarkupPlaceholderTag = true, visible = false
                     )
                     ComponentTestType.SingleBehavior -> createComponent(id = compWicketId, model = model, behavior = behavior1)
                     ComponentTestType.OneBehaviors -> createComponent(id = compWicketId, model = model, behaviors = listOf(behavior1))
@@ -75,67 +61,67 @@ abstract class AbstractWrapperTest<C : Component, M> {
                         behavior = behavior1,
                         behaviors = listOf(behavior2)
                     )
-                    ComponentTestType.OnConfigInvisible -> createComponent(
-                        id = compWicketId, model = model,
-                        onConfig = { isVisible = false }
-                    )
+                    ComponentTestType.OnConfigInvisible -> createComponent(id = compWicketId, model = model) {
+                        isVisible = false
+                    }
                     ComponentTestType.VisibilityAllowed -> createComponent(id = compWicketId, model = model, visibilityAllowed = true)
                     ComponentTestType.VisibilityNotAllowed -> createComponent(id = compWicketId, model = model, visibilityAllowed = false)
-                    ComponentTestType.InvisibleByBlock -> createComponent(id = compWicketId, model = model, block = { isVisible = false })
-                })
-        }
+                    ComponentTestType.InvisibleByBlock -> createComponent(id = compWicketId, model = model, postInit = { isVisible = false })
+                }
+                queueComponent(c)
+            })
 
     private fun check(type: ComponentTestType, comp: Component) {
         when (type) {
-            ComponentTestType.Disabled -> assertFalse(comp.isEnabled)
-            ComponentTestType.Enabled -> assertTrue(comp.isEnabled)
-            ComponentTestType.Invisible -> assertFalse(comp.isVisible)
-            ComponentTestType.Visible -> assertTrue(comp.isVisible)
-            ComponentTestType.NonEscapedModelStrings -> assertFalse(comp.escapeModelStrings)
-            ComponentTestType.EscapedModelStrings -> assertTrue(comp.escapeModelStrings)
-            ComponentTestType.RenderBodyOnly -> assertTrue(comp.renderBodyOnly)
-            ComponentTestType.RenderEnclosingTag -> assertFalse(comp.renderBodyOnly)
-            ComponentTestType.ExplicitMarkupId -> assertEquals(explicitMarkupId, comp.markupId)
-            ComponentTestType.ImplicitMarkupId -> assertTrue(comp.outputMarkupId)
-            ComponentTestType.NoMarkupId -> assertFalse(comp.outputMarkupId)
-            ComponentTestType.PlaceholderTag -> assertTrue(comp.outputMarkupPlaceholderTag)
+            ComponentTestType.Disabled -> Assertions.assertFalse(comp.isEnabled)
+            ComponentTestType.Enabled -> Assertions.assertTrue(comp.isEnabled)
+            ComponentTestType.Invisible -> Assertions.assertFalse(comp.isVisible)
+            ComponentTestType.Visible -> Assertions.assertTrue(comp.isVisible)
+            ComponentTestType.NonEscapedModelStrings -> Assertions.assertFalse(comp.escapeModelStrings)
+            ComponentTestType.EscapedModelStrings -> Assertions.assertTrue(comp.escapeModelStrings)
+            ComponentTestType.RenderBodyOnly -> Assertions.assertTrue(comp.renderBodyOnly)
+            ComponentTestType.RenderEnclosingTag -> Assertions.assertFalse(comp.renderBodyOnly)
+            ComponentTestType.ExplicitMarkupId -> Assertions.assertEquals(explicitMarkupId, comp.markupId)
+            ComponentTestType.ImplicitMarkupId -> Assertions.assertTrue(comp.outputMarkupId)
+            ComponentTestType.NoMarkupId -> Assertions.assertFalse(comp.outputMarkupId)
+            ComponentTestType.PlaceholderTag -> Assertions.assertTrue(comp.outputMarkupPlaceholderTag)
             ComponentTestType.InvisiblePlaceholderTag -> {
-                assertTrue(comp.outputMarkupPlaceholderTag)
-                assertFalse(comp.isVisible)
+                Assertions.assertTrue(comp.outputMarkupPlaceholderTag)
+                Assertions.assertFalse(comp.isVisible)
             }
             ComponentTestType.SingleBehavior -> {
-                assertEquals(1, comp.behaviors.size)
-                assertEquals(behavior1, comp.behaviors[0])
+                Assertions.assertEquals(1, comp.behaviors.size)
+                Assertions.assertEquals(behavior1, comp.behaviors[0])
             }
             ComponentTestType.OneBehaviors -> {
-                assertEquals(1, comp.behaviors.size)
-                assertEquals(behavior1, comp.behaviors[0])
+                Assertions.assertEquals(1, comp.behaviors.size)
+                Assertions.assertEquals(behavior1, comp.behaviors[0])
             }
             ComponentTestType.MultiBehaviors -> {
-                assertEquals(2, comp.behaviors.size)
-                assertEquals(behavior1, comp.behaviors[0])
-                assertEquals(behavior2, comp.behaviors[1])
+                Assertions.assertEquals(2, comp.behaviors.size)
+                Assertions.assertEquals(behavior1, comp.behaviors[0])
+                Assertions.assertEquals(behavior2, comp.behaviors[1])
             }
             ComponentTestType.BehaviorWithBehaviors -> {
-                assertEquals(2, comp.behaviors.size)
-                assertEquals(behavior1, comp.behaviors[0])
-                assertEquals(behavior2, comp.behaviors[1])
+                Assertions.assertEquals(2, comp.behaviors.size)
+                Assertions.assertEquals(behavior1, comp.behaviors[0])
+                Assertions.assertEquals(behavior2, comp.behaviors[1])
             }
             ComponentTestType.OnConfigInvisible -> tester.assertInvisible(compPath)
             ComponentTestType.VisibilityAllowed -> {
                 tester.assertVisible(compPath)
-                assertTrue(comp.isVisibilityAllowed)
+                Assertions.assertTrue(comp.isVisibilityAllowed)
             }
             ComponentTestType.VisibilityNotAllowed -> {
                 tester.assertInvisible(compPath)
-                assertFalse(comp.isVisibleInHierarchy)
-                assertFalse(comp.isVisibilityAllowed)
+                Assertions.assertFalse(comp.isVisibleInHierarchy)
+                Assertions.assertFalse(comp.isVisibilityAllowed)
             }
-            ComponentTestType.InvisibleByBlock -> assertFalse(comp.isVisible)
+            ComponentTestType.InvisibleByBlock -> Assertions.assertFalse(comp.isVisible)
         }
     }
 
-    abstract fun createComponent(
+    abstract fun Panel.createComponent(
         id: String,
         model: IModel<M>? = null,
         markupId: String? = null,
@@ -149,8 +135,10 @@ abstract class AbstractWrapperTest<C : Component, M> {
         behavior: Behavior? = null,
         behaviors: List<Behavior>? = null,
         onConfig: (C.() -> Unit)? = null,
-        block: (C.() -> Unit)? = null
+        postInit: (C.() -> Unit)? = null
     ): C
+
+    abstract fun Panel.queueComponent(comp: C)
 
     open val pathToComponent: String = compWicketId
 

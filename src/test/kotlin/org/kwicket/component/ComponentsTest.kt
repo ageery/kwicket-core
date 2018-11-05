@@ -23,14 +23,12 @@ class ComponentsTest : AbstractWicketTest() {
         private const val componentsTestMarkup = """<span wicket:id="$labelId">[LABEL]</span>"""
     }
 
-    private abstract class ComponentsTestPanel : TestPanel(id = panelId, markup = componentsTestMarkup)
+    //private abstract class ComponentsTestPanel : TestPanel(id = panelId, markup = componentsTestMarkup)
 
     @Test
     fun `component config defaults`() {
-        val panel = object : ComponentsTestPanel() {
-            init {
-                q(Label(labelId, labelText.model()).config())
-            }
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config())
         }
         tester.render(panel) {
             assertContains(labelId)
@@ -44,13 +42,11 @@ class ComponentsTest : AbstractWicketTest() {
     @Test
     fun `component config markupId`() {
         val myMarkupId = "testTag"
-        val panel = object : ComponentsTestPanel() {
-            init {
-                q(
-                    Label(labelId, labelText.model())
-                        .config(markupId = myMarkupId)
-                )
-            }
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(
+                Label(labelId, labelText.model())
+                    .config(markupId = myMarkupId)
+            )
         }
         tester.render(panel) {
             assertNotNull(findTag("id", myMarkupId))
@@ -60,13 +56,11 @@ class ComponentsTest : AbstractWicketTest() {
     @Test
     fun `component config markupId and outputMarkupId=true`() {
         val myMarkupId = "testTag"
-        val panel = object : ComponentsTestPanel() {
-            init {
-                q(
-                    Label(labelId, labelText.model())
-                        .config(markupId = myMarkupId, outputMarkupId = true)
-                )
-            }
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(
+                Label(labelId, labelText.model())
+                    .config(markupId = myMarkupId, outputMarkupId = true)
+            )
         }
         tester.render(panel) {
             assertNotNull(findTag("id", myMarkupId))
@@ -75,13 +69,11 @@ class ComponentsTest : AbstractWicketTest() {
 
     @Test
     fun `component config outputMarkupId=false`() {
-        val panel = object : ComponentsTestPanel() {
-            init {
-                q(
-                    Label(labelId, labelText.model())
-                        .config(outputMarkupId = false)
-                )
-            }
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(
+                Label(labelId, labelText.model())
+                    .config(outputMarkupId = false)
+            )
         }
         tester.render(panel) {
             assertFalse(tester.getTagByWicketId(labelId).hasAttribute("id"))
@@ -90,41 +82,32 @@ class ComponentsTest : AbstractWicketTest() {
 
     @Test
     fun `component config outputMarkupId`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(outputMarkupId = true)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(outputMarkupId = true))
         }
         tester.render(panel) {
-            assertNotNull(findTag("id", panel.label.markupId))
+            assertNotNull(this[labelPath].markupId)
         }
     }
 
     @Test
     fun `component config outputMarkupPlaceholderTag=true`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(outputMarkupPlaceholderTag = true)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(outputMarkupPlaceholderTag = true))
         }
         tester.render(panel) {
-            assertNotNull(findTag("id", panel.label.markupId))
+            assertNotNull(this[labelPath].markupId)
             assertVisible(labelPath)
         }
     }
 
     @Test
     fun `component config outputMarkupPlaceholderTag=true visible=false`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(visible = false, outputMarkupPlaceholderTag = true)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(visible = false, outputMarkupPlaceholderTag = true))
         }
         tester.render(panel) {
-            assertNotNull(findTag("id", panel.label.markupId))
+            assertNotNull(findTag("id", this[labelPath].markupId))
             assertInvisible(labelPath)
         }
     }
@@ -133,44 +116,35 @@ class ComponentsTest : AbstractWicketTest() {
     fun `component config visible=false`() {
         val c = Label(labelId).config(visible = false)
         assertFalse(c.isVisible)
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(visible = false)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(visible = false))
         }
         tester.render(panel) {
-            assertFalse(panel.label.isVisible)
+            assertFalse(this[labelPath].isVisible)
             assertInvisible(labelPath)
         }
     }
 
     @Test
     fun `component config visible=true`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(visible = true)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(visible = true))
         }
         tester.render(panel) {
             assertLabel(labelPath, labelText)
             assertVisible(labelPath)
-            assertTrue(panel.label.isVisible)
+            assertTrue(this[labelPath].isVisible)
         }
     }
 
     @Test
     fun `component config renderBodyOnly=true`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(renderBodyOnly = true)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(renderBodyOnly = true))
         }
         tester.render(panel) {
             assertLabel(labelPath, labelText)
-            assertTrue(panel.label.renderBodyOnly)
+            assertTrue(this[labelPath].renderBodyOnly)
             assertNull(tester.getTagByWicketId(labelId))
         }
     }
@@ -178,40 +152,31 @@ class ComponentsTest : AbstractWicketTest() {
     @Test
     fun `component config escapeModelStrings=true`() {
         val labelText = "<1"
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(escapeModelStrings = true)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(escapeModelStrings = true))
         }
         tester.render(panel) {
             assertLabel(labelPath, "&lt;1")
-            assertTrue(panel.label.escapeModelStrings)
+            assertTrue(this[labelPath].escapeModelStrings)
         }
     }
 
     @Test
     fun `component config escapeModelStrings=false`() {
         val labelText = "<1"
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(escapeModelStrings = false)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(escapeModelStrings = false))
         }
         tester.render(panel) {
             assertLabel(labelPath, labelText)
-            assertFalse(panel.label.escapeModelStrings)
+            assertFalse(this[labelPath].escapeModelStrings)
         }
     }
 
     @Test
     fun `component config enabled=true`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(enabled = true)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(enabled = true))
         }
         tester.render(panel) {
             assertEnabled(labelPath)
@@ -221,11 +186,8 @@ class ComponentsTest : AbstractWicketTest() {
 
     @Test
     fun `component config enabled=false`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
-                Label(labelId, labelText.model())
-                    .config(enabled = false)
-            )
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(Label(labelId, labelText.model()).config(enabled = false))
         }
         tester.render(panel) {
             assertDisabled(labelPath)
@@ -235,38 +197,38 @@ class ComponentsTest : AbstractWicketTest() {
 
     @Test
     fun `component config behavior != null`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(
                 Label(labelId, labelText.model())
                     .config(behavior = AttributeAppender("data-kwicket-test", "testing"))
             )
         }
         tester.render(panel) {
             assertLabel(labelPath, labelText)
-            assertEquals(1, panel.label.behaviors.size)
+            assertEquals(1, this[labelPath].behaviors.size)
             assertNotNull(tester.findTag("data-kwicket-test", "testing"))
         }
     }
 
     @Test
     fun `component config 1 behaviors`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(
                 Label(labelId, labelText.model())
                     .config(behaviors = listOf(AttributeAppender("data-kwicket-test", "testing")))
             )
         }
         tester.render(panel) {
             assertLabel(labelPath, labelText)
-            assertEquals(1, panel.label.behaviors.size)
+            assertEquals(1, this[labelPath].behaviors.size)
             assertNotNull(tester.findTag("data-kwicket-test", "testing"))
         }
     }
 
     @Test
     fun `component config 2 behaviors`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(
                 Label(labelId, labelText.model())
                     .config(
                         behaviors = listOf(
@@ -278,7 +240,7 @@ class ComponentsTest : AbstractWicketTest() {
         }
         tester.render(panel) {
             assertLabel(labelPath, labelText)
-            assertEquals(2, panel.label.behaviors.size)
+            assertEquals(2, this[labelPath].behaviors.size)
             assertNotNull(tester.findTag("data-kwicket-test", "testing"))
             assertNotNull(tester.findTag("data-kwicket-test2", "testing2"))
         }
@@ -286,8 +248,8 @@ class ComponentsTest : AbstractWicketTest() {
 
     @Test
     fun `component config behavior with behaviors`() {
-        val panel = object : ComponentsTestPanel() {
-            val label = q(
+        val panel = TestPanel(id = panelId, markup = componentsTestMarkup) {
+            q(
                 Label(labelId, labelText.model())
                     .config(
                         behavior = AttributeAppender("data-kwicket-test", "behavior1", " "),
@@ -297,7 +259,7 @@ class ComponentsTest : AbstractWicketTest() {
         }
         tester.render(panel) {
             assertLabel(labelPath, labelText)
-            assertEquals(2, panel.label.behaviors.size)
+            assertEquals(2, this[labelPath].behaviors.size)
             assertNotNull(tester.findTag("data-kwicket-test", "behavior1 behavior2"))
         }
     }
