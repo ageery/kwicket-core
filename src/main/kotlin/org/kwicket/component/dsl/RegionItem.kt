@@ -5,10 +5,10 @@ import org.apache.wicket.MarkupContainer
 
 /**
  * FIXME: change the description
- * Used by [WicketTagConsumer] to build a Wicket hierarchy.
+ * Used by [WicketTagConsumer] to panel a Wicket hierarchy.
  *
  * @property parent optional parent for the component builder
- * @property id Wicket id for the component to build
+ * @property id Wicket id for the component to panel
  * @property builder lambda for creating a Wicket component
  */
 internal class RegionItem(

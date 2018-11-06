@@ -92,7 +92,7 @@ class AbstractTagTest : AbstractWicketTest() {
                 }
                 label(tagName = "label", model = "andrew".model())
             }
-        }.build("panel")
+        }.panel("panel")
         tester.render(panel) {
             assertContains("test")
             println(lastResponseAsString)
