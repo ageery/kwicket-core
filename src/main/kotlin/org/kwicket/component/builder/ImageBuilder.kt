@@ -55,7 +55,7 @@ class ImageBuilder<T>(
     override fun build(id: String): Image =
         imageFactory(
             id = id,
-            resourceReference = resourceReference,
+            resRef = resourceReference,
             resourceParameters = resourceParameters,
             resourceReferences = resourceReferences,
             imageResource = imageResource,

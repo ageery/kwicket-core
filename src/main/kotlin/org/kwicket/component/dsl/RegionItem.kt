@@ -11,7 +11,7 @@ import org.apache.wicket.MarkupContainer
  * @property id Wicket id for the component to panel
  * @property builder lambda for creating a Wicket component
  */
-internal class RegionItem(
+class RegionItem(
     val parent: RegionItem? = null,
     private val id: String,
     private val builder: (String) -> Component

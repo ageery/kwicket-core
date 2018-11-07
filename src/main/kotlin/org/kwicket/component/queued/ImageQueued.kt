@@ -33,7 +33,7 @@ import org.kwicket.component.q
  */
 fun MarkupContainer.image(
     id: String,
-    resourceReference: ResourceReference? = null,
+    resRef: ResourceReference? = null,
     resourceParameters: PageParameters? = null,
     resourceReferences: List<ResourceReference>? = null,
     imageResource: IResource? = null,
@@ -54,7 +54,7 @@ fun MarkupContainer.image(
 ): Image = q(
     imageFactory(
         id = id,
-        resourceReference = resourceReference,
+        resRef = resRef,
         resourceParameters = resourceParameters,
         resourceReferences = resourceReferences,
         imageResource = imageResource,

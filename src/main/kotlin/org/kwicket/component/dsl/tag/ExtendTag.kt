@@ -11,7 +11,7 @@ fun <T, C : TagConsumer<T>> C.extend(block: EXTEND.() -> Unit = {}): T = EXTEND(
     this
 ).visitAndFinalize(this, block)
 
-internal fun extend(block: EXTEND.() -> Unit = {}) = wicket().extend{ block.invoke(this) }
+fun extend(block: EXTEND.() -> Unit = {}) = wicket().extend{ block.invoke(this) }
 //)
 //.visitAndFinalize(this, block)
 

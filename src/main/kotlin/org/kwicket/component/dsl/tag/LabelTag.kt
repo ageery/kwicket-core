@@ -71,7 +71,7 @@ open class LabelTag<T>(
         initialAttributes = initialAttributes,
         consumer = consumer,
         tagName = tagName,
-        emptyTag = true),
+        emptyTag = false),
     IComponentBuilder<Label, T> by LabelBuilder<T>(
         model = model,
         markupId = markupId,

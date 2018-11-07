@@ -1,15 +1,12 @@
 package org.kwicket.component.queued
 
 import org.apache.wicket.MarkupContainer
-import org.apache.wicket.Page
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.link.BookmarkablePageLink
-import org.apache.wicket.markup.html.link.PopupSettings
-import org.apache.wicket.request.mapper.parameter.PageParameters
-import org.kwicket.component.builder.BookmarkablePageLinkBuilder
+import org.apache.wicket.markup.html.form.Form
+import org.apache.wicket.model.IModel
+import org.kwicket.component.factory.formFactory
 import org.kwicket.component.q
-import kotlin.reflect.KClass
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -31,10 +28,9 @@ import kotlin.reflect.KClass
  * @param block optional block to execute to configure the component
  * @return the created [Label] that has been queued into the parent container
  */
-fun <P: Page> MarkupContainer.bookmarkablePageLink(
+fun <T> MarkupContainer.form(
     id: String,
-    page: KClass<P>,
-    params: PageParameters? = null,
+    model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -45,24 +41,23 @@ fun <P: Page> MarkupContainer.bookmarkablePageLink(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (BookmarkablePageLink<*>.() -> Unit)? = null,
-    postInit: (BookmarkablePageLink<*>.() -> Unit)? = null,
-    popupSettings: PopupSettings? = null,
-    block: (BookmarkablePageLinkBuilder<P>.() -> Unit)? = null
-): BookmarkablePageLink<*> = q(BookmarkablePageLinkBuilder(
-    page = page,
-    pageParams = params,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    popupSettings = popupSettings,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    onConfig: (Form<T>.() -> Unit)? = null,
+    postInit: (Form<T>.() -> Unit)? = null
+): Form<T> = q(
+    formFactory(
+        id = id,
+        model = model,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        visible = visible,
+        enabled = enabled,
+        visibilityAllowed = visibilityAllowed,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        postInit = postInit
+    )
+)

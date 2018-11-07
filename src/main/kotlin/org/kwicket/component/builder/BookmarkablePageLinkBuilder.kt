@@ -3,6 +3,7 @@ package org.kwicket.component.builder
 import org.apache.wicket.Page
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import org.apache.wicket.markup.html.link.PopupSettings
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.kwicket.component.factory.bookmarkablePageLinkFactory
 import kotlin.reflect.KClass
@@ -10,6 +11,7 @@ import kotlin.reflect.KClass
 interface IBookmarkablePageLinkBuilder<P: Page> : IComponentBuilder<BookmarkablePageLink<*>, P> {
     val page: KClass<P>
     val pageParams: PageParameters?
+    var popupSettings: PopupSettings?
 }
 
 class BookmarkablePageLinkBuilder<P: Page>(
@@ -26,6 +28,7 @@ class BookmarkablePageLinkBuilder<P: Page>(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     onConfig: (BookmarkablePageLink<*>.() -> Unit)? = null,
+    override var popupSettings: PopupSettings? = null,
     postInit: (BookmarkablePageLink<*>.() -> Unit)? = null
 ) : IBookmarkablePageLinkBuilder<P>,
     ComponentBuilder<BookmarkablePageLink<*>, P>(

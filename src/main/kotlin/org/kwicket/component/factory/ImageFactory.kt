@@ -10,7 +10,7 @@ import org.kwicket.component.config
 
 fun imageFactory(
     id: String,
-    resourceReference: ResourceReference? = null,
+    resRef: ResourceReference? = null,
     resourceParameters: PageParameters? = null,
     resourceReferences: List<ResourceReference>? = null,
     imageResource: IResource? = null,
@@ -52,7 +52,7 @@ fun imageFactory(
         behavior = behavior,
         behaviors = behaviors
     ).also {  image ->
-        resourceReference?.let { image.setImageResourceReference(it, resourceParameters) }
+        resRef?.let { image.setImageResourceReference(it, resourceParameters) }
         resourceReferences?.let { image.setImageResourceReferences(resourceParameters, *it.toTypedArray()) }
         imageResource?.let { image.setImageResource(it) }
         imageResources?.let { image.setImageResources(*it.toTypedArray()) }

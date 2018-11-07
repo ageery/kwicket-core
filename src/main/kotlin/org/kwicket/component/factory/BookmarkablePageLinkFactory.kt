@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.Page
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import org.apache.wicket.markup.html.link.PopupSettings
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.kwicket.component.config
 import kotlin.reflect.KClass
@@ -22,6 +23,7 @@ fun <P : Page> bookmarkablePageLinkFactory(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     onConfig: (BookmarkablePageLink<*>.() -> Unit)? = null,
+    popupSettings: PopupSettings? = null,
     postInit: (BookmarkablePageLink<*>.() -> Unit)? = null
 ): BookmarkablePageLink<*> =
     if (onConfig != null) {
@@ -46,6 +48,7 @@ fun <P : Page> bookmarkablePageLinkFactory(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors
-    ).also {
-        postInit?.invoke(it)
+    ).also { link ->
+        popupSettings?.let { link.popupSettings = it }
+        postInit?.invoke(link)
     }

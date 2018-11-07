@@ -77,7 +77,7 @@ import org.kwicket.component.wrapper.KPanel
  * @param onConfig lambda to execute in the onConfigure lifecycle method
  * @param body FIXME: lambda for creating the body of the panel
  */
-internal class BuilderPanel(
+class BuilderPanel(
     id: String,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,

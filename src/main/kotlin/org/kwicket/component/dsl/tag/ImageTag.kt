@@ -14,13 +14,13 @@ import org.kwicket.component.builder.IImageBuilder
 import org.kwicket.component.builder.ImageBuilder
 import org.kwicket.component.dsl.ComponentTag
 
-fun <T> HTMLTag.image(
-    resourceReference: ResourceReference? = null,
+fun HTMLTag.image(
+    resRef: ResourceReference? = null,
     resourceParameters: PageParameters? = null,
     resourceReferences: List<ResourceReference>? = null,
     imageResource: IResource? = null,
     imageResources: List<IResource>? = null,
-    model: IModel<T>? = null,
+    model: IModel<*>? = null,
     tagName: String = "img",
     id: String? = null,
     markupId: String? = null,
@@ -35,10 +35,10 @@ fun <T> HTMLTag.image(
     behaviors: List<Behavior>? = null,
     onConfig: (Image.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: ImageTag<T>.() -> Unit = {}
+    block: ImageTag<*>.() -> Unit = {}
 ): Unit =
     ImageTag(
-        resourceReference = resourceReference,
+        resourceReference = resRef,
         resourceParameters = resourceParameters,
         resourceReferences = resourceReferences,
         imageResource = imageResource,

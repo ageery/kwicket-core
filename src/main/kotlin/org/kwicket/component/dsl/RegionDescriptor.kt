@@ -6,7 +6,7 @@ package org.kwicket.component.dsl
  * @property markup the HTML that the Wicket components attach to
  * @property builders builders for creating Wicket components that attach to the markup
  */
-internal class RegionDescriptor(
+class RegionDescriptor(
     val markup: String,
     val builders: List<RegionItem>
 )

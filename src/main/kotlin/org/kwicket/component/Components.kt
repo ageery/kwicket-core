@@ -23,7 +23,7 @@ import org.apache.wicket.validation.IValidator
  * @param component [Component] to include in the @receiver
  * @return the [component] that was added to the [MarkupContainer]
  */
-internal fun <C : Component, M : MarkupContainer> M.q(component: C): C = component.also { queue(it) }
+fun <C : Component, M : MarkupContainer> M.q(component: C): C = component.also { queue(it) }
 
 /**
  * Configures the @receiver, a [Component].
