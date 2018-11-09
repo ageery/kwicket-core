@@ -32,7 +32,7 @@ fun <T : Serializable?> T.model(): IModel<T> = Model.of(this)
  * @receiver [List] of type [T]
  * @return model of the @receiver [List]
  */
-fun <T, L : List<T>> L.listModel(): IModel<List<T>> = ListModel(this)
+fun <T, L : List<T>> L.listModel(): IModel<L> = ListModel(this) as IModel<L>
 
 // FIXME: comment -- needed by Select2 components
 fun <T, L : Collection<T>> L.collectionModel(): IModel<Collection<T>> = CollectionModel(this)
