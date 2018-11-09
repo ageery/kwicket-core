@@ -9,17 +9,17 @@ import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.factory.imageFactory
 
 interface IImageBuilder<T> : IComponentBuilder<Image, T> {
-    var resourceReference: ResourceReference?
+    var resRef: ResourceReference?
     var resParams: PageParameters?
-    var resourceReferences: List<ResourceReference>?
+    var resRefs: List<ResourceReference>?
     var imageResource: IResource?
     var imageResources: List<IResource>?
 }
 
 class ImageBuilder<T>(
-    override var resourceReference: ResourceReference? = null,
+    override var resRef: ResourceReference? = null,
     override var resParams: PageParameters? = null,
-    override var resourceReferences: List<ResourceReference>? = null,
+    override var resRefs: List<ResourceReference>? = null,
     override var imageResource: IResource? = null,
     override var imageResources: List<IResource>? = null,
     model: IModel<T>? = null,
@@ -55,9 +55,9 @@ class ImageBuilder<T>(
     override fun build(id: String): Image =
         imageFactory(
             id = id,
-            resRef = resourceReference,
+            resRef = resRef,
             resParams = resParams,
-            resourceReferences = resourceReferences,
+            resRefs = resRefs,
             imageResource = imageResource,
             imageResources = imageResources,
             model = model,

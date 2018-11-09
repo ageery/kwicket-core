@@ -144,7 +144,7 @@ open class DropDownChoiceTag<T>(
         initialAttributes = initialAttributes,
         consumer = consumer,
         builder = DropDownChoiceBuilder(
-            model = model,
+            model = model as IModel<T?>,
             choices = choices,
             choiceRenderer = choiceRenderer,
             validators = validators,

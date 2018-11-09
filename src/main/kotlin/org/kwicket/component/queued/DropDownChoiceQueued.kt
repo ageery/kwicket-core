@@ -32,7 +32,7 @@ import org.kwicket.component.q
  */
 fun <T> MarkupContainer.dropDownChoice(
     id: String,
-    model: IModel<T>? = null,
+    model: IModel<T?>? = null,
     choices: IModel<List<T>>,
     choiceRenderer: IChoiceRenderer<T>? = null,
     markupId: String? = null,
@@ -52,7 +52,7 @@ fun <T> MarkupContainer.dropDownChoice(
     validator: IValidator<T>? = null,
     validators: List<IValidator<T>>? = null,
     block: (DropDownChoiceBuilder<T>.() -> Unit)? = null
-): DropDownChoice<T> = q(DropDownChoiceBuilder<T>(
+): DropDownChoice<T> = q(DropDownChoiceBuilder(
     model = model,
     choices = choices,
     choiceRenderer = choiceRenderer,

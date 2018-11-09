@@ -10,7 +10,7 @@ import org.kwicket.hasNonNull
 
 fun <T> dropDownChoiceFactory(
     id: String,
-    model: IModel<T>? = null,
+    model: IModel<T?>? = null,
     choices: IModel<List<T>>,
     choiceRenderer: IChoiceRenderer<T>? = null,
     label: IModel<String>? = null,

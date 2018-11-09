@@ -34,7 +34,7 @@ fun <T: Any> HTMLTag.textArea(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    initialAttributes: Map<String, String> = mapOf("type" to "text"),
+    initialAttributes: Map<String, String> = emptyMap(),
     block: TextAreaTag<T>.() -> Unit = {}
 ): Unit =
     @Suppress("UNCHECKED_CAST")
@@ -62,7 +62,9 @@ fun <T: Any> HTMLTag.textArea(
 
 fun <T: Any> HTMLTag.textArea(
     id: String? = null,
-    tagName: String = "input",
+    cols: Int? = null,
+    rows: Int? = null,
+    tagName: String = "textarea",
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
     validator: IValidator<T>? = null,
@@ -78,10 +80,13 @@ fun <T: Any> HTMLTag.textArea(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    initialAttributes: Map<String, String> = mapOf("type" to "text"),
-    block: TextFieldTag<T>.() -> Unit = {}
+    initialAttributes: Map<String, String> = listOfNotNull(
+        cols?.let { "cols" to cols.toString() },
+        rows?.let { "rows" to rows.toString() }
+    ).toMap(),
+    block: TextAreaTag<T>.() -> Unit = {}
 ): Unit =
-    TextFieldTag(
+    TextAreaTag(
         id = id,
         tagName = tagName,
         label = label,
@@ -105,8 +110,8 @@ fun <T: Any> HTMLTag.textArea(
 
 open class TextAreaTag<T: Any>(
     id: String? = null,
-    tagName: String = "input",
-    initialAttributes: Map<String, String> = mapOf("type" to "text"),
+    tagName: String = "textarea",
+    initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     val builder: TextAreaBuilder<T>
 ) : ITextAreaBuilder<T> by builder,
@@ -123,8 +128,8 @@ open class TextAreaTag<T: Any>(
         isRequired: Boolean? = null,
         validator: IValidator<T>? = null,
         validators: List<IValidator<T>>? = null,
-        tagName: String = "input",
-        initialAttributes: Map<String, String> = mapOf("type" to "text"),
+        tagName: String = "textarea",
+        initialAttributes: Map<String, String> = emptyMap(),
         consumer: TagConsumer<*>,
         model: IModel<T?>? = null,
         markupId: String? = null,

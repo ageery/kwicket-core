@@ -7,7 +7,7 @@ import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import org.kwicket.component.factory.dropDownChoiceFactory
 
-interface IDropDownChoiceBuilder<T> : IComponentBuilder<DropDownChoice<T>, T> {
+interface IDropDownChoiceBuilder<T> : IComponentBuilder<DropDownChoice<T>, T?> {
     var label: IModel<String>?
     var isRequired: Boolean?
     var validator: IValidator<T>?
@@ -15,7 +15,7 @@ interface IDropDownChoiceBuilder<T> : IComponentBuilder<DropDownChoice<T>, T> {
 }
 
 class DropDownChoiceBuilder<T>(
-    model: IModel<T>? = null,
+    model: IModel<T?>? = null,
     val choices: IModel<List<T>>,
     val choiceRenderer: IChoiceRenderer<T>? = null,
     override var label: IModel<String>? = null,
@@ -35,7 +35,7 @@ class DropDownChoiceBuilder<T>(
     onConfig: (DropDownChoice<T>.() -> Unit)? = null,
     postInit: (DropDownChoice<T>.() -> Unit)? = null
 ) : IDropDownChoiceBuilder<T>,
-    ComponentBuilder<DropDownChoice<T>, T>(
+    ComponentBuilder<DropDownChoice<T>, T?>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -54,7 +54,7 @@ class DropDownChoiceBuilder<T>(
     override fun build(id: String): DropDownChoice<T> =
         dropDownChoiceFactory(
             id = id,
-            model = model,
+            model = model as IModel<T?>,
             choices = choices,
             choiceRenderer = choiceRenderer,
             markupId = markupId,

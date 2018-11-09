@@ -12,7 +12,7 @@ fun imageFactory(
     id: String,
     resRef: ResourceReference? = null,
     resParams: PageParameters? = null,
-    resourceReferences: List<ResourceReference>? = null,
+    resRefs: List<ResourceReference>? = null,
     imageResource: IResource? = null,
     imageResources: List<IResource>? = null,
     model: IModel<*>? = null,
@@ -53,7 +53,7 @@ fun imageFactory(
         behaviors = behaviors
     ).also {  image ->
         resRef?.let { image.setImageResourceReference(it, resParams) }
-        resourceReferences?.let { image.setImageResourceReferences(resParams, *it.toTypedArray()) }
+        resRefs?.let { image.setImageResourceReferences(resParams, *it.toTypedArray()) }
         imageResource?.let { image.setImageResource(it) }
         imageResources?.let { image.setImageResources(*it.toTypedArray()) }
         postInit?.invoke(image)
