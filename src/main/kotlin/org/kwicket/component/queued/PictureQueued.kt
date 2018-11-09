@@ -2,17 +2,13 @@ package org.kwicket.component.queued
 
 import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.image.Image
+import org.apache.wicket.markup.html.image.Picture
 import org.apache.wicket.model.IModel
-import org.apache.wicket.request.mapper.parameter.PageParameters
-import org.apache.wicket.request.resource.IResource
-import org.apache.wicket.request.resource.ResourceReference
-import org.kwicket.component.factory.imageFactory
+import org.kwicket.component.factory.pictureFactory
 import org.kwicket.component.q
 
 /**
- * Creates and queues a [Label] into the parent container.
+ * Creates and queues a [Picture] into the parent container.
  *
  * @param id Wicket component id
  * @param model model for the component
@@ -29,15 +25,10 @@ import org.kwicket.component.q
  * @param behaviors optional List of [Behavior]s to add to the component
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param block optional block to execute to configure the component
- * @return the created [Label] that has been queued into the parent container
+ * @return the created [Picture] that has been queued into the parent container
  */
-fun MarkupContainer.image(
+fun MarkupContainer.picture(
     id: String,
-    resRef: ResourceReference? = null,
-    resParams: PageParameters? = null,
-    resRefs: List<ResourceReference>? = null,
-    imageResource: IResource? = null,
-    imageResources: List<IResource>? = null,
     model: IModel<*>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -49,18 +40,11 @@ fun MarkupContainer.image(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    xValues: List<String>? = null,
-    sizes: List<String>? = null,
-    onConfig: (Image.() -> Unit)? = null,
-    postInit: (Image.() -> Unit)? = null
-): Image = q(
-    imageFactory(
+    onConfig: (Picture.() -> Unit)? = null,
+    postInit: (Picture.() -> Unit)? = null
+): Picture = q(
+    pictureFactory(
         id = id,
-        resRef = resRef,
-        resParams = resParams,
-        resRefs = resRefs,
-        imageResource = imageResource,
-        imageResources = imageResources,
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -73,8 +57,6 @@ fun MarkupContainer.image(
         behavior = behavior,
         behaviors = behaviors,
         onConfig = onConfig,
-        xValues = xValues,
-        sizes = sizes,
         postInit = postInit
     )
 )

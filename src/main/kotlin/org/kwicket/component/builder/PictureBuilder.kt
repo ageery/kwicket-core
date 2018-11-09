@@ -1,31 +1,13 @@
 package org.kwicket.component.builder
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.image.Image
+import org.apache.wicket.markup.html.image.Picture
 import org.apache.wicket.model.IModel
-import org.apache.wicket.request.mapper.parameter.PageParameters
-import org.apache.wicket.request.resource.IResource
-import org.apache.wicket.request.resource.ResourceReference
-import org.kwicket.component.factory.imageFactory
+import org.kwicket.component.factory.pictureFactory
 
-interface IImageBuilder<T> : IComponentBuilder<Image, T> {
-    var resRef: ResourceReference?
-    var resParams: PageParameters?
-    var resRefs: List<ResourceReference>?
-    var imageResource: IResource?
-    var imageResources: List<IResource>?
-    var xValues: List<String>?
-    var sizes: List<String>?
-}
+interface IPictureBuilder<T> : IComponentBuilder<Picture, T>
 
-class ImageBuilder<T>(
-    override var resRef: ResourceReference? = null,
-    override var resParams: PageParameters? = null,
-    override var resRefs: List<ResourceReference>? = null,
-    override var imageResource: IResource? = null,
-    override var imageResources: List<IResource>? = null,
-    override var xValues: List<String>? = null,
-    override var sizes: List<String>? = null,
+class PictureBuilder<T>(
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -37,10 +19,10 @@ class ImageBuilder<T>(
     isRenderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Image.() -> Unit)? = null,
-    postInit: (Image.() -> Unit)? = null
-) : IImageBuilder<T>,
-    ComponentBuilder<Image, T>(
+    onConfig: (Picture.() -> Unit)? = null,
+    postInit: (Picture.() -> Unit)? = null
+) : IPictureBuilder<T>,
+    ComponentBuilder<Picture, T>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -56,14 +38,9 @@ class ImageBuilder<T>(
         postInit = postInit
     ) {
 
-    override fun build(id: String): Image =
-        imageFactory(
+    override fun build(id: String): Picture =
+        pictureFactory(
             id = id,
-            resRef = resRef,
-            resParams = resParams,
-            resRefs = resRefs,
-            imageResource = imageResource,
-            imageResources = imageResources,
             model = model,
             markupId = markupId,
             outputMarkupId = outputMarkupId,

@@ -1,20 +1,12 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.image.Image
+import org.apache.wicket.markup.html.image.Picture
 import org.apache.wicket.model.IModel
-import org.apache.wicket.request.mapper.parameter.PageParameters
-import org.apache.wicket.request.resource.IResource
-import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config
 
-fun imageFactory(
+fun pictureFactory(
     id: String,
-    resRef: ResourceReference? = null,
-    resParams: PageParameters? = null,
-    resRefs: List<ResourceReference>? = null,
-    imageResource: IResource? = null,
-    imageResources: List<IResource>? = null,
     model: IModel<*>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -25,14 +17,12 @@ fun imageFactory(
     escapeModelStrings: Boolean? = null,
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
-    xValues: List<String>? = null,
-    sizes: List<String>? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Image.() -> Unit)? = null,
-    postInit: (Image.() -> Unit)? = null
-): Image =
+    onConfig: (Picture.() -> Unit)? = null,
+    postInit: (Picture.() -> Unit)? = null
+): Picture =
     if (onConfig != null) {
-        object : Image(id, model) {
+        object : Picture(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -41,7 +31,7 @@ fun imageFactory(
 
         }
     } else {
-        Image(id, model)
+        Picture(id, model)
     }.config(
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -53,12 +43,4 @@ fun imageFactory(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors
-    ).also {  image ->
-        resRef?.let { image.setImageResourceReference(it, resParams) }
-        resRefs?.let { image.setImageResourceReferences(resParams, *it.toTypedArray()) }
-        imageResource?.let { image.setImageResource(it) }
-        imageResources?.let { image.setImageResources(*it.toTypedArray()) }
-        xValues?.let { image.setXValues(*it.toTypedArray()) }
-        sizes?.let { image.setSizes(*it.toTypedArray()) }
-        postInit?.invoke(image)
-    }
+    ).also { postInit?.invoke(it) }

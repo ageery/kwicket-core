@@ -33,6 +33,8 @@ fun HTMLTag.image(
     isRenderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    xValues: List<String>? = null,
+    sizes: List<String>? = null,
     onConfig: (Image.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
     block: ImageTag<*>.() -> Unit = {}
@@ -58,6 +60,8 @@ fun HTMLTag.image(
         behaviors = behaviors,
         onConfig = onConfig,
         initialAttributes = initialAttributes,
+        sizes = sizes,
+        xValues = xValues,
         consumer = consumer
     ).visit(block)
 
@@ -94,6 +98,8 @@ open class ImageTag<T>(
         enabled: Boolean? = null,
         isEscapeModelStrings: Boolean? = null,
         isRenderBodyOnly: Boolean? = null,
+        xValues: List<String>? = null,
+        sizes: List<String>? = null,
         behavior: Behavior? = null,
         behaviors: List<Behavior>? = null
     ) : this(
@@ -117,6 +123,8 @@ open class ImageTag<T>(
             isEnabled = enabled,
             isEscapeModelStrings = isEscapeModelStrings,
             isRenderBodyOnly = isRenderBodyOnly,
+            xValues = xValues,
+            sizes = sizes,
             behavior = behavior,
             behaviors = behaviors
         )
