@@ -78,7 +78,7 @@ fun MarkupContainer.link(
     onClick: (Link<*>.() -> Unit)? = null,
     postInit: (Link<*>.() -> Unit)? = null,
     block: (LinkBuilder<*>.() -> Unit)? = null
-): Link<*> = q(LinkBuilder<Any>(
+): Link<*> = q(LinkBuilder<Any?>(
     markupId = markupId,
     outputMarkupId = outputMarkupId,
     outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,

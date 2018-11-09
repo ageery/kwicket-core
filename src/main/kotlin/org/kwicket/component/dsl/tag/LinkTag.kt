@@ -46,6 +46,39 @@ fun <T> HTMLTag.link(
         consumer = consumer
     ).visit(block)
 
+fun HTMLTag.link(
+    id: String? = null,
+    tagName: String = "a",
+    markupId: String? = null,
+    outputMarkupId: Boolean? = null,
+    outputMarkupPlaceholderTag: Boolean? = null,
+    visible: Boolean? = null,
+    visibilityAllowed: Boolean? = null,
+    enabled: Boolean? = null,
+    escapeModelStrings: Boolean? = null,
+    renderBodyOnly: Boolean? = null,
+    behavior: Behavior? = null,
+    behaviors: List<Behavior>? = null,
+    initialAttributes: Map<String, String> = emptyMap(),
+    block: LinkTag<*>.() -> Unit = {}
+): Unit =
+    LinkTag<Any?>(
+        id = id,
+        tagName = tagName,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        visible = visible,
+        visibilityAllowed = visibilityAllowed,
+        enabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        initialAttributes = initialAttributes,
+        consumer = consumer
+    ).visit(block)
+
 open class LinkTag<T>(
     id: String? = null,
     tagName: String = "a",
