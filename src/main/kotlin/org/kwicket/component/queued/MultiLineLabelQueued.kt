@@ -3,7 +3,9 @@ package org.kwicket.component.queued
 import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.basic.MultiLineLabel
 import org.apache.wicket.model.IModel
+import org.kwicket.component.factory.multiLineLabelFactory
 import org.kwicket.component.q
 
 /**
@@ -39,10 +41,10 @@ fun MarkupContainer.multiLineLabel(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Label.() -> Unit)? = null,
-    postInit: (Label.() -> Unit)? = null
-): Label = q(
-    multiLineLabel(
+    onConfig: (MultiLineLabel.() -> Unit)? = null,
+    postInit: (MultiLineLabel.() -> Unit)? = null
+): MultiLineLabel = q(
+    multiLineLabelFactory(
         id = id,
         model = model,
         markupId = markupId,
