@@ -6,12 +6,12 @@ import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.model.IModel
 import org.kwicket.component.factory.listViewFactory
 
-interface IListViewBuilder<T> : IComponentBuilder<ListView<T>, MutableList<T>> {
-    var items: ListView<T>.(ListItem<T>) -> Unit
+interface IListViewBuilder<T, L: List<T>> : IComponentBuilder<ListView<T>, L> {
+    var populateItem: (ListItem<T>.() -> Unit)?
 }
 
-class ListViewBuilder<T>(
-    model: IModel<MutableList<T>>? = null,
+class ListViewBuilder<T, L: List<T>>(
+    model: IModel<L>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -24,9 +24,9 @@ class ListViewBuilder<T>(
     behaviors: List<Behavior>? = null,
     onConfig: (ListView<T>.() -> Unit)? = null,
     postInit: (ListView<T>.() -> Unit)? = null,
-    override var items: ListView<T>.(ListItem<T>) -> Unit
-) : IListViewBuilder<T>,
-    ComponentBuilder<ListView<T>, MutableList<T>>(
+    override var populateItem: (ListItem<T>.() -> Unit)? = null
+) : IListViewBuilder<T, L>,
+    ComponentBuilder<ListView<T>, L>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -58,7 +58,7 @@ class ListViewBuilder<T>(
             behaviors = behaviors,
             onConfig = onConfig,
             postInit = postInit,
-            items = items
+            populateItem = populateItem
         )
 
 }

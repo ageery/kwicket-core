@@ -6,6 +6,8 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.list.ListItem
 import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.model.IModel
+import org.kwicket.component.builder.IListViewBuilder
+import org.kwicket.component.builder.ListViewBuilder
 import org.kwicket.component.factory.listViewFactory
 import org.kwicket.component.q
 
@@ -29,9 +31,9 @@ import org.kwicket.component.q
  * @param block optional block to execute to configure the component
  * @return the created [Label] that has been queued into the parent container
  */
-fun <T> MarkupContainer.listView(
+fun <T, L: List<T>> MarkupContainer.listView(
     id: String,
-    model: IModel<MutableList<T>>? = null,
+    model: IModel<L>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -44,23 +46,25 @@ fun <T> MarkupContainer.listView(
     behaviors: List<Behavior>? = null,
     onConfig: (ListView<T>.() -> Unit)? = null,
     postInit: (ListView<T>.() -> Unit)? = null,
-    items: ListView<T>.(ListItem<T>) -> Unit
+    populateItem: (ListItem<T>.() -> Unit)? = null,
+    block: (IListViewBuilder<T, L>.() -> Unit)? = null
 ): ListView<T> = q(
-    listViewFactory(
-        id = id,
+    ListViewBuilder(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
+        isVisible = visible,
+        isEnabled = enabled,
+        isVisibilityAllowed = visibilityAllowed,
+        isEscapeModelStrings = escapeModelStrings,
+        isRenderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
         onConfig = onConfig,
         postInit = postInit,
-        items = items
-    )
+        populateItem = populateItem
+    ).apply {
+        block?.invoke(this)
+    }.build(id)
 )

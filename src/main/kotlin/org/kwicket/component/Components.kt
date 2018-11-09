@@ -2,11 +2,14 @@ package org.kwicket.component
 
 import org.apache.wicket.Component
 import org.apache.wicket.MarkupContainer
+import org.apache.wicket.Page
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.markup.html.form.FormComponent
 import org.apache.wicket.model.IModel
+import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.validation.IValidator
+import kotlin.reflect.KClass
 
 /**
  * Queues the [component] in the [MarkupContainer] and returns the queued [component], allowing a [Component] to be
@@ -204,3 +207,5 @@ internal fun <B : Button> B.config(
     defaultFormProcessing?.let { this.defaultFormProcessing = defaultFormProcessing }
     return this
 }
+
+fun <P: Page> Component.setResponsePage(page: KClass<P>, params: PageParameters? = null) = setResponsePage(page.java, params)

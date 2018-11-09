@@ -10,7 +10,7 @@ import org.kwicket.component.factory.imageFactory
 
 interface IImageBuilder<T> : IComponentBuilder<Image, T> {
     var resourceReference: ResourceReference?
-    var resourceParameters: PageParameters?
+    var resParams: PageParameters?
     var resourceReferences: List<ResourceReference>?
     var imageResource: IResource?
     var imageResources: List<IResource>?
@@ -18,7 +18,7 @@ interface IImageBuilder<T> : IComponentBuilder<Image, T> {
 
 class ImageBuilder<T>(
     override var resourceReference: ResourceReference? = null,
-    override var resourceParameters: PageParameters? = null,
+    override var resParams: PageParameters? = null,
     override var resourceReferences: List<ResourceReference>? = null,
     override var imageResource: IResource? = null,
     override var imageResources: List<IResource>? = null,
@@ -56,7 +56,7 @@ class ImageBuilder<T>(
         imageFactory(
             id = id,
             resRef = resourceReference,
-            resourceParameters = resourceParameters,
+            resParams = resParams,
             resourceReferences = resourceReferences,
             imageResource = imageResource,
             imageResources = imageResources,

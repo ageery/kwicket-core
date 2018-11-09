@@ -11,7 +11,7 @@ import org.kwicket.component.config
 fun imageFactory(
     id: String,
     resRef: ResourceReference? = null,
-    resourceParameters: PageParameters? = null,
+    resParams: PageParameters? = null,
     resourceReferences: List<ResourceReference>? = null,
     imageResource: IResource? = null,
     imageResources: List<IResource>? = null,
@@ -52,8 +52,8 @@ fun imageFactory(
         behavior = behavior,
         behaviors = behaviors
     ).also {  image ->
-        resRef?.let { image.setImageResourceReference(it, resourceParameters) }
-        resourceReferences?.let { image.setImageResourceReferences(resourceParameters, *it.toTypedArray()) }
+        resRef?.let { image.setImageResourceReference(it, resParams) }
+        resourceReferences?.let { image.setImageResourceReferences(resParams, *it.toTypedArray()) }
         imageResource?.let { image.setImageResource(it) }
         imageResources?.let { image.setImageResources(*it.toTypedArray()) }
         postInit?.invoke(image)

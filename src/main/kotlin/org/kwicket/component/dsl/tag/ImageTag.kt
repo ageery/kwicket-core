@@ -16,7 +16,7 @@ import org.kwicket.component.dsl.ComponentTag
 
 fun HTMLTag.image(
     resRef: ResourceReference? = null,
-    resourceParameters: PageParameters? = null,
+    resParams: PageParameters? = null,
     resourceReferences: List<ResourceReference>? = null,
     imageResource: IResource? = null,
     imageResources: List<IResource>? = null,
@@ -39,7 +39,7 @@ fun HTMLTag.image(
 ): Unit =
     ImageTag(
         resourceReference = resRef,
-        resourceParameters = resourceParameters,
+        resParams = resParams,
         resourceReferences = resourceReferences,
         imageResource = imageResource,
         imageResources = imageResources,
@@ -76,7 +76,7 @@ open class ImageTag<T>(
     ), HtmlBlockTag {
     constructor(
         resourceReference: ResourceReference? = null,
-        resourceParameters: PageParameters? = null,
+        resParams: PageParameters? = null,
         resourceReferences: List<ResourceReference>? = null,
         imageResource: IResource? = null,
         imageResources: List<IResource>? = null,
@@ -104,7 +104,7 @@ open class ImageTag<T>(
         builder = ImageBuilder(
             onConfig = onConfig,
             resourceReference = resourceReference,
-            resourceParameters = resourceParameters,
+            resParams = resParams,
             resourceReferences = resourceReferences,
             imageResource = imageResource,
             imageResources = imageResources,

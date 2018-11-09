@@ -30,7 +30,7 @@ import org.kwicket.component.q
  */
 fun <T> MarkupContainer.link(
     id: String,
-    model: IModel<T>? = null,
+    model: IModel<T>,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -47,6 +47,38 @@ fun <T> MarkupContainer.link(
     block: (LinkBuilder<T>.() -> Unit)? = null
 ): Link<T> = q(LinkBuilder(
     model = model,
+    markupId = markupId,
+    outputMarkupId = outputMarkupId,
+    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+    isVisible = visible,
+    isVisibilityAllowed = visibilityAllowed,
+    isEnabled = enabled,
+    escapeModelStrings = escapeModelStrings,
+    renderBodyOnly = renderBodyOnly,
+    behavior = behavior,
+    behaviors = behaviors,
+    onConfig = onConfig,
+    onClick = onClick,
+    postInit = postInit
+).also { block?.invoke(it) }.build(id))
+
+fun MarkupContainer.link(
+    id: String,
+    markupId: String? = null,
+    outputMarkupId: Boolean? = null,
+    outputMarkupPlaceholderTag: Boolean? = null,
+    visible: Boolean? = null,
+    enabled: Boolean? = null,
+    visibilityAllowed: Boolean? = null,
+    escapeModelStrings: Boolean? = null,
+    renderBodyOnly: Boolean? = null,
+    behavior: Behavior? = null,
+    behaviors: List<Behavior>? = null,
+    onConfig: (Link<*>.() -> Unit)? = null,
+    onClick: (Link<*>.() -> Unit)? = null,
+    postInit: (Link<*>.() -> Unit)? = null,
+    block: (LinkBuilder<*>.() -> Unit)? = null
+): Link<*> = q(LinkBuilder<Any>(
     markupId = markupId,
     outputMarkupId = outputMarkupId,
     outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,

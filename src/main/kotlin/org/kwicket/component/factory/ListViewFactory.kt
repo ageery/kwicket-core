@@ -6,9 +6,9 @@ import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 
-fun <T> listViewFactory(
+fun <T, L: List<T>> listViewFactory(
     id: String,
-    model: IModel<MutableList<T>>? = null,
+    model: IModel<L>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -21,7 +21,7 @@ fun <T> listViewFactory(
     behaviors: List<Behavior>? = null,
     onConfig: (ListView<T>.() -> Unit)? = null,
     postInit: (ListView<T>.() -> Unit)? = null,
-    items: ListView<T>.(ListItem<T>) -> Unit
+    populateItem: (ListItem<T>.() -> Unit)? = null
 ): ListView<T> =
     object : ListView<T>(id, model) {
 
@@ -31,7 +31,7 @@ fun <T> listViewFactory(
         }
 
         override fun populateItem(item: ListItem<T>) {
-            items.invoke(this, item)
+            populateItem?.invoke(item)
         }
 
     }.config(

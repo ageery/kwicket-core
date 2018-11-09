@@ -12,8 +12,8 @@ import org.kwicket.component.builder.IComponentBuilder
 import org.kwicket.component.builder.ListViewBuilder
 import org.kwicket.component.dsl.ComponentTag
 
-fun <T> HTMLTag.listView(
-    model: IModel<MutableList<T>>? = null,
+fun <T, L: List<T>> HTMLTag.listView(
+    model: IModel<L>? = null,
     tagName: String = "div",
     id: String? = null,
     markupId: String? = null,
@@ -28,8 +28,8 @@ fun <T> HTMLTag.listView(
     behaviors: List<Behavior>? = null,
     onConfig: (ListView<T>.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    items: ListView<T>.(ListItem<T>) -> Unit,
-    block: ListViewTag<T>.() -> Unit = {}
+    populateItem: (ListItem<T>.() -> Unit)? = null,
+    block: ListViewTag<T, L>.() -> Unit = {}
 ): Unit =
     ListViewTag(
         id = id,
@@ -47,14 +47,14 @@ fun <T> HTMLTag.listView(
         behaviors = behaviors,
         onConfig = onConfig,
         initialAttributes = initialAttributes,
-        items = items,
+        populateItem = populateItem,
         consumer = consumer
     ).visit(block)
 
-open class ListViewTag<T>(
+open class ListViewTag<T, L: List<T>>(
     id: String? = null,
     tagName: String = "span",
-    model: IModel<MutableList<T>>? = null,
+    model: IModel<L>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -68,14 +68,14 @@ open class ListViewTag<T>(
     onConfig: (ListView<T>.() -> Unit)? = null,
     postInit: (ListView<T>.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    items: ListView<T>.(ListItem<T>) -> Unit,
+    populateItem: (ListItem<T>.() -> Unit)? = null,
     consumer: TagConsumer<*>
 ) : ComponentTag<ListView<T>>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,
         tagName = tagName),
-    IComponentBuilder<ListView<T>, MutableList<T>> by ListViewBuilder<T>(
+    IComponentBuilder<ListView<T>, L> by ListViewBuilder<T, L>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -89,6 +89,6 @@ open class ListViewTag<T>(
         behaviors = behaviors,
         onConfig = onConfig,
         postInit = postInit,
-        items = items
+        populateItem = populateItem
     ),
     HtmlBlockInlineTag
