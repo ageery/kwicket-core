@@ -1,20 +1,17 @@
 package org.kwicket.component.builder
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.form.Form
+import org.apache.wicket.markup.html.image.InlineImage
 import org.apache.wicket.model.IModel
-import org.kwicket.FileSize
-import org.kwicket.component.factory.formFactory
+import org.apache.wicket.request.resource.PackageResourceReference
+import org.kwicket.component.factory.inlineImageFactory
 
-interface IFormBuilder<T> : IComponentBuilder<Form<T>, T> {
-    var onSubmit: (Form<T>.() -> Unit)?
-    var onError: (Form<T>.() -> Unit)?
-    var isMultiPart: Boolean?
-    var maxSize: FileSize?
-    var fileMaxSize: FileSize?
+interface IInlineImageBuilder<T> : IComponentBuilder<InlineImage, T> {
+    val resRef: PackageResourceReference
 }
 
-class FormBuilder<T>(
+class InlineImageBuilder<T>(
+    override val resRef: PackageResourceReference,
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -22,19 +19,14 @@ class FormBuilder<T>(
     isVisible: Boolean? = null,
     isVisibilityAllowed: Boolean? = null,
     isEnabled: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
+    isEscapeModelStrings: Boolean? = null,
+    isRenderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Form<T>.() -> Unit)? = null,
-    override var onSubmit: (Form<T>.() -> Unit)? = null,
-    override var onError: (Form<T>.() -> Unit)? = null,
-    override var isMultiPart: Boolean? = null,
-    override var maxSize: FileSize? = null,
-    override var fileMaxSize: FileSize? = null,
-    postInit: (Form<T>.() -> Unit)? = null
-) : IFormBuilder<T>,
-    ComponentBuilder<Form<T>, T>(
+    onConfig: (InlineImage.() -> Unit)? = null,
+    postInit: (InlineImage.() -> Unit)? = null
+) : IInlineImageBuilder<T>,
+    ComponentBuilder<InlineImage, T>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -42,17 +34,18 @@ class FormBuilder<T>(
         isVisible = isVisible,
         isVisibilityAllowed = isVisibilityAllowed,
         isEnabled = isEnabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
+        escapeModelStrings = isEscapeModelStrings,
+        renderBodyOnly = isRenderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
         onConfig = onConfig,
         postInit = postInit
     ) {
 
-    override fun build(id: String): Form<T> =
-        formFactory(
+    override fun build(id: String): InlineImage =
+        inlineImageFactory(
             id = id,
+            resRef = resRef,
             model = model,
             markupId = markupId,
             outputMarkupId = outputMarkupId,
@@ -65,11 +58,6 @@ class FormBuilder<T>(
             behavior = behavior,
             behaviors = behaviors,
             onConfig = onConfig,
-            onSubmit = onSubmit,
-            isMultiPart = isMultiPart,
-            maxSize = maxSize,
-            fileMaxSize = fileMaxSize,
-            onError = onError,
             postInit = postInit
         )
 

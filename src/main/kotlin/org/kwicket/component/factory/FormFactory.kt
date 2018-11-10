@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
+import org.kwicket.FileSize
 import org.kwicket.component.config
 import org.kwicket.hasNonNull
 
@@ -22,6 +23,9 @@ fun <T> formFactory(
     onConfig: (Form<T>.() -> Unit)? = null,
     onSubmit: (Form<T>.() -> Unit)? = null,
     onError: (Form<T>.() -> Unit)? = null,
+    isMultiPart: Boolean? = null,
+    maxSize: FileSize? = null,
+    fileMaxSize: FileSize? = null,
     postInit: (Form<T>.() -> Unit)? = null
 ): Form<T> =
     if (hasNonNull(onConfig, onSubmit, onError)) {
@@ -56,4 +60,9 @@ fun <T> formFactory(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors
-    ).also { postInit?.invoke(it) }
+    ).also { form ->
+        isMultiPart?.let { form.isMultiPart = it }
+        maxSize?.let { form.maxSize = it.bytes }
+        fileMaxSize?.let { form.fileMaxSize = it.bytes }
+        postInit?.invoke(form)
+    }

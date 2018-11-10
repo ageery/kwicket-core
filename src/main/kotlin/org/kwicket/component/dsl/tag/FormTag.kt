@@ -7,6 +7,7 @@ import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
+import org.kwicket.FileSize
 import org.kwicket.component.builder.FormBuilder
 import org.kwicket.component.builder.IFormBuilder
 import org.kwicket.component.dsl.ComponentTag
@@ -26,6 +27,9 @@ fun <T> HTMLTag.form(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = emptyMap(),
+    isMultiPart: Boolean? = null,
+    maxSize: FileSize? = null,
+    fileMaxSize: FileSize? = null,
     block: FormTag<T>.() -> Unit = {}
 ): Unit =
     FormTag(
@@ -43,6 +47,9 @@ fun <T> HTMLTag.form(
         behavior = behavior,
         behaviors = behaviors,
         initialAttributes = initialAttributes,
+        fileMaxSize = fileMaxSize,
+        maxSize = maxSize,
+        isMultiPart = isMultiPart,
         consumer = consumer
     ).visit(block)
 
@@ -74,6 +81,9 @@ open class FormTag<T>(
         enabled: Boolean? = null,
         escapeModelStrings: Boolean? = null,
         renderBodyOnly: Boolean? = null,
+        isMultiPart: Boolean? = null,
+        maxSize: FileSize? = null,
+        fileMaxSize: FileSize? = null,
         behavior: Behavior? = null,
         behaviors: List<Behavior>? = null
     ) : this(
@@ -92,7 +102,10 @@ open class FormTag<T>(
             escapeModelStrings = escapeModelStrings,
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
-            behaviors = behaviors
+            behaviors = behaviors,
+            isMultiPart = isMultiPart,
+            maxSize = maxSize,
+            fileMaxSize = fileMaxSize
         )
     )
 

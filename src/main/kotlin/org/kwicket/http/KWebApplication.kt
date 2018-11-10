@@ -14,7 +14,9 @@ import kotlin.reflect.KClass
 abstract class KWebApplication(
     private val homePage: KClass<out Page>,
     configType: RuntimeConfigurationType? = null,
-    private val gatherExtendedBrowserInfo: Boolean? = null
+    private val gatherExtendedBrowserInfo: Boolean? = null,
+    private val throwExceptionOnMissingResource: Boolean? = null,
+    private val uploadProgressUpdatesEnabled: Boolean? = null
 ) :
     WebApplication() {
 
@@ -25,6 +27,8 @@ abstract class KWebApplication(
     override fun init() {
         super.init()
         gatherExtendedBrowserInfo?.let { requestCycleSettings.gatherExtendedBrowserInfo = it }
+        throwExceptionOnMissingResource?.let { resourceSettings.throwExceptionOnMissingResource = it }
+        uploadProgressUpdatesEnabled?.let { applicationSettings.setUploadProgressUpdatesEnabled(it) }
     }
 
     /**

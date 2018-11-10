@@ -2,15 +2,15 @@ package org.kwicket.component.queued
 
 import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.form.Form
+import org.apache.wicket.markup.html.image.InlineImage
+import org.apache.wicket.markup.html.image.Picture
 import org.apache.wicket.model.IModel
-import org.kwicket.FileSize
-import org.kwicket.component.builder.FormBuilder
+import org.apache.wicket.request.resource.PackageResourceReference
+import org.kwicket.component.factory.inlineImageFactory
 import org.kwicket.component.q
 
 /**
- * Creates and queues a [Label] into the parent container.
+ * Creates and queues a [Picture] into the parent container.
  *
  * @param id Wicket component id
  * @param model model for the component
@@ -27,11 +27,12 @@ import org.kwicket.component.q
  * @param behaviors optional List of [Behavior]s to add to the component
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param block optional block to execute to configure the component
- * @return the created [Label] that has been queued into the parent container
+ * @return the created [Picture] that has been queued into the parent container
  */
-fun <T> MarkupContainer.form(
+fun MarkupContainer.inlineImage(
     id: String,
-    model: IModel<T>? = null,
+    resRef: PackageResourceReference,
+    model: IModel<*>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -42,29 +43,24 @@ fun <T> MarkupContainer.form(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Form<T>.() -> Unit)? = null,
-    isMultiPart: Boolean? = null,
-    maxSize: FileSize? = null,
-    fileMaxSize: FileSize? = null,
-    block: (FormBuilder<T>.() -> Unit)? = null
-): Form<T> = q(
-    FormBuilder(
+    onConfig: (InlineImage.() -> Unit)? = null,
+    postInit: (InlineImage.() -> Unit)? = null
+): InlineImage = q(
+    inlineImageFactory(
+        id = id,
+        resRef = resRef,
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        isVisible = visible,
-        isEnabled = enabled,
-        isVisibilityAllowed = visibilityAllowed,
+        visible = visible,
+        enabled = enabled,
+        visibilityAllowed = visibilityAllowed,
         escapeModelStrings = escapeModelStrings,
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
         onConfig = onConfig,
-        isMultiPart = isMultiPart,
-        maxSize = maxSize,
-        fileMaxSize = fileMaxSize
-    ).apply{
-        block?.invoke(this)
-    }.build(id)
+        postInit = postInit
+    )
 )

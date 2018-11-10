@@ -5,15 +5,17 @@ import kotlinx.html.HtmlBlockInlineTag
 import kotlinx.html.TagConsumer
 import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.image.Picture
+import org.apache.wicket.markup.html.image.InlineImage
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.IPictureBuilder
-import org.kwicket.component.builder.PictureBuilder
+import org.apache.wicket.request.resource.PackageResourceReference
+import org.kwicket.component.builder.IInlineImageBuilder
+import org.kwicket.component.builder.InlineImageBuilder
 import org.kwicket.component.dsl.ComponentTag
 
-fun <T> HTMLTag.picture(
+fun <T> HTMLTag.inlineImage(
+    resRef: PackageResourceReference,
     model: IModel<T>? = null,
-    tagName: String = "picture",
+    tagName: String = "img",
     id: String? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -25,12 +27,13 @@ fun <T> HTMLTag.picture(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Picture.() -> Unit)? = null,
+    onConfig: (InlineImage.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: PictureTag<T>.() -> Unit = {}
+    block: InlineImageTag<T>.() -> Unit = {}
 ): Unit =
-    PictureTag(
+    InlineImageTag(
         id = id,
+        resRef = resRef,
         tagName = tagName,
         model = model,
         markupId = markupId,
@@ -48,9 +51,10 @@ fun <T> HTMLTag.picture(
         consumer = consumer
     ).visit(block)
 
-open class PictureTag<T>(
+open class InlineImageTag<T>(
     id: String? = null,
-    tagName: String = "picture",
+    resRef: PackageResourceReference,
+    tagName: String = "img",
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -62,17 +66,18 @@ open class PictureTag<T>(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Picture.() -> Unit)? = null,
-    postInit: (Picture.() -> Unit)? = null,
+    onConfig: (InlineImage.() -> Unit)? = null,
+    postInit: (InlineImage.() -> Unit)? = null,
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>
-) : ComponentTag<Picture>(
+) : ComponentTag<InlineImage>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,
         tagName = tagName,
         emptyTag = false),
-    IPictureBuilder<T> by PictureBuilder<T>(
+    IInlineImageBuilder<T> by InlineImageBuilder<T>(
+        resRef = resRef,
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
