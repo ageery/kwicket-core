@@ -26,6 +26,8 @@ fun HTMLTag.button(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = emptyMap(),
+    onSubmit: (Button.() -> Unit)? = null,
+    onError: (Button.() -> Unit)? = null,
     block: ButtonTag.() -> Unit = {}
 ): Unit =
     ButtonTag(
@@ -43,6 +45,8 @@ fun HTMLTag.button(
         behavior = behavior,
         behaviors = behaviors,
         initialAttributes = initialAttributes,
+        onSubmit = onSubmit,
+        onError = onError,
         consumer = consumer
     ).visit(block)
 
@@ -75,8 +79,10 @@ open class ButtonTag(
         escapeModelStrings: Boolean? = null,
         renderBodyOnly: Boolean? = null,
         behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
+        behaviors: List<Behavior>? = null,
+        onSubmit: (Button.() -> Unit)? = null,
+        onError: (Button.() -> Unit)? = null
+        ) : this(
         id = id,
         tagName = tagName,
         initialAttributes = initialAttributes,
@@ -92,7 +98,9 @@ open class ButtonTag(
             escapeModelStrings = escapeModelStrings,
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
-            behaviors = behaviors
+            behaviors = behaviors,
+            onSubmit = onSubmit,
+            onError = onError
         )
     )
 
