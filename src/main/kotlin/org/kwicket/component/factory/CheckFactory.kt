@@ -5,6 +5,24 @@ import org.apache.wicket.markup.html.form.Check
 import org.apache.wicket.markup.html.form.CheckGroup
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
+import org.kwicket.component.config.ICheckConfig
+import org.kwicket.component.config.useAnonSubClass
+
+fun <T> checkFactory(
+    id: String,
+    config: ICheckConfig<T>
+): Check<T> =
+    if (config.useAnonSubClass()) {
+        object : Check<T>(id, config.model, config.group) {
+            override fun onConfigure() {
+                super.onConfigure()
+                config.onConfig?.invoke(this)
+            }
+        }
+    } else {
+        Check(id, config.model, config.group)
+    }.config(config).apply { config.postInit?.invoke(this) }
+
 
 fun <T> checkFactory(
     id: String,

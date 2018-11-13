@@ -6,6 +6,8 @@ import org.apache.wicket.markup.html.form.Check
 import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.model.IModel
 import org.kwicket.component.builder.CheckBuilder
+import org.kwicket.component.config.ICheckConfig
+import org.kwicket.component.factory.checkFactory
 import org.kwicket.component.q
 
 /**
@@ -28,6 +30,7 @@ import org.kwicket.component.q
  * @param block optional block to execute to configure the component
  * @return the created [CheckBox] that has been queued into the parent container
  */
+// FIXME: make this one use the one below...
 fun <T : Any> MarkupContainer.check(
     id: String,
     model: IModel<T>? = null,
@@ -63,3 +66,12 @@ fun <T : Any> MarkupContainer.check(
         block?.invoke(it)
     }.build(id)
 )
+
+fun <T : Any> MarkupContainer.check2(
+    id: String,
+    config: ICheckConfig<T>,
+    block: (ICheckConfig<T>.() -> Unit)? = null
+): Check<T> {
+    block?.invoke(config)
+    return q(checkFactory(id = id, config = config))
+}

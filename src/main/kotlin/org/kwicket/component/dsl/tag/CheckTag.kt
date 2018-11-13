@@ -1,15 +1,20 @@
 package org.kwicket.component.dsl.tag
 
-import kotlinx.html.HTMLTag
-import kotlinx.html.HtmlBlockTag
-import kotlinx.html.TagConsumer
-import kotlinx.html.visit
+import kotlinx.html.*
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Check
 import org.apache.wicket.model.IModel
 import org.kwicket.component.builder.CheckBuilder
+import org.kwicket.component.builder.CheckBuilder2
 import org.kwicket.component.builder.ICheckBuilder
+import org.kwicket.component.config.ICheckConfig
 import org.kwicket.component.dsl.ComponentTag
+
+//fun <T> HTMLTag.check(
+//    id: String? = null,
+//    config: ICheckConfig<T>,
+//    block: CheckTag<T>.() -> Unit = {}
+//): Unit =
 
 fun <T> HTMLTag.check(
     id: String? = null,
@@ -45,6 +50,27 @@ fun <T> HTMLTag.check(
         initialAttributes = initialAttributes,
         consumer = consumer
     ).visit(block)
+
+fun InputType?.toAttr() = this?.let { mapOf("type" to it.realValue) } ?: emptyMap
+
+// FIXME: I wonder if she use InputType here as a parameter and then map it to the initialAttributes
+class CheckTag2<T>(
+    id: String? = null,
+    tagName: String = "input",
+    consumer: TagConsumer<*>,
+    inputType: InputType? = InputType.checkBox,
+    val config: ICheckConfig<T>
+) : ICheckConfig<T> by config,
+    ComponentTag<Check<T>>(
+        id = id,
+        initialAttributes = inputType.toAttr(),
+        consumer = consumer,
+        tagName = tagName
+    ), HtmlBlockTag {
+
+    override fun build(id: String): Check<T> = CheckBuilder2(config).build(id)
+
+}
 
 open class CheckTag<T>(
     id: String? = null,

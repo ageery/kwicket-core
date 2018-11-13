@@ -11,6 +11,20 @@ Kotlin has the following characteristics that make developing Wicket application
 - generic reification (inlining)
 - compact constructor/property definitions
 - multiple top-level classes per file
+- nullability
 
 Themes
-- `this` manipulation
+- `this` manipulation, including a nullable this
+
+Config: nullable, r/w props for creating a Component, except the id
+Factory: Id + Config -> Component
+// Builder: Config -> (String) -> Component
+Queued: Id + Config + Config.Block -> q(Component)
+Tag: No Id + Parent + Config + Config.Block -> Parent + Component
+
+What is the builder buying us? -- nothing: both *queue and *tag can be written in terms of config + factory
+
+What is the relationship between the config classes/interface and the config() functions? can they be combined?
+The thing that is slightly tricky about this is that not all of the config parameters can be applied _after_
+the component is created. Some of the properties have to be used in the process of creating the component
+(e.g., group for Check)

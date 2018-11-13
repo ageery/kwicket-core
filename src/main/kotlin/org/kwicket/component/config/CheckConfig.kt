@@ -1,21 +1,17 @@
-package org.kwicket.component.builder
+package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Check
+import org.apache.wicket.markup.html.form.CheckGroup
 import org.apache.wicket.model.IModel
-import org.kwicket.component.config.ICheckConfig
-import org.kwicket.component.factory.checkFactory
 
-interface ICheckBuilder<T> : IComponentBuilder<Check<T>, T>
-
-class CheckBuilder2<T>(
-    val config: ICheckConfig<T>
-) : Builder<Check<T>> {
-    override fun build(id: String): Check<T> = checkFactory(id = id, config = config)
+interface ICheckConfig<T> : IComponentConfig<Check<T>, T> {
+    var group: CheckGroup<T>?
 }
 
-class CheckBuilder<T>(
+class CheckConfig<T>(
     model: IModel<T>? = null,
+    override var group: CheckGroup<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -28,8 +24,8 @@ class CheckBuilder<T>(
     behaviors: List<Behavior>? = null,
     onConfig: (Check<T>.() -> Unit)? = null,
     postInit: (Check<T>.() -> Unit)? = null
-) : ICheckBuilder<T>,
-    ComponentBuilder<Check<T>, T>(
+) : ICheckConfig<T>,
+    ComponentConfig<Check<T>, T>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -43,24 +39,4 @@ class CheckBuilder<T>(
         behaviors = behaviors,
         onConfig = onConfig,
         postInit = postInit
-    ) {
-
-    override fun build(id: String): Check<T> =
-        checkFactory(
-            id = id,
-            model = model,
-            markupId = markupId,
-            outputMarkupId = outputMarkupId,
-            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-            visible = isVisible,
-            visibilityAllowed = isVisibilityAllowed,
-            enabled = isEnabled,
-            escapeModelStrings = escapeModelStrings,
-            renderBodyOnly = renderBodyOnly,
-            behavior = behavior,
-            behaviors = behaviors,
-            onConfig = onConfig,
-            postInit = postInit
-        )
-
-}
+    )

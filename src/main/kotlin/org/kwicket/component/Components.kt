@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.form.FormComponent
 import org.apache.wicket.model.IModel
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.validation.IValidator
+import org.kwicket.component.config.IComponentConfig
 import kotlin.reflect.KClass
 
 /**
@@ -78,6 +79,20 @@ internal fun <C : Component> C.config(
     }.also { if (it.isNotEmpty()) add(*it.toTypedArray()) }
     return this
 }
+
+internal fun <C : Component> C.config(config: IComponentConfig<C, *>) =
+    config(
+        markupId = config.markupId,
+        outputMarkupId = config.outputMarkupId,
+        outputMarkupPlaceholderTag = config.outputMarkupPlaceholderTag,
+        visible = config.isVisible,
+        visibilityAllowed = config.isVisibilityAllowed,
+        enabled = config.isEnabled,
+        escapeModelStrings = config.escapeModelStrings,
+        renderBodyOnly = config.renderBodyOnly,
+        behavior = config.behavior,
+        behaviors = config.behaviors
+    )
 
 /**
  * Configures the @receiver, a [FormComponent].
@@ -208,4 +223,5 @@ internal fun <B : Button> B.config(
     return this
 }
 
-fun <P: Page> Component.setResponsePage(page: KClass<P>, params: PageParameters? = null) = setResponsePage(page.java, params)
+fun <P : Page> Component.setResponsePage(page: KClass<P>, params: PageParameters? = null) =
+    setResponsePage(page.java, params)
