@@ -8,6 +8,8 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.factory.dropDownChoiceFactory
 
 interface IDropDownChoiceBuilder<T> : IComponentBuilder<DropDownChoice<T>, T?> {
+    var choices: IModel<List<T>>?
+    var choiceRenderer: IChoiceRenderer<T>?
     var label: IModel<String>?
     var isRequired: Boolean?
     var validator: IValidator<T>?
@@ -16,8 +18,8 @@ interface IDropDownChoiceBuilder<T> : IComponentBuilder<DropDownChoice<T>, T?> {
 
 class DropDownChoiceBuilder<T>(
     model: IModel<T?>? = null,
-    val choices: IModel<List<T>>,
-    val choiceRenderer: IChoiceRenderer<T>? = null,
+    override var choices: IModel<List<T>>? = null,
+    override var choiceRenderer: IChoiceRenderer<T>? = null,
     override var label: IModel<String>? = null,
     override var isRequired: Boolean? = null,
     override var validator: IValidator<T>? = null,
@@ -55,7 +57,7 @@ class DropDownChoiceBuilder<T>(
         dropDownChoiceFactory(
             id = id,
             model = model as IModel<T?>,
-            choices = choices,
+            choices = choices!!,
             choiceRenderer = choiceRenderer,
             markupId = markupId,
             outputMarkupId = outputMarkupId,
