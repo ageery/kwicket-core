@@ -8,18 +8,22 @@ import org.kwicket.component.config.useAnonSubClass
 fun timeFieldFactory(
     id: String,
     config: ITimeFieldConfig
-): TimeField =
-    if (config.useAnonSubClass()) {
+): TimeField {
+    val postInit = config.postInit
+    return if (config.useAnonSubClass()) {
+        val use12HourFormat = config.use12HourFormat
+        val onConfig = config.onConfig
         object : TimeField(id, config.model) {
             override fun onConfigure() {
                 super.onConfigure()
-                config.onConfig?.invoke(this)
+                onConfig?.invoke(this)
             }
 
             override fun use12HourFormat(): Boolean {
-                return config.use12HourFormat ?: super.use12HourFormat()
+                return use12HourFormat ?: super.use12HourFormat()
             }
         }
     } else {
         TimeField(id, config.model)
-    }.config(config).apply { config.postInit?.invoke(this) }
+    }.config(config).apply { postInit?.invoke(this) }
+}

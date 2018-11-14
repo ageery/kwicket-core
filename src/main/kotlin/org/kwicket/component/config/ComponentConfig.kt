@@ -3,10 +3,12 @@ package org.kwicket.component.config
 import org.apache.wicket.Component
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.model.IModel
+import java.io.Serializable
 
 internal fun IComponentConfig<*, *>.useAnonSubClass() = onConfig != null
 
-interface IComponentConfig<C : Component, T> {
+// FIXME: I would like this to _not_ be serializable
+interface IComponentConfig<C : Component, T> : Serializable {
     val model: IModel<T>?
     var markupId: String?
     var outputMarkupId: Boolean?

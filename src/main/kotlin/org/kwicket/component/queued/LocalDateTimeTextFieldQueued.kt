@@ -2,21 +2,21 @@ package org.kwicket.component.queued
 
 import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.extensions.markup.html.form.datetime.LocalDateTextField
+import org.apache.wicket.extensions.markup.html.form.datetime.LocalDateTimeTextField
 import org.apache.wicket.model.IModel
-import org.kwicket.component.config.ILocalDateTextFieldConfig
-import org.kwicket.component.config.LocalDateTextFieldConfig
-import org.kwicket.component.factory.localDateTextFieldFactory
+import org.kwicket.component.config.ILocalDateTimeTextFieldConfig
+import org.kwicket.component.config.LocalDateTimeTextFieldConfig
+import org.kwicket.component.factory.localDateTimeTextFieldFactory
 import org.kwicket.component.q
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.FormatStyle
 
-fun MarkupContainer.localDateTextField(
+fun MarkupContainer.localDateTimeTextField(
     id: String,
-    model: IModel<LocalDate>? = null,
-    formatPattern: String? = null,
-    parsePattern: String? = null,
+    model: IModel<LocalDateTime>? = null,
+    dateTimePattern: String? = null,
     dateStyle: FormatStyle? = null,
+    timeStyle: FormatStyle? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -27,15 +27,15 @@ fun MarkupContainer.localDateTextField(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (LocalDateTextField.() -> Unit)? = null,
-    postInit: (LocalDateTextField.() -> Unit)? = null,
-    block: (ILocalDateTextFieldConfig.() -> Unit)? = null
-): LocalDateTextField = localDateTextField(
-    id = id, block = block, config = LocalDateTextFieldConfig(
+    onConfig: (LocalDateTimeTextField.() -> Unit)? = null,
+    postInit: (LocalDateTimeTextField.() -> Unit)? = null,
+    block: (ILocalDateTimeTextFieldConfig.() -> Unit)? = null
+): LocalDateTimeTextField = localDateTimeTextField(
+    id = id, block = block, config = LocalDateTimeTextFieldConfig(
         model = model,
-        formatPattern = formatPattern,
-        parsePattern = parsePattern,
+        dateTimePattern = dateTimePattern,
         dateStyle = dateStyle,
+        timeStyle = timeStyle,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -51,11 +51,11 @@ fun MarkupContainer.localDateTextField(
     )
 )
 
-fun MarkupContainer.localDateTextField(
+fun MarkupContainer.localDateTimeTextField(
     id: String,
-    config: ILocalDateTextFieldConfig,
-    block: (ILocalDateTextFieldConfig.() -> Unit)? = null
-): LocalDateTextField {
+    config: ILocalDateTimeTextFieldConfig,
+    block: (ILocalDateTimeTextFieldConfig.() -> Unit)? = null
+): LocalDateTimeTextField {
     block?.invoke(config)
-    return q(localDateTextFieldFactory(id = id, config = config))
+    return q(localDateTimeTextFieldFactory(id = id, config = config))
 }
