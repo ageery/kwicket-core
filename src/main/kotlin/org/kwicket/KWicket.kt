@@ -23,3 +23,5 @@ inline class Kilobyte(override val value: Long) : FileSize {
 fun Map<String, *>.toParams() = PageParameters().apply {
     this@toParams.entries.forEach { add(it.key, it.value) }
 }
+
+operator fun PageParameters.get(key: String) = get(key)

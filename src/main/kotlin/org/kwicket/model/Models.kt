@@ -7,6 +7,7 @@ import org.apache.wicket.model.PropertyModel
 import org.apache.wicket.model.ResourceModel
 import org.apache.wicket.model.util.CollectionModel
 import org.apache.wicket.model.util.ListModel
+import org.apache.wicket.model.util.MapModel
 import java.io.Serializable
 import kotlin.reflect.KProperty1
 
@@ -36,6 +37,8 @@ fun <T, L : List<T>> L.listModel(): IModel<L> = ListModel(this) as IModel<L>
 
 // FIXME: comment -- needed by Select2 components
 fun <T, L : Collection<T>> L.collectionModel(): IModel<Collection<T>> = CollectionModel(this)
+
+fun <K, V, L : Map<K, V>> L.mapModel(): IModel<Map<K, V>> = MapModel(this)
 
 /**
  * Creates a [LoadableDetachableModel] that uses the lambda to produce its value.
