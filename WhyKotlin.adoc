@@ -28,3 +28,6 @@ What is the relationship between the config classes/interface and the config() f
 The thing that is slightly tricky about this is that not all of the config parameters can be applied _after_
 the component is created. Some of the properties have to be used in the process of creating the component
 (e.g., group for Check)
+
+Unanswered questions:
+* Does the config have to be serializable -- does it end up being serialized?

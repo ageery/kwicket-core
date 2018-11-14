@@ -22,6 +22,10 @@ interface IComponentConfig<C : Component, T> : Serializable {
     var behaviors: List<Behavior>?
     var onConfig: (C.() -> Unit)?
     var postInit: (C.() -> Unit)?
+    val requiresSubclass: Boolean
+        get() = onConfig != null
+    val isValid: Boolean
+        get() = true
 }
 
 open class ComponentConfig<C : Component, T>(

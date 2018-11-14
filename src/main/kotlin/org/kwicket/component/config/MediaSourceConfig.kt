@@ -1,21 +1,28 @@
 package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.extensions.markup.html.form.datetime.TimeField
+import org.apache.wicket.markup.html.media.Source
 import org.apache.wicket.model.IModel
-import java.time.LocalTime
+import org.apache.wicket.request.mapper.parameter.PageParameters
+import org.apache.wicket.request.resource.ResourceReference
 
-internal fun ITimeFieldConfig.useAnonSubClass() = onConfig != null || use12HourFormat != null
-
-interface ITimeFieldConfig : IComponentConfig<TimeField, LocalTime> {
-    var use12HourFormat: Boolean?
-    override val requiresSubclass: Boolean
-        get() = super.requiresSubclass || use12HourFormat != null
+interface IMediaSourceConfig<T> : IComponentConfig<Source, T> {
+    var resRef: ResourceReference?
+    var url: String?
+    var pageParams: PageParameters?
+    var isDisplayType: Boolean?
+    var type: String?
+    var media: String?
 }
 
-class TimeFieldConfig(
-    model: IModel<LocalTime>? = null,
-    override var use12HourFormat: Boolean? = null,
+class MediaSourceConfig<T>(
+    model: IModel<T>? = null,
+    override var resRef: ResourceReference? = null,
+    override var url: String? = null,
+    override var pageParams: PageParameters? = null,
+    override var isDisplayType: Boolean? = null,
+    override var type: String? = null,
+    override var media: String? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -26,10 +33,10 @@ class TimeFieldConfig(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (TimeField.() -> Unit)? = null,
-    postInit: (TimeField.() -> Unit)? = null
-) : ITimeFieldConfig,
-    ComponentConfig<TimeField, LocalTime>(
+    onConfig: (Source.() -> Unit)? = null,
+    postInit: (Source.() -> Unit)? = null
+) : IMediaSourceConfig<T>,
+    ComponentConfig<Source, T>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
