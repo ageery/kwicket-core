@@ -50,6 +50,7 @@ dependencies {
     compile("org.apache.wicket:wicket-core:$wicketVersion")
     compile("org.apache.wicket:wicket-devutils:$wicketVersion")
     compile("org.apache.wicket:wicket-bean-validation:$wicketVersion")
+    compile("org.apache.wicket:wicket-spring:$wicketVersion")
 
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testCompile("org.junit.jupiter:junit-jupiter-params:$junitVersion")

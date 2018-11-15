@@ -3,6 +3,7 @@ package org.kwicket.http
 import org.apache.wicket.Page
 import org.apache.wicket.core.request.mapper.MountedMapper
 import org.apache.wicket.protocol.http.WebApplication
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector
 import kotlin.reflect.KClass
 
 /**
@@ -15,3 +16,7 @@ import kotlin.reflect.KClass
  * @return [MountedMapper] encapsulating the mounted page
  */
 fun <P : Page> WebApplication.mountPage(path: String, page: KClass<P>): MountedMapper = mountPage(path, page.java)
+
+fun <A : WebApplication> A.enableSpringIoC(): A = this.also {
+    componentInstantiationListeners.add(SpringComponentInjector(it))
+}
