@@ -8,7 +8,7 @@ import org.kwicket.component.config.IAjaxFallbackButtonConfig
 import java.util.Optional
 
 /**
- * Creates an [AjaxFallbackButton] object with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [AjaxFallbackButton] component with the Wicket identifier set to [id] and configured using [config].
  *
  * @param id Wicket component id
  * @param config specifies the settings for the [AjaxFallbackButton]

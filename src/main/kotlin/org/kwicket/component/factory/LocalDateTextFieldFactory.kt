@@ -6,11 +6,15 @@ import org.kwicket.component.config
 import org.kwicket.component.config.ILocalDateTextFieldConfig
 import java.time.LocalDate
 
+/**
+ * Creates a [LocalDateTextField] component with the Wicket identifier set to [id] and configured using [config].
 
-fun <T: LocalDate?> localDateTextFieldFactory(
-    id: String,
-    config: ILocalDateTextFieldConfig<T>
-): LocalDateTextField {
+ * @param T type of the model of the [LocalDateTextField]
+ * @param id Wicket component id
+ * @param config specifies the settings for the [LocalDateTextField] component
+ * @return [LocalDateTextField] with the Wicket component id of [id] and configured by [config]
+ */
+fun <T: LocalDate?> localDateTextFieldFactory(id: String, config: ILocalDateTextFieldConfig<T>): LocalDateTextField {
     @Suppress("UNCHECKED_CAST")
     val model = config.model as IModel<LocalDate?>
     return if (config.requiresSubclass) {
@@ -25,8 +29,7 @@ fun <T: LocalDate?> localDateTextFieldFactory(
                     onConfig?.invoke(this)
                 }
 
-                override fun getStatelessHint(): Boolean =
-                    stateless ?: super.getStatelessHint()
+                override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
 
             }
         } else {
@@ -38,8 +41,7 @@ fun <T: LocalDate?> localDateTextFieldFactory(
                     onConfig?.invoke(this)
                 }
 
-                override fun getStatelessHint(): Boolean =
-                    stateless ?: super.getStatelessHint()
+                override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
 
             }
         }

@@ -4,15 +4,18 @@ import org.apache.wicket.markup.html.form.CheckBox
 import org.kwicket.component.config
 import org.kwicket.component.config.ICheckBoxConfig
 
-fun checkBoxFactory(
-    id: String,
-    config: ICheckBoxConfig
-): CheckBox {
-    val model = config.model
-    val onConfig = config.onConfig
-    val stateless = config.stateless
-    return if (config.requiresSubclass) {
-        object : CheckBox(id, model) {
+/**
+ * Creates an [CheckBox] component with the Wicket identifier set to [id] and configured using [config].
+ *
+ * @param id Wicket component id
+ * @param config specifies the settings for the [CheckBox]
+ * @return [CheckBox] with the Wicket component id of [id] and configured by [config]
+ */
+fun checkBoxFactory(id: String, config: ICheckBoxConfig): CheckBox =
+    if (config.requiresSubclass) {
+        val onConfig = config.onConfig
+        val stateless = config.stateless
+        object : CheckBox(id, config.model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -24,6 +27,5 @@ fun checkBoxFactory(
 
         }
     } else {
-        CheckBox(id, model)
+        CheckBox(id, config.model)
     }.config(config)
-}

@@ -8,6 +8,14 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
+/**
+ * Creates a [ZonedDateTimeField] component with the Wicket identifier set to [id] and configured using [config].
+
+ * @param T type of the model of the [ZonedDateTimeField]
+ * @param id Wicket component id
+ * @param config specifies the settings for the [ZonedDateTimeField] component
+ * @return [ZonedDateTimeField] with the Wicket component id of [id] and configured by [config]
+ */
 fun <T : ZonedDateTime?> zonedDateTimeFieldFactory(
     id: String,
     config: IIZonedDateTimeFieldConfig<T>

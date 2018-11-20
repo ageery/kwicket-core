@@ -7,7 +7,7 @@ import org.kwicket.component.config.IAjaxFallbackLinkConfig
 import java.util.Optional
 
 /**
- * Creates an [AjaxFallbackLink] object with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [AjaxFallbackLink] component with the Wicket identifier set to [id] and configured using [config].
  *
  * @param T type of the model of the [AjaxFallbackLink]
  * @param id Wicket component id

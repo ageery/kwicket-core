@@ -6,7 +6,7 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IAjaxButtonConfig
 
 /**
- * Creates an [AjaxButton] object with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [AjaxButton] component with the Wicket identifier set to [id] and configured using [config].
  *
  * @param id Wicket component id
  * @param config specifies the settings for the [AjaxButton]

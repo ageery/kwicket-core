@@ -6,7 +6,15 @@ import org.kwicket.component.config
 import org.kwicket.component.config.ILocalDateTimeTextFieldConfig
 import java.time.LocalDateTime
 
-fun <T: LocalDateTime?>localDateTimeTextFieldFactory(
+/**
+ * Creates a [LocalDateTimeTextField] component with the Wicket identifier set to [id] and configured using [config].
+
+ * @param T type of the model of the [LocalDateTimeTextField]
+ * @param id Wicket component id
+ * @param config specifies the settings for the [LocalDateTimeTextField] component
+ * @return [LocalDateTimeTextField] with the Wicket component id of [id] and configured by [config]
+ */
+fun <T : LocalDateTime?> localDateTimeTextFieldFactory(
     id: String,
     config: ILocalDateTimeTextFieldConfig<T>
 ): LocalDateTimeTextField {
@@ -16,7 +24,6 @@ fun <T: LocalDateTime?>localDateTimeTextFieldFactory(
         val onConfig = config.onConfig
         val stateless = config.stateless
         if (config.dateTimePattern != null) {
-
             object : LocalDateTimeTextField(id, model, config.dateTimePattern) {
 
                 override fun onConfigure() {
@@ -24,22 +31,18 @@ fun <T: LocalDateTime?>localDateTimeTextFieldFactory(
                     onConfig?.invoke(this)
                 }
 
-                override fun getStatelessHint(): Boolean =
-                    stateless ?: super.getStatelessHint()
+                override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
 
             }
         } else {
-            @Suppress("UNCHECKED_CAST")
-            object :
-                LocalDateTimeTextField(id, model, config.dateStyle, config.timeStyle) {
+            object : LocalDateTimeTextField(id, model, config.dateStyle, config.timeStyle) {
 
                 override fun onConfigure() {
                     super.onConfigure()
                     onConfig?.invoke(this)
                 }
 
-                override fun getStatelessHint(): Boolean =
-                    stateless ?: super.getStatelessHint()
+                override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
 
             }
         }
@@ -47,7 +50,6 @@ fun <T: LocalDateTime?>localDateTimeTextFieldFactory(
         if (config.dateTimePattern != null) {
             LocalDateTimeTextField(id, model, config.dateTimePattern)
         } else {
-            @Suppress("UNCHECKED_CAST")
             LocalDateTimeTextField(id, model, config.dateStyle, config.timeStyle)
         }
     }.config(config)

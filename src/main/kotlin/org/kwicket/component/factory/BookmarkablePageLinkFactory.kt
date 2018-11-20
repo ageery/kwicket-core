@@ -5,16 +5,23 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.kwicket.component.config
 import org.kwicket.component.config.IBookmarkablePageLinkConfig
 
-fun <T, P: Page> bookmarkablePageLinkFactory(
+/**
+ * Creates an [BookmarkablePageLink] component with the Wicket identifier set to [id] and configured using [config].
+ *
+ * @param T type of the model of the [BookmarkablePageLink]
+ * @param id Wicket component id
+ * @param config specifies the settings for the [BookmarkablePageLink]
+ * @return [BookmarkablePageLink] with the Wicket component id of [id] and configured by [config]
+ */
+fun <T, P : Page> bookmarkablePageLinkFactory(
     id: String,
     config: IBookmarkablePageLinkConfig<T, P>
 ): BookmarkablePageLink<T> {
-    val onConfig = config.onConfig
-    val stateless = config.stateless
-    val pageParams = config.pageParams
     val page = config.page?.java
     return if (config.requiresSubclass) {
-        object : BookmarkablePageLink<T>(id, page, pageParams) {
+        val onConfig = config.onConfig
+        val stateless = config.stateless
+        object : BookmarkablePageLink<T>(id, page, config.pageParams) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -26,6 +33,6 @@ fun <T, P: Page> bookmarkablePageLinkFactory(
 
         }
     } else {
-        BookmarkablePageLink<T, P>(id, page, pageParams)
+        BookmarkablePageLink<T, P>(id, page, config.pageParams)
     }.config(config)
 }

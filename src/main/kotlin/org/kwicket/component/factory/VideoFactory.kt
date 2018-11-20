@@ -1,9 +1,18 @@
 package org.kwicket.component.factory
 
+import org.apache.wicket.markup.html.form.SubmitLink
 import org.apache.wicket.markup.html.media.video.Video
 import org.kwicket.component.config
 import org.kwicket.component.config.IVideoConfig
 
+/**
+ * Creates a [Video] component with the Wicket identifier set to [id] and configured using [config].
+
+ * @param T type of the model of the [Video]
+ * @param id Wicket component id
+ * @param config specifies the settings for the [Video] component
+ * @return [Video] with the Wicket component id of [id] and configured by [config]
+ */
 fun <T> videoFactory(id: String, config: IVideoConfig<T>): Video =
     if (config.requiresSubclass) {
         val onConfig = config.onConfig
@@ -37,7 +46,8 @@ fun <T> videoFactory(id: String, config: IVideoConfig<T>): Video =
         } else {
             Video(id, config.model, config.resRef, config.pageParams)
         }
-    }.config(config).apply {
+    }.config(config)
+        .apply {
         config.width?.let { width = it }
         config.height?.let { height = it }
         config.poster?.let { poster = it }

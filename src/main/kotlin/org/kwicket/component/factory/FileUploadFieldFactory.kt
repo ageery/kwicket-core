@@ -5,26 +5,27 @@ import org.kwicket.component.config
 import org.kwicket.component.config.FileUploadFieldConfig
 import org.kwicket.component.config.IFileUploadFieldConfig
 
-fun fileUploadFieldFactory(
-    id: String,
-    config: IFileUploadFieldConfig = FileUploadFieldConfig()
-): FileUploadField {
-    val model = config.model
-    return if (config.requiresSubclass) {
+/**
+ * Creates an [FileUploadField] component with the Wicket identifier set to [id] and configured using [config].
+
+ * @param id Wicket component id
+ * @param config specifies the settings for the [FileUploadField] component -- defaults to an empty config
+ * @return [FileUploadField] with the Wicket component id of [id] and configured by [config]
+ */
+fun fileUploadFieldFactory(id: String, config: IFileUploadFieldConfig = FileUploadFieldConfig()): FileUploadField =
+    if (config.requiresSubclass) {
         val onConfig = config.onConfig
         val stateless = config.stateless
-        object : FileUploadField(id, model) {
+        object : FileUploadField(id, config.model) {
 
             override fun onConfigure() {
                 super.onConfigure()
                 onConfig?.invoke(this)
             }
 
-            override fun getStatelessHint(): Boolean =
-                stateless ?: super.getStatelessHint()
+            override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
 
         }
     } else {
-        FileUploadField(id, model)
+        FileUploadField(id, config.model)
     }.config(config)
-}
