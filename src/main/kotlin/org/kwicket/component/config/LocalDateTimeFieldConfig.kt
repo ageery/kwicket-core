@@ -2,25 +2,22 @@ package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.extensions.markup.html.form.datetime.LocalDateTimeField
-import org.apache.wicket.extensions.markup.html.form.datetime.LocalDateTimeTextField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.FormatStyle
 
-internal val IILocalDateTimeFieldConfig.useAnonSubClass: Boolean
-    get() = onConfig != null || toLocalDate != null || toLocalTime != null || defaultTime != null
-
-interface IILocalDateTimeFieldConfig : IFormComponentConfig<LocalDateTimeField, LocalDateTime> {
+interface IILocalDateTimeFieldConfig<T: LocalDateTime?> : IFormComponentConfig<LocalDateTimeField, LocalDateTime, T> {
     var toLocalDate: ((LocalDateTime) -> LocalDate)?
     var toLocalTime: ((LocalDateTime) -> LocalTime)?
     var defaultTime: (() -> LocalTime)?
+    override val requiresSubclass: Boolean
+        get() = super.requiresSubclass || toLocalDate != null || toLocalTime != null || defaultTime != null
 }
 
-class LocalDateTimeFieldConfig(
-    model: IModel<LocalDateTime>? = null,
+class LocalDateTimeFieldConfig<T: LocalDateTime?>(
+    model: IModel<T>? = null,
     override var toLocalDate: ((LocalDateTime) -> LocalDate)? = null,
     override var toLocalTime: ((LocalDateTime) -> LocalTime)? = null,
     override var defaultTime: (() -> LocalTime)? = null,
@@ -38,10 +35,11 @@ class LocalDateTimeFieldConfig(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    stateless: Boolean? = null,
     onConfig: (LocalDateTimeField.() -> Unit)? = null,
     postInit: (LocalDateTimeField.() -> Unit)? = null
-) : IILocalDateTimeFieldConfig,
-    FormComponentConfig<LocalDateTimeField, LocalDateTime>(
+) : IILocalDateTimeFieldConfig<T>,
+    FormComponentConfig<LocalDateTimeField, LocalDateTime, T>(
         model = model,
         label = label,
         isRequired = isRequired,
@@ -57,6 +55,7 @@ class LocalDateTimeFieldConfig(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
+        stateless = stateless,
         onConfig = onConfig,
         postInit = postInit
     )

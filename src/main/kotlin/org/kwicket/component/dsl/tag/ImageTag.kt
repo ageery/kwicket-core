@@ -10,9 +10,10 @@ import org.apache.wicket.model.IModel
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.resource.IResource
 import org.apache.wicket.request.resource.ResourceReference
-import org.kwicket.component.builder.IImageBuilder
-import org.kwicket.component.builder.ImageBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.IImageConfig
+import org.kwicket.component.config.ImageConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.imageFactory
 
 fun HTMLTag.image(
     resRef: ResourceReference? = null,
@@ -40,75 +41,9 @@ fun HTMLTag.image(
     block: ImageTag<*>.() -> Unit = {}
 ): Unit =
     ImageTag(
-        resRef = resRef,
-        resParams = resParams,
-        resRefs = resRefs,
-        imageResource = imageResource,
-        imageResources = imageResources,
         id = id,
         tagName = tagName,
-        model = model,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        isEscapeModelStrings = isEscapeModelStrings,
-        isRenderBodyOnly = isRenderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        onConfig = onConfig,
-        initialAttributes = initialAttributes,
-        sizes = sizes,
-        xValues = xValues,
-        consumer = consumer
-    ).visit(block)
-
-open class ImageTag<T>(
-    id: String? = null,
-    tagName: String = "img",
-    initialAttributes: Map<String, String> = emptyMap(),
-    consumer: TagConsumer<*>,
-    val builder: ImageBuilder<T>
-) : IImageBuilder<T> by builder,
-    ComponentTag<Image> (
-        id = id,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-    constructor(
-        resRef: ResourceReference? = null,
-        resParams: PageParameters? = null,
-        resRefs: List<ResourceReference>? = null,
-        imageResource: IResource? = null,
-        imageResources: List<IResource>? = null,
-        id: String? = null,
-        onConfig: (Image.() -> Unit)? = null,
-        tagName: String = "img",
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        model: IModel<T>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        isEscapeModelStrings: Boolean? = null,
-        isRenderBodyOnly: Boolean? = null,
-        xValues: List<String>? = null,
-        sizes: List<String>? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = ImageBuilder(
-            onConfig = onConfig,
+        config = ImageConfig(
             resRef = resRef,
             resParams = resParams,
             resRefs = resRefs,
@@ -121,14 +56,31 @@ open class ImageTag<T>(
             isVisible = visible,
             isVisibilityAllowed = visibilityAllowed,
             isEnabled = enabled,
-            isEscapeModelStrings = isEscapeModelStrings,
-            isRenderBodyOnly = isRenderBodyOnly,
-            xValues = xValues,
-            sizes = sizes,
+            escapeModelStrings = isEscapeModelStrings,
+            renderBodyOnly = isRenderBodyOnly,
             behavior = behavior,
-            behaviors = behaviors
-        )
-    )
+            behaviors = behaviors,
+            sizes = sizes,
+            xValues = xValues,
+            onConfig = onConfig
+        ),
+        initialAttributes = initialAttributes,
+        consumer = consumer
+    ).visit(block)
 
-    override fun build(id: String) = builder.build(id)
-}
+open class ImageTag<T>(
+    id: String? = null,
+    tagName: String = "img",
+    initialAttributes: Map<String, String> = emptyMap(),
+    consumer: TagConsumer<*>,
+    config: IImageConfig<T>,
+    factory: (String, IImageConfig<T>) -> Image = { cid, c -> imageFactory(cid, c) }
+) : IImageConfig<T> by config,
+    ConfigurableComponentTag<T, Image, IImageConfig<T>>(
+        id = id,
+        initialAttributes = initialAttributes,
+        consumer = consumer,
+        tagName = tagName,
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

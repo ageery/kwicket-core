@@ -4,8 +4,9 @@ import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.IModel
+import org.kwicket.component.config.ILabelConfig
+import org.kwicket.component.config.LabelConfig
 import org.kwicket.component.factory.labelFactory
-import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -27,9 +28,9 @@ import org.kwicket.component.q
  * @param block optional block to execute to configure the component
  * @return the created [Label] that has been queued into the parent container
  */
-fun MarkupContainer.label(
+fun <T> MarkupContainer.label(
     id: String,
-    model: IModel<*>? = null,
+    model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -41,17 +42,17 @@ fun MarkupContainer.label(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     onConfig: (Label.() -> Unit)? = null,
-    postInit: (Label.() -> Unit)? = null
-): Label = q(
-    labelFactory(
-        id = id,
+    postInit: (Label.() -> Unit)? = null,
+    block: (ILabelConfig<T>.() -> Unit)? = null
+): Label = q(id = id, block = block, factory = { cid, config -> labelFactory(cid, config) }, config =
+    LabelConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
+        isVisible = visible,
+        isEnabled = enabled,
+        isVisibilityAllowed = visibilityAllowed,
         escapeModelStrings = escapeModelStrings,
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,

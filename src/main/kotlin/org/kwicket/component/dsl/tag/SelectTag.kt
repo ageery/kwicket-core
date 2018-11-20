@@ -8,17 +8,18 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.extensions.markup.html.form.select.Select
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.ISelectBuilder
-import org.kwicket.component.builder.SelectBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.ISelectConfig
+import org.kwicket.component.config.SelectConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.selectFactory
 
-fun <T> HTMLTag.select(
+fun <C: Any, T: C?> HTMLTag.select(
     id: String? = null,
     tagName: String = "select",
     label: IModel<String>? = null,
-    validator: IValidator<T>? = null,
-    validators: List<IValidator<T>>? = null,
-    model: IModel<T?>? = null,
+    validator: IValidator<C>? = null,
+    validators: List<IValidator<C>>? = null,
+    model: IModel<T>? = null,
     outputMarkupId: Boolean? = null,
     markupId: String? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -30,36 +31,37 @@ fun <T> HTMLTag.select(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: SelectTag<T>.() -> Unit = {}
+    block: SelectTag<C, T>.() -> Unit = {}
 ): Unit =
-    @Suppress("UNCHECKED_CAST")
-    SelectTag(
+    SelectTag<C, T>(
         id = id,
         tagName = tagName,
-        label = label,
-        validator = validator,
-        validators = validators,
-        model = model as IModel<T>?,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
+        config = SelectConfig<C, T>(
+            label = label,
+            validator = validator,
+            validators = validators,
+            model = model,
+            markupId = markupId,
+            outputMarkupId = outputMarkupId,
+            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+            isVisible = visible,
+            isVisibilityAllowed = visibilityAllowed,
+            isEnabled = enabled,
+            escapeModelStrings = escapeModelStrings,
+            renderBodyOnly = renderBodyOnly,
+            behavior = behavior,
+            behaviors = behaviors
+        ),
         initialAttributes = initialAttributes,
         consumer = consumer
     ).visit(block)
 
-fun <T> HTMLTag.select(
+fun <C: Any, T: C?> HTMLTag.select(
     id: String? = null,
     tagName: String = "select",
     label: IModel<String>? = null,
-    validator: IValidator<T>? = null,
-    validators: List<IValidator<T>>? = null,
+    validator: IValidator<C>? = null,
+    validators: List<IValidator<C>>? = null,
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -72,72 +74,16 @@ fun <T> HTMLTag.select(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: SelectTag<T>.() -> Unit = {}
+    block: SelectTag<C, T>.() -> Unit = {}
 ): Unit =
-    SelectTag(
+    SelectTag<C, T>(
         id = id,
         tagName = tagName,
-        label = label,
-        validator = validator,
-        validators = validators,
-        model = model,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class SelectTag<T>(
-    id: String? = null,
-    tagName: String = "select",
-    initialAttributes: Map<String, String> = emptyMap(),
-    consumer: TagConsumer<*>,
-    val builder: SelectBuilder<T>
-) : ISelectBuilder<T> by builder,
-    ComponentTag<Select<T>>(
-        id = id,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        label: IModel<String>? = null,
-        validator: IValidator<T>? = null,
-        validators: List<IValidator<T>>? = null,
-        tagName: String = "select",
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        model: IModel<T>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = SelectBuilder(
-            model = model,
-            validators = validators,
-            validator = validator,
+        config = SelectConfig<C, T>(
             label = label,
+            validator = validator,
+            validators = validators,
+            model = model,
             markupId = markupId,
             outputMarkupId = outputMarkupId,
             outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -148,8 +94,24 @@ open class SelectTag<T>(
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors
-        )
-    )
+        ),
+        initialAttributes = initialAttributes,
+        consumer = consumer
+    ).visit(block)
 
-    override fun build(id: String) = builder.build(id)
-}
+open class SelectTag<C: Any, T: C?>(
+    id: String? = null,
+    tagName: String = "select",
+    initialAttributes: Map<String, String> = emptyMap(),
+    consumer: TagConsumer<*>,
+    config: ISelectConfig<C, T>,
+    factory: (String, ISelectConfig<C, T>) -> Select<C> = { cid, c -> selectFactory<C, T>(cid, c) }
+) : ISelectConfig<C, T> by config,
+    ConfigurableComponentTag<T, Select<C>, ISelectConfig<C, T>>(
+        id = id,
+        initialAttributes = initialAttributes,
+        consumer = consumer,
+        tagName = tagName,
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

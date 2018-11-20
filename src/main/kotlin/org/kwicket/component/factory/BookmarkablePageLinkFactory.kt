@@ -1,54 +1,31 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.Page
-import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
-import org.apache.wicket.markup.html.link.PopupSettings
-import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.kwicket.component.config
-import kotlin.reflect.KClass
+import org.kwicket.component.config.IBookmarkablePageLinkConfig
 
-fun <P : Page> bookmarkablePageLinkFactory(
+fun <T, P: Page> bookmarkablePageLinkFactory(
     id: String,
-    page: KClass<P>,
-    pageParams: PageParameters? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    enabled: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    onConfig: (BookmarkablePageLink<*>.() -> Unit)? = null,
-    popupSettings: PopupSettings? = null,
-    postInit: (BookmarkablePageLink<*>.() -> Unit)? = null
-): BookmarkablePageLink<*> =
-    if (onConfig != null) {
-        object : BookmarkablePageLink<Any?>(id, page.java, pageParams) {
+    config: IBookmarkablePageLinkConfig<T, P>
+): BookmarkablePageLink<T> {
+    val onConfig = config.onConfig
+    val stateless = config.stateless
+    val pageParams = config.pageParams
+    val page = config.page?.java
+    return if (config.requiresSubclass) {
+        object : BookmarkablePageLink<T>(id, page, pageParams) {
 
             override fun onConfigure() {
                 super.onConfigure()
-                onConfig.invoke(this)
+                onConfig?.invoke(this)
             }
+
+            override fun getStatelessHint(): Boolean =
+                stateless ?: super.getStatelessHint()
 
         }
     } else {
-        BookmarkablePageLink<Any, P>(id, page.java, pageParams)
-    }.config(
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors
-    ).also { link ->
-        popupSettings?.let { link.popupSettings = it }
-        postInit?.invoke(link)
-    }
+        BookmarkablePageLink<T, P>(id, page, pageParams)
+    }.config(config)
+}

@@ -7,9 +7,10 @@ import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.ExternalLink
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.ExternalLinkBuilder
-import org.kwicket.component.builder.IExternalLinkBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.ExternalLinkConfig
+import org.kwicket.component.config.IExternalLinkConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.externalLinkFactory
 
 fun HTMLTag.externalLink(
     id: String? = null,
@@ -31,62 +32,10 @@ fun HTMLTag.externalLink(
 ): Unit =
     ExternalLinkTag(
         id = id,
-        label = label,
         tagName = tagName,
-        model = model,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class ExternalLinkTag(
-    id: String? = null,
-    tagName: String = "a",
-    initialAttributes: Map<String, String> = emptyMap(),
-    consumer: TagConsumer<*>,
-    val builder: ExternalLinkBuilder
-) : IExternalLinkBuilder by builder,
-    ComponentTag<ExternalLink>(
-        id = id,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        label: IModel<*>? = null,
-        tagName: String = "a",
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        model: IModel<String>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = ExternalLinkBuilder(
-            model = model,
+        config = ExternalLinkConfig(
             label = label,
+            model = model,
             markupId = markupId,
             outputMarkupId = outputMarkupId,
             outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -97,8 +46,24 @@ open class ExternalLinkTag(
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors
-        )
-    )
+        ),
+        initialAttributes = initialAttributes,
+        consumer = consumer
+    ).visit(block)
 
-    override fun build(id: String) = builder.build(id)
-}
+open class ExternalLinkTag(
+    id: String? = null,
+    tagName: String = "a",
+    initialAttributes: Map<String, String> = emptyMap(),
+    consumer: TagConsumer<*>,
+    config: IExternalLinkConfig,
+    factory: (String, IExternalLinkConfig) -> ExternalLink = { cid, c -> externalLinkFactory(cid, c) }
+) : IExternalLinkConfig by config,
+    ConfigurableComponentTag<String, ExternalLink, IExternalLinkConfig>(
+        id = id,
+        initialAttributes = initialAttributes,
+        consumer = consumer,
+        tagName = tagName,
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

@@ -41,6 +41,7 @@ class VideoConfig<T>(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    stateless: Boolean? = null,
     onConfig: (Video.() -> Unit)? = null,
     postInit: (Video.() -> Unit)? = null
 ) : IVideoConfig<T>,
@@ -69,6 +70,7 @@ class VideoConfig<T>(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
+        stateless = stateless,
         onConfig = onConfig,
         postInit = postInit
     )

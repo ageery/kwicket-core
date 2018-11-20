@@ -5,10 +5,7 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.model.IModel
 import java.io.Serializable
 
-internal fun IComponentConfig<*, *>.useAnonSubClass() = onConfig != null
-
-// FIXME: I would like this to _not_ be serializable
-interface IComponentConfig<C : Component, T> : Serializable {
+interface IComponentConfig<C : Component, T> {
     val model: IModel<T>?
     var markupId: String?
     var outputMarkupId: Boolean?
@@ -20,10 +17,11 @@ interface IComponentConfig<C : Component, T> : Serializable {
     var renderBodyOnly: Boolean?
     var behavior: Behavior?
     var behaviors: List<Behavior>?
+    var stateless: Boolean?
     var onConfig: (C.() -> Unit)?
     var postInit: (C.() -> Unit)?
     val requiresSubclass: Boolean
-        get() = onConfig != null
+        get() = onConfig != null || stateless != null
     val isValid: Boolean
         get() = true
 }
@@ -40,6 +38,7 @@ open class ComponentConfig<C : Component, T>(
     override var renderBodyOnly: Boolean? = null,
     override var behavior: Behavior? = null,
     override var behaviors: List<Behavior>? = null,
+    override var stateless: Boolean? = null,
     override var onConfig: (C.() -> Unit)? = null,
     override var postInit: (C.() -> Unit)? = null
 ) : IComponentConfig<C, T>

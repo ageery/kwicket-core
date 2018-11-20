@@ -4,27 +4,31 @@ import org.apache.wicket.markup.html.form.StatelessForm
 import org.kwicket.component.config
 import org.kwicket.component.config.IStatelessFormConfig
 
-fun <T> statelessFormFactory(
-    id: String,
-    config: IStatelessFormConfig<T>
-): StatelessForm<T> =
+fun <T> statelessFormFactory(id: String, config: IStatelessFormConfig<T>): StatelessForm<T> =
     if (config.requiresSubclass) {
+        val onConfig = config.onConfig
+        val stateless = config.stateless
+        val onSubmit = config.onSubmit
+        val onError = config.onError
         object : StatelessForm<T>(id, config.model) {
 
             override fun onConfigure() {
                 super.onConfigure()
-                config.onConfig?.invoke(this)
+                onConfig?.invoke(this)
             }
 
+            override fun getStatelessHint(): Boolean =
+                stateless ?: super.getStatelessHint()
+
             override fun onSubmit() {
-                config.onSubmit?.invoke(this)
+                onSubmit?.invoke(this)
             }
 
             override fun onError() {
-                config.onError?.invoke(this)
+                onError?.invoke(this)
             }
 
         }
     } else {
         StatelessForm(id, config.model)
-    }.config(config).apply { config.postInit?.invoke(this) }
+    }.config(config)

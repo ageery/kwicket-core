@@ -5,8 +5,8 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.ExternalLink
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.ExternalLinkBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.ExternalLinkConfig
+import org.kwicket.component.factory.externalLinkFactory
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -44,8 +44,8 @@ fun MarkupContainer.externalLink(
     behaviors: List<Behavior>? = null,
     onConfig: (ExternalLink.() -> Unit)? = null,
     postInit: (ExternalLink.() -> Unit)? = null,
-    block: (ExternalLinkBuilder.() -> Unit)? = null
-): ExternalLink = q(ExternalLinkBuilder(
+    block: (ExternalLinkConfig.() -> Unit)? = null
+): ExternalLink = q(id = id, block = block, factory = { cid, config -> externalLinkFactory(cid, config) }, config = ExternalLinkConfig(
     model = model,
     label = label,
     markupId = markupId,
@@ -60,4 +60,4 @@ fun MarkupContainer.externalLink(
     behaviors = behaviors,
     onConfig = onConfig,
     postInit = postInit
-).also { block?.invoke(it) }.build(id))
+))

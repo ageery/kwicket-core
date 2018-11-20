@@ -7,16 +7,14 @@ import org.apache.wicket.validation.IValidator
 import java.time.LocalDate
 import java.time.format.FormatStyle
 
-internal fun ILocalDateTextFieldConfig.useAnonSubClass() = onConfig != null
-
-interface ILocalDateTextFieldConfig : IFormComponentConfig<LocalDateTextField, LocalDate> {
+interface ILocalDateTextFieldConfig<T: LocalDate?> : IFormComponentConfig<LocalDateTextField, LocalDate, T> {
     var formatPattern: String?
     var parsePattern: String?
     var dateStyle: FormatStyle?
 }
 
-class LocalDateTextFieldConfig(
-    model: IModel<LocalDate>? = null,
+class LocalDateTextFieldConfig<T: LocalDate?>(
+    model: IModel<T>? = null,
     override var formatPattern: String? = null,
     override var parsePattern: String? = null,
     override var dateStyle: FormatStyle? = null,
@@ -34,10 +32,11 @@ class LocalDateTextFieldConfig(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    stateless: Boolean? = null,
     onConfig: (LocalDateTextField.() -> Unit)? = null,
     postInit: (LocalDateTextField.() -> Unit)? = null
-) : ILocalDateTextFieldConfig,
-    FormComponentConfig<LocalDateTextField, LocalDate>(
+) : ILocalDateTextFieldConfig<T>,
+    FormComponentConfig<LocalDateTextField, LocalDate, T>(
         model = model,
         label = label,
         isRequired = isRequired,
@@ -53,6 +52,7 @@ class LocalDateTextFieldConfig(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
+        stateless = stateless,
         onConfig = onConfig,
         postInit = postInit
     )

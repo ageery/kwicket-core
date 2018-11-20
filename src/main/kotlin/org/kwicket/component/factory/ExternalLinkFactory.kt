@@ -1,50 +1,30 @@
 package org.kwicket.component.factory
 
-import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.ExternalLink
-import org.apache.wicket.model.IModel
 import org.kwicket.component.config
-
-// FIXME: do settings
+import org.kwicket.component.config.IExternalLinkConfig
 
 fun externalLinkFactory(
     id: String,
-    model: IModel<String>? = null,
-    label: IModel<*>? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    enabled: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    onConfig: (ExternalLink.() -> Unit)? = null,
-    postInit: (ExternalLink.() -> Unit)? = null
-): ExternalLink =
-    if (onConfig != null) {
+    config: IExternalLinkConfig
+): ExternalLink {
+    val onConfig = config.onConfig
+    val stateless = config.stateless
+    val label = config.label
+    val model = config.model
+    return if (config.requiresSubclass) {
         object : ExternalLink(id, model, label) {
 
             override fun onConfigure() {
                 super.onConfigure()
-                onConfig.invoke(this)
+                onConfig?.invoke(this)
             }
+
+            override fun getStatelessHint(): Boolean =
+                stateless ?: super.getStatelessHint()
+
         }
     } else {
         ExternalLink(id, model, label)
-    }.config(
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors
-    ).also {
-        postInit?.invoke(it)
-    }
+    }.config(config)
+}

@@ -5,11 +5,11 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.AjaxFallbackButtonBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.AjaxFallbackButtonConfig
+import org.kwicket.component.config.IAjaxFallbackButtonConfig
+import org.kwicket.component.factory.ajaxFallbackButtonFactory
 
 /**
  * Creates and queues a [AjaxButton] into the parent container.
@@ -49,22 +49,24 @@ fun MarkupContainer.ajaxFallbackButton(
     onError: (AjaxFallbackButton.(AjaxRequestTarget?) -> Unit)? = null,
     form: Form<*>? = null,
     postInit: (AjaxFallbackButton.() -> Unit)? = null,
-    block: (AjaxFallbackButtonBuilder.() -> Unit)? = null
-): Button = q(AjaxFallbackButtonBuilder(
-    model = model,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    onSubmit = onSubmit,
-    onError = onError,
-    form = form,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    block: (IAjaxFallbackButtonConfig.() -> Unit)? = null
+) = q(
+    id = id, block = block, factory = ::ajaxFallbackButtonFactory, config = AjaxFallbackButtonConfig(
+        model = model,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        onSubmit = onSubmit,
+        onError = onError,
+        form = form,
+        postInit = postInit
+    )
+)

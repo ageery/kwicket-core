@@ -7,8 +7,9 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.markup.html.link.PopupSettings
 import org.apache.wicket.request.mapper.parameter.PageParameters
-import org.kwicket.component.builder.BookmarkablePageLinkBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.BookmarkablePageLinkConfig
+import org.kwicket.component.config.IBookmarkablePageLinkConfig
+import org.kwicket.component.factory.bookmarkablePageLinkFactory
 import kotlin.reflect.KClass
 
 /**
@@ -33,7 +34,7 @@ import kotlin.reflect.KClass
  */
 fun <P: Page> MarkupContainer.bookmarkablePageLink(
     id: String,
-    page: KClass<P>,
+    page: KClass<P>?,
     params: PageParameters? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -48,21 +49,24 @@ fun <P: Page> MarkupContainer.bookmarkablePageLink(
     onConfig: (BookmarkablePageLink<*>.() -> Unit)? = null,
     postInit: (BookmarkablePageLink<*>.() -> Unit)? = null,
     popupSettings: PopupSettings? = null,
-    block: (BookmarkablePageLinkBuilder<P>.() -> Unit)? = null
-): BookmarkablePageLink<*> = q(BookmarkablePageLinkBuilder(
-    page = page,
-    pageParams = params,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    popupSettings = popupSettings,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    block: (BookmarkablePageLinkConfig<*, P>.() -> Unit)? = null
+): BookmarkablePageLink<*> = q(id = id,
+    block = block,
+    factory = { cid, config -> bookmarkablePageLinkFactory(cid, config) },
+    config = BookmarkablePageLinkConfig<Any?, P>(
+        page = page,
+        pageParams = params,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        //popupSettings = popupSettings,
+        postInit = postInit
+    ))

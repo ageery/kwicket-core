@@ -7,43 +7,46 @@ import org.kwicket.component.config.IAudioConfig
 fun <T> audioFactory(
     id: String,
     config: IAudioConfig<T>
-): Audio =
-    if (config.isValid) {
-        if (config.requiresSubclass) {
-            if (config.url != null) {
-                object : Audio(id, config.model, config.url, config.pageParams) {
-                    override fun onConfigure() {
-                        super.onConfigure()
-                        config.onConfig?.invoke(this)
-                    }
+): Audio {
+    val onConfig = config.onConfig
+    val stateless = config.stateless
+    val model = config.model
+    val url = config.url
+    val pageParams = config.pageParams
+    val resRef = config.resRef
+    return if (config.requiresSubclass) {
+
+        return if (url != null) {
+            object : Audio(id, model, url, pageParams) {
+
+                override fun onConfigure() {
+                    super.onConfigure()
+                    onConfig?.invoke(this)
                 }
-            } else {
-                object : Audio(id, config.model, config.resRef, config.pageParams) {
-                    override fun onConfigure() {
-                        super.onConfigure()
-                        config.onConfig?.invoke(this)
-                    }
-                }
+
+                override fun getStatelessHint(): Boolean =
+                    stateless ?: super.getStatelessHint()
+
             }
         } else {
-            if (config.url != null) {
-                Audio(id, config.model, config.url, config.pageParams)
-            } else {
-                Audio(id, config.model, config.resRef, config.pageParams)
+            object : Audio(id, model, resRef, pageParams) {
+
+                override fun onConfigure() {
+                    super.onConfigure()
+                    onConfig?.invoke(this)
+                }
+
+                override fun getStatelessHint(): Boolean =
+                    stateless ?: super.getStatelessHint()
+
             }
-        }.config(config).apply {
-            config.isMuted?.let { isMuted = it }
-            config.hasControls?.let { setControls(it) }
-            config.preload?.let { preload = it }
-            config.isAutoPlay?.let { isAutoplay = it }
-            config.isLooping?.let { isLooping = it }
-            config.startTime?.let { startTime = it }
-            config.endTime?.let { endTime = it }
-            config.mediaGroup?.let { mediaGroup = it }
-            config.crossOrigin?.let { crossOrigin = it }
-            config.type?.let { type = it }
-            config.postInit?.invoke(this)
         }
     } else {
-        throw RuntimeException("Config is not valid")
-    }
+        if (url != null) {
+            Audio(id, model, url, pageParams)
+        } else {
+            Audio(id, model, resRef, pageParams)
+        }
+    }.config(config)
+
+}

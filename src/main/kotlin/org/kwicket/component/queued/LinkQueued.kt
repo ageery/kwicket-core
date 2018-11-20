@@ -5,8 +5,8 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.Link
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.LinkBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.LinkConfig
+import org.kwicket.component.factory.linkFactory
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -44,23 +44,26 @@ fun <T> MarkupContainer.link(
     onConfig: (Link<T>.() -> Unit)? = null,
     onClick: (Link<T>.() -> Unit)? = null,
     postInit: (Link<T>.() -> Unit)? = null,
-    block: (LinkBuilder<T>.() -> Unit)? = null
-): Link<T> = q(LinkBuilder(
-    model = model,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    onClick = onClick,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    block: (LinkConfig<T>.() -> Unit)? = null
+): Link<T> = q(
+    id = id, block = block, factory = { cid, config -> linkFactory(cid, config) }, config =
+    LinkConfig(
+        model = model,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        onClick = onClick,
+        postInit = postInit
+    )
+)
 
 fun MarkupContainer.link(
     id: String,
@@ -77,19 +80,21 @@ fun MarkupContainer.link(
     onConfig: (Link<*>.() -> Unit)? = null,
     onClick: (Link<*>.() -> Unit)? = null,
     postInit: (Link<*>.() -> Unit)? = null,
-    block: (LinkBuilder<*>.() -> Unit)? = null
-): Link<*> = q(LinkBuilder<Any?>(
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    onClick = onClick,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    block: (LinkConfig<*>.() -> Unit)? = null
+): Link<*> = q(
+    id = id, block = block, factory = { cid, config -> linkFactory(cid, config) }, config = LinkConfig<Unit>(
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        onClick = onClick,
+        postInit = postInit
+    )
+)

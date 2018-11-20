@@ -34,6 +34,7 @@ class AudioConfig<T>(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    stateless: Boolean? = null,
     onConfig: (Audio.() -> Unit)? = null,
     postInit: (Audio.() -> Unit)? = null
 ) : IAudioConfig<T>,
@@ -62,6 +63,7 @@ class AudioConfig<T>(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
+        stateless = stateless,
         onConfig = onConfig,
         postInit = postInit
     )

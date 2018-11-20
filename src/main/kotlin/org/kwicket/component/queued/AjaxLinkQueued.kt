@@ -6,8 +6,9 @@ import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.AjaxLinkBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.AjaxLinkConfig
+import org.kwicket.component.config.IAjaxLinkConfig
+import org.kwicket.component.factory.ajaxLinkFactory
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -45,20 +46,22 @@ fun <T> MarkupContainer.ajaxLink(
     onConfig: (AjaxLink<T>.() -> Unit)? = null,
     onClick: (AjaxLink<T>.(AjaxRequestTarget) -> Unit)? = null,
     postInit: (AjaxLink<T>.() -> Unit)? = null,
-    block: (AjaxLinkBuilder<T>.() -> Unit)? = null
-): AjaxLink<T> = q(AjaxLinkBuilder(
-    model = model,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    onClick = onClick,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    block: (IAjaxLinkConfig<T>.() -> Unit)? = null
+): AjaxLink<T> = q(
+    id = id, block = block, factory = { cid, config -> ajaxLinkFactory(cid, config) }, config = AjaxLinkConfig(
+        model = model,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        onClick = onClick,
+        postInit = postInit
+    )
+)

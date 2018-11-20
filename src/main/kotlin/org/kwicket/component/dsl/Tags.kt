@@ -1,6 +1,7 @@
 package org.kwicket.component.dsl
 
 import kotlinx.html.HTMLTag
+import kotlinx.html.InputType
 import org.kwicket.wicketIdAttr
 
 var HTMLTag.wicketId: String?
@@ -12,3 +13,5 @@ var HTMLTag.wicketId: String?
             attributes.remove(wicketIdAttr)
         }
     }
+
+fun InputType?.toAttr() = this?.let { mapOf("type" to it.realValue) } ?: emptyMap()

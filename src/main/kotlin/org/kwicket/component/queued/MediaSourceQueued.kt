@@ -9,7 +9,6 @@ import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.IMediaSourceConfig
 import org.kwicket.component.config.MediaSourceConfig
 import org.kwicket.component.factory.mediaSourceFactory
-import org.kwicket.component.q
 
 fun MarkupContainer.mediaSource(
     id: String,
@@ -32,8 +31,11 @@ fun MarkupContainer.mediaSource(
     onConfig: (Source.() -> Unit)? = null,
     postInit: (Source.() -> Unit)? = null,
     block: (IMediaSourceConfig<*>.() -> Unit)? = null
-): Source = mediaSource<Any?>(
-    id = id, block = block, config = MediaSourceConfig(
+): Source = q(
+    id = id,
+    block = block,
+    factory = { cid, config -> mediaSourceFactory(cid, config) },
+    config = MediaSourceConfig<Unit>(
         resRef = resRef,
         url = url,
         pageParams = pageParams,
@@ -77,8 +79,8 @@ fun <T> MarkupContainer.mediaSource(
     onConfig: (Source.() -> Unit)? = null,
     postInit: (Source.() -> Unit)? = null,
     block: (IMediaSourceConfig<T>.() -> Unit)? = null
-): Source = mediaSource(
-    id = id, block = block, config = MediaSourceConfig(
+): Source = q(
+    id = id, block = block, factory = { cid, config -> mediaSourceFactory(cid, config) }, config = MediaSourceConfig(
         model = model,
         resRef = resRef,
         url = url,
@@ -100,12 +102,3 @@ fun <T> MarkupContainer.mediaSource(
         postInit = postInit
     )
 )
-
-fun <T> MarkupContainer.mediaSource(
-    id: String,
-    config: IMediaSourceConfig<T>,
-    block: (IMediaSourceConfig<T>.() -> Unit)? = null
-): Source {
-    block?.invoke(config)
-    return q(mediaSourceFactory(id = id, config = config))
-}

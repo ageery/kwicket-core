@@ -7,9 +7,10 @@ import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.IWebMarkupContainerBuilder
-import org.kwicket.component.builder.WebMarkupContainerBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.IWebMarkupContainerConfig
+import org.kwicket.component.config.WebMarkupContainerConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.webMarkupContainerFactory
 
 fun HTMLTag.webMarkupContainer(
     id: String? = null,
@@ -31,57 +32,7 @@ fun HTMLTag.webMarkupContainer(
     WebMarkupContainerTag(
         id = id,
         tagName = tagName,
-        model = model,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class WebMarkupContainerTag<T>(
-    id: String? = null,
-    tagName: String = "div",
-    initialAttributes: Map<String, String> = emptyMap(),
-    consumer: TagConsumer<*>,
-    val builder: WebMarkupContainerBuilder<T>
-) : IWebMarkupContainerBuilder<T> by builder,
-    ComponentTag<WebMarkupContainer>(
-        id = id,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        tagName: String = "div",
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        model: IModel<T>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = WebMarkupContainerBuilder(
+        config = WebMarkupContainerConfig(
             model = model,
             markupId = markupId,
             outputMarkupId = outputMarkupId,
@@ -93,8 +44,26 @@ open class WebMarkupContainerTag<T>(
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors
-        )
-    )
+        ),
+        initialAttributes = initialAttributes,
+        consumer = consumer
+    ).visit(block)
 
-    override fun build(id: String) = builder.build(id)
-}
+open class WebMarkupContainerTag<T>(
+    id: String? = null,
+    tagName: String = "div",
+    initialAttributes: Map<String, String> = emptyMap(),
+    consumer: TagConsumer<*>,
+    config: IWebMarkupContainerConfig<T>,
+    factory: (String, IWebMarkupContainerConfig<T>) -> WebMarkupContainer = { cid, c ->
+        webMarkupContainerFactory(cid, c)
+    }
+) : IWebMarkupContainerConfig<T> by config,
+    ConfigurableComponentTag<T, WebMarkupContainer, IWebMarkupContainerConfig<T>>(
+        id = id,
+        initialAttributes = initialAttributes,
+        consumer = consumer,
+        tagName = tagName,
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

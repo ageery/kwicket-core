@@ -1,55 +1,46 @@
 package org.kwicket.component.factory
 
-import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.CheckGroup
-import org.apache.wicket.model.IModel
-import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config
+import org.kwicket.component.config.ICheckGroupConfig
 
-fun <T> checkGroupFactory(
+// FIXME: the problem is that checkGroup should extend FormComponentFactory but it doesn't...
+// FIXME: probably better to fix it at the source than here...
+
+fun <T, L: Collection<T>> checkGroupFactory(
     id: String,
-    model: IModel<MutableCollection<T>>? = null,
-    label: IModel<String>? = null,
-    validator: IValidator<MutableCollection<T>>? = null,
-    validators: List<IValidator<MutableCollection<T>>>? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    enabled: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    onConfig: (CheckGroup<T>.() -> Unit)? = null,
-    postInit: (CheckGroup<T>.() -> Unit)? = null
-): CheckGroup<T> =
-    if (onConfig != null) {
+    config: ICheckGroupConfig<T, L>
+): CheckGroup<T> {
+    val model = config.model
+    val onConfig = config.onConfig
+    val stateless = config.stateless
+    return if (config.requiresSubclass) {
         object : CheckGroup<T>(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
-                onConfig.invoke(this)
+                onConfig?.invoke(this)
             }
+
+            override fun getStatelessHint(): Boolean =
+                stateless ?: super.getStatelessHint()
 
         }
     } else {
         CheckGroup(id, model)
-    }.config(
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        label = label,
-        validator = validator,
-        validators = validators
-    ).also {
-        postInit?.invoke(it)
-    }
+    }.config(config)
+        .also { checkGroup ->
+            // FIXME: this should not be necessary...
+            config.isRequired?.let { checkGroup.isRequired = it }
+            config.label?.let { checkGroup.label = it }
+            // FIXME: not sure what the problem is here....
+//        val x = when {
+//            config.validator != null -> listOf(config.validator) + (config.validators ?: emptyList())
+//            config.validators != null -> config.validators
+//            else -> emptyList()
+//        }!!
+//        x.also { validators ->
+//            if (validators.isNotEmpty()) checkGroup.add(*validators.toTypedArray() as Array<IValidator<T>>)
+//        }
+        }
+}

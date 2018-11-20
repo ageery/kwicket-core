@@ -10,7 +10,6 @@ import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.AudioConfig
 import org.kwicket.component.config.IAudioConfig
 import org.kwicket.component.factory.audioFactory
-import org.kwicket.component.q
 
 fun MarkupContainer.audio(
     id: String,
@@ -40,8 +39,8 @@ fun MarkupContainer.audio(
     onConfig: (Audio.() -> Unit)? = null,
     postInit: (Audio.() -> Unit)? = null,
     block: (IAudioConfig<*>.() -> Unit)? = null
-): Audio = audio<Any?>(
-    id = id, block = block, config = AudioConfig(
+): Audio = q(
+    id = id, block = block, factory = { cid, config -> audioFactory(cid, config) }, config = AudioConfig<Unit>(
         resRef = resRef,
         url = url,
         pageParams = pageParams,
@@ -99,8 +98,8 @@ fun <T> MarkupContainer.audio(
     onConfig: (Audio.() -> Unit)? = null,
     postInit: (Audio.() -> Unit)? = null,
     block: (IAudioConfig<T>.() -> Unit)? = null
-): Audio = audio(
-    id = id, block = block, config = AudioConfig(
+): Audio = q(
+    id = id, block = block, factory = { cid, config -> audioFactory(cid, config) }, config = AudioConfig(
         model = model,
         resRef = resRef,
         url = url,
@@ -129,12 +128,3 @@ fun <T> MarkupContainer.audio(
         postInit = postInit
     )
 )
-
-fun <T> MarkupContainer.audio(
-    id: String,
-    config: IAudioConfig<T>,
-    block: (IAudioConfig<T>.() -> Unit)? = null
-): Audio {
-    block?.invoke(config)
-    return q(audioFactory(id = id, config = config))
-}

@@ -5,8 +5,8 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.ButtonBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.ButtonConfig
+import org.kwicket.component.factory.buttonFactory
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -45,21 +45,23 @@ fun MarkupContainer.button(
     onSubmit: (Button.() -> Unit)? = null,
     onError: (Button.() -> Unit)? = null,
     postInit: (Button.() -> Unit)? = null,
-    block: (ButtonBuilder.() -> Unit)? = null
-): Button = q(ButtonBuilder(
-    model = model,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    onSubmit = onSubmit,
-    onError = onError,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    block: (ButtonConfig.() -> Unit)? = null
+): Button = q(
+    id = id, block = block, factory = { cid, config -> buttonFactory(cid, config) }, config = ButtonConfig(
+        model = model,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        onSubmit = onSubmit,
+        onError = onError,
+        postInit = postInit
+    )
+)

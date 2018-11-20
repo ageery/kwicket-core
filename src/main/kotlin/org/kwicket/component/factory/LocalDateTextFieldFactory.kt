@@ -1,35 +1,53 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.extensions.markup.html.form.datetime.LocalDateTextField
+import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.ILocalDateTextFieldConfig
-import org.kwicket.component.config.useAnonSubClass
+import java.time.LocalDate
 
-// FIXME: could we get rid of the Factory at the end?
-fun localDateTextFieldFactory(
+
+fun <T: LocalDate?> localDateTextFieldFactory(
     id: String,
-    config: ILocalDateTextFieldConfig
-): LocalDateTextField =
-    if (config.useAnonSubClass()) {
+    config: ILocalDateTextFieldConfig<T>
+): LocalDateTextField {
+    @Suppress("UNCHECKED_CAST")
+    val model = config.model as IModel<LocalDate?>
+    return if (config.requiresSubclass) {
+        val onConfig = config.onConfig
+        val stateless = config.stateless
         if (config.dateStyle != null) {
-            object : LocalDateTextField(id, config.model, config.dateStyle) {
+
+            object : LocalDateTextField(id, model, config.dateStyle) {
+
                 override fun onConfigure() {
                     super.onConfigure()
-                    config.onConfig?.invoke(this)
+                    onConfig?.invoke(this)
                 }
+
+                override fun getStatelessHint(): Boolean =
+                    stateless ?: super.getStatelessHint()
+
             }
         } else {
-            object : LocalDateTextField(id, config.model, config.formatPattern, config.parsePattern) {
+            object :
+                LocalDateTextField(id, model, config.formatPattern, config.parsePattern) {
+
                 override fun onConfigure() {
                     super.onConfigure()
-                    config.onConfig?.invoke(this)
+                    onConfig?.invoke(this)
                 }
+
+                override fun getStatelessHint(): Boolean =
+                    stateless ?: super.getStatelessHint()
+
             }
         }
     } else {
         if (config.dateStyle != null) {
-            LocalDateTextField(id, config.model, config.dateStyle)
+            LocalDateTextField(id, model, config.dateStyle)
         } else {
-            LocalDateTextField(id, config.model, config.formatPattern, config.parsePattern)
+            LocalDateTextField(id, model, config.formatPattern, config.parsePattern)
         }
-    }.config(config).apply { config.postInit?.invoke(this) }
+    }.config(config)
+}

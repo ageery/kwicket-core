@@ -5,8 +5,6 @@ import org.apache.wicket.extensions.markup.html.form.datetime.TimeField
 import org.apache.wicket.model.IModel
 import java.time.LocalTime
 
-internal fun ITimeFieldConfig.useAnonSubClass() = onConfig != null || use12HourFormat != null
-
 interface ITimeFieldConfig : IComponentConfig<TimeField, LocalTime> {
     var use12HourFormat: Boolean?
     override val requiresSubclass: Boolean
@@ -26,6 +24,7 @@ class TimeFieldConfig(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    stateless: Boolean? = null,
     onConfig: (TimeField.() -> Unit)? = null,
     postInit: (TimeField.() -> Unit)? = null
 ) : ITimeFieldConfig,
@@ -41,6 +40,7 @@ class TimeFieldConfig(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
+        stateless = stateless,
         onConfig = onConfig,
         postInit = postInit
     )

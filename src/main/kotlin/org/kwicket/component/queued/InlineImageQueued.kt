@@ -6,8 +6,9 @@ import org.apache.wicket.markup.html.image.InlineImage
 import org.apache.wicket.markup.html.image.Picture
 import org.apache.wicket.model.IModel
 import org.apache.wicket.request.resource.PackageResourceReference
+import org.kwicket.component.config.IInlineImageConfig
+import org.kwicket.component.config.InlineImageConfig
 import org.kwicket.component.factory.inlineImageFactory
-import org.kwicket.component.q
 
 /**
  * Creates and queues a [Picture] into the parent container.
@@ -29,10 +30,10 @@ import org.kwicket.component.q
  * @param block optional block to execute to configure the component
  * @return the created [Picture] that has been queued into the parent container
  */
-fun MarkupContainer.inlineImage(
+fun <T> MarkupContainer.inlineImage(
     id: String,
     resRef: PackageResourceReference,
-    model: IModel<*>? = null,
+    model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -44,18 +45,54 @@ fun MarkupContainer.inlineImage(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     onConfig: (InlineImage.() -> Unit)? = null,
-    postInit: (InlineImage.() -> Unit)? = null
+    postInit: (InlineImage.() -> Unit)? = null,
+    block: (IInlineImageConfig<T>.() -> Unit)? = null
 ): InlineImage = q(
-    inlineImageFactory(
-        id = id,
+    id = id, block = block, factory = { cid, config -> inlineImageFactory(cid, config) }, config =
+    InlineImageConfig(
         resRef = resRef,
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
+        isVisible = visible,
+        isEnabled = enabled,
+        isVisibilityAllowed = visibilityAllowed,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        postInit = postInit
+    )
+)
+
+fun MarkupContainer.inlineImage(
+    id: String,
+    resRef: PackageResourceReference,
+    markupId: String? = null,
+    outputMarkupId: Boolean? = null,
+    outputMarkupPlaceholderTag: Boolean? = null,
+    visible: Boolean? = null,
+    enabled: Boolean? = null,
+    visibilityAllowed: Boolean? = null,
+    escapeModelStrings: Boolean? = null,
+    renderBodyOnly: Boolean? = null,
+    behavior: Behavior? = null,
+    behaviors: List<Behavior>? = null,
+    onConfig: (InlineImage.() -> Unit)? = null,
+    postInit: (InlineImage.() -> Unit)? = null,
+    block: (IInlineImageConfig<*>.() -> Unit)? = null
+): InlineImage = q(
+    id = id, block = block, factory = { cid, config -> inlineImageFactory(cid, config) }, config =
+    InlineImageConfig<Any?>(
+        resRef = resRef,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isEnabled = enabled,
+        isVisibilityAllowed = visibilityAllowed,
         escapeModelStrings = escapeModelStrings,
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,

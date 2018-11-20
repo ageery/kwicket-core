@@ -8,9 +8,10 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.AjaxButtonBuilder
-import org.kwicket.component.builder.IAjaxButtonBuilder
+import org.kwicket.component.config.AjaxButtonConfig
+import org.kwicket.component.config.IAjaxButtonConfig
 import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.factory.ajaxButtonFactory
 
 fun HTMLTag.ajaxButton(
     id: String? = null,
@@ -20,86 +21,50 @@ fun HTMLTag.ajaxButton(
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    enabled: Boolean? = null,
+    isVisible: Boolean? = null,
+    isVisibilityAllowed: Boolean? = null,
+    isEnabled: Boolean? = null,
     escapeModelStrings: Boolean? = null,
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    initialAttributes: Map<String, String> = emptyMap(),
     block: AjaxButtonTag.() -> Unit = {}
 ): Unit =
     AjaxButtonTag(
         id = id,
         tagName = tagName,
-        model = model,
-        form = form,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class AjaxButtonTag(
-    id: String? = null,
-    tagName: String = "form",
-    initialAttributes: Map<String, String> = emptyMap(),
-    consumer: TagConsumer<*>,
-    val builder: AjaxButtonBuilder
-) : IAjaxButtonBuilder by builder,
-    ComponentTag<AjaxButton>(
-        id = id,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        tagName: String = "button",
-        form: Form<*>? = null,
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        model: IModel<String>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = AjaxButtonBuilder(
+        config = AjaxButtonConfig(
             model = model,
             form = form,
             markupId = markupId,
             outputMarkupId = outputMarkupId,
             outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-            isVisible = visible,
-            isVisibilityAllowed = visibilityAllowed,
-            isEnabled = enabled,
+            isVisible = isVisible,
+            isVisibilityAllowed = isVisibilityAllowed,
+            isEnabled = isEnabled,
             escapeModelStrings = escapeModelStrings,
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors
-        )
-    )
+        ),
+        consumer = consumer
+    ).visit(block)
 
-    override fun build(id: String) = builder.build(id)
+class AjaxButtonTag(
+    id: String? = null,
+    tagName: String = "button",
+    initialAttributes: Map<String, String> = emptyMap(),
+    consumer: TagConsumer<*>,
+    val config: IAjaxButtonConfig
+) : IAjaxButtonConfig by config,
+    ComponentTag<AjaxButton>(
+        id = id,
+        initialAttributes = initialAttributes,
+        consumer = consumer,
+        tagName = tagName
+    ),
+    HtmlBlockTag {
+
+    override fun build(id: String) = ajaxButtonFactory(id = id, config = config)
+
 }

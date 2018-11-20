@@ -11,7 +11,7 @@ val kotlinxHtmlVersion = "0.6.10"
 val mavenPubName = "mavenJavaLibrary"
 
 plugins {
-    kotlin("jvm") version "1.3.0"
+    kotlin("jvm") version "1.3.10"
     id("jacoco")
     id("org.jetbrains.dokka") version "0.9.16"
     id("maven-publish")

@@ -8,14 +8,15 @@ import org.apache.wicket.Page
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.request.mapper.parameter.PageParameters
-import org.kwicket.component.builder.BookmarkablePageLinkBuilder
-import org.kwicket.component.builder.IBookmarkablePageLinkBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.BookmarkablePageLinkConfig
+import org.kwicket.component.config.IBookmarkablePageLinkConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.bookmarkablePageLinkFactory
 import kotlin.reflect.KClass
 
-fun <T: Page> HTMLTag.bookmarkablePageLink(
+fun <P: Page> HTMLTag.bookmarkablePageLink(
     id: String? = null,
-    page: KClass<T>,
+    page: KClass<P>? = null,
     pageParams: PageParameters? = null,
     tagName: String = "a",
     markupId: String? = null,
@@ -29,64 +30,12 @@ fun <T: Page> HTMLTag.bookmarkablePageLink(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: BookmarkablePageLinkTag<*>.() -> Unit = {}
+    block: BookmarkablePageLinkTag<*, P>.() -> Unit = {}
 ): Unit =
     BookmarkablePageLinkTag(
-        page = page,
-        pageParams = pageParams,
         id = id,
         tagName = tagName,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class BookmarkablePageLinkTag<P: Page>(
-    id: String? = null,
-    tagName: String = "a",
-    initialAttributes: Map<String, String> = emptyMap(),
-    consumer: TagConsumer<*>,
-    val builder: BookmarkablePageLinkBuilder<P>
-) : IBookmarkablePageLinkBuilder<P> by builder,
-    ComponentTag<BookmarkablePageLink<*>>(
-        id = id,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        page: KClass<P>,
-        pageParams: PageParameters? = null,
-        tagName: String = "a",
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = BookmarkablePageLinkBuilder(
+        config = BookmarkablePageLinkConfig<Any?, P>(
             page = page,
             pageParams = pageParams,
             markupId = markupId,
@@ -99,8 +48,24 @@ open class BookmarkablePageLinkTag<P: Page>(
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors
-        )
-    )
+        ),
+        initialAttributes = initialAttributes,
+        consumer = consumer
+    ).visit(block)
 
-    override fun build(id: String) = builder.build(id)
-}
+open class BookmarkablePageLinkTag<T, P: Page>(
+    id: String? = null,
+    tagName: String = "a",
+    initialAttributes: Map<String, String> = emptyMap(),
+    consumer: TagConsumer<*>,
+    config: IBookmarkablePageLinkConfig<T, P>,
+    factory: (String, IBookmarkablePageLinkConfig<T, P>) -> BookmarkablePageLink<T> = { cid, c -> bookmarkablePageLinkFactory(cid, c) }
+) : IBookmarkablePageLinkConfig<T, P> by config,
+    ConfigurableComponentTag<T, BookmarkablePageLink<T>, IBookmarkablePageLinkConfig<T, P>>(
+        id = id,
+        initialAttributes = initialAttributes,
+        consumer = consumer,
+        tagName = tagName,
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

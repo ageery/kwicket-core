@@ -7,9 +7,10 @@ import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Radio
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.IRadioBuilder
-import org.kwicket.component.builder.RadioBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.IRadioConfig
+import org.kwicket.component.config.RadioConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.radioFactory
 
 fun <T> HTMLTag.radio(
     id: String? = null,
@@ -31,57 +32,7 @@ fun <T> HTMLTag.radio(
     RadioTag(
         id = id,
         tagName = tagName,
-        model = model,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class RadioTag<T>(
-    id: String? = null,
-    tagName: String = "input",
-    initialAttributes: Map<String, String> = mapOf("type" to "radio"),
-    consumer: TagConsumer<*>,
-    val builder: RadioBuilder<T>
-) : IRadioBuilder<T> by builder,
-    ComponentTag<Radio<T>>(
-        id = id,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        tagName: String = "input",
-        initialAttributes: Map<String, String> = mapOf("type" to "radio"),
-        consumer: TagConsumer<*>,
-        model: IModel<T>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = RadioBuilder(
+        config = RadioConfig(
             model = model,
             markupId = markupId,
             outputMarkupId = outputMarkupId,
@@ -93,8 +44,24 @@ open class RadioTag<T>(
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors
-        )
-    )
+        ),
+        initialAttributes = initialAttributes,
+        consumer = consumer
+    ).visit(block)
 
-    override fun build(id: String) = builder.build(id)
-}
+open class RadioTag<T>(
+    id: String? = null,
+    tagName: String = "input",
+    initialAttributes: Map<String, String> = mapOf("type" to "radio"),
+    consumer: TagConsumer<*>,
+    config: RadioConfig<T>,
+    factory: (String, IRadioConfig<T>) -> Radio<T> = { cid, c -> radioFactory(cid, c) }
+) : IRadioConfig<T> by config,
+    ConfigurableComponentTag<T, Radio<T>, IRadioConfig<T>>(
+        id = id,
+        initialAttributes = initialAttributes,
+        consumer = consumer,
+        tagName = tagName,
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

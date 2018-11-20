@@ -22,6 +22,7 @@ class CheckConfig<T>(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    stateless: Boolean? = null,
     onConfig: (Check<T>.() -> Unit)? = null,
     postInit: (Check<T>.() -> Unit)? = null
 ) : ICheckConfig<T>,
@@ -37,6 +38,7 @@ class CheckConfig<T>(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
+        stateless = stateless,
         onConfig = onConfig,
         postInit = postInit
     )

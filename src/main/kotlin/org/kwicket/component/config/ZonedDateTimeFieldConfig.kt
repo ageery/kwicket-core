@@ -8,17 +8,16 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
-internal val IIZonedDateTimeFieldConfig.useAnonSubClass: Boolean
-    get() = onConfig != null || toZonedDate != null || toZonedTime != null || defaultTime != null
-
-interface IIZonedDateTimeFieldConfig : IFormComponentConfig<ZonedDateTimeField, ZonedDateTime> {
+interface IIZonedDateTimeFieldConfig<T: ZonedDateTime?> : IFormComponentConfig<ZonedDateTimeField, ZonedDateTime, T> {
     var toZonedDate: ((ZonedDateTime) -> LocalDate)?
     var toZonedTime: ((ZonedDateTime) -> LocalTime)?
     var defaultTime: (() -> LocalTime)?
+    override val requiresSubclass: Boolean
+        get() = super.requiresSubclass || toZonedDate != null || toZonedTime != null || defaultTime != null
 }
 
-class ZonedDateTimeFieldConfig(
-    model: IModel<ZonedDateTime>? = null,
+class ZonedDateTimeFieldConfig<T: ZonedDateTime?>(
+    model: IModel<T>? = null,
     override var toZonedDate: ((ZonedDateTime) -> LocalDate)? = null,
     override var toZonedTime: ((ZonedDateTime) -> LocalTime)? = null,
     override var defaultTime: (() -> LocalTime)? = null,
@@ -38,8 +37,8 @@ class ZonedDateTimeFieldConfig(
     behaviors: List<Behavior>? = null,
     onConfig: (ZonedDateTimeField.() -> Unit)? = null,
     postInit: (ZonedDateTimeField.() -> Unit)? = null
-) : IIZonedDateTimeFieldConfig,
-    FormComponentConfig<ZonedDateTimeField, ZonedDateTime>(
+) : IIZonedDateTimeFieldConfig<T>,
+    FormComponentConfig<ZonedDateTimeField, ZonedDateTime, T>(
         model = model,
         label = label,
         isRequired = isRequired,

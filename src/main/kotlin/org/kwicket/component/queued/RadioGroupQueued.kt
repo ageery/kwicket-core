@@ -6,8 +6,8 @@ import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.markup.html.form.RadioGroup
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.RadioGroupBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.RadioGroupConfig
+import org.kwicket.component.factory.radioGroupFactory
 
 /**
  * Creates and queues a [CheckBox] into the parent container.
@@ -29,7 +29,7 @@ import org.kwicket.component.q
  * @param block optional block to execute to configure the component
  * @return the created [CheckBox] that has been queued into the parent container
  */
-fun <T : Any> MarkupContainer.radioGroup(
+fun <C: Any, T : C?> MarkupContainer.radioGroup(
     id: String,
     model: IModel<T>? = null,
     markupId: String? = null,
@@ -42,14 +42,14 @@ fun <T : Any> MarkupContainer.radioGroup(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (RadioGroup<T>.() -> Unit)? = null,
-    postInit: (RadioGroup<T>.() -> Unit)? = null,
+    onConfig: (RadioGroup<C>.() -> Unit)? = null,
+    postInit: (RadioGroup<C>.() -> Unit)? = null,
     label: IModel<String>? = null,
-    validator: IValidator<T>? = null,
-    validators: List<IValidator<T>>? = null,
-    block: (RadioGroupBuilder<T>.() -> Unit)? = null
-): RadioGroup<T> = q(
-    RadioGroupBuilder(
+    validator: IValidator<C>? = null,
+    validators: List<IValidator<C>>? = null,
+    block: (RadioGroupConfig<C, T>.() -> Unit)? = null
+): RadioGroup<C> = q(id = id, block = block, factory = { cid, config -> radioGroupFactory<C, T>(cid, config) }, config =
+    RadioGroupConfig<C, T>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -66,7 +66,4 @@ fun <T : Any> MarkupContainer.radioGroup(
         validator = validator,
         validators = validators,
         postInit = postInit
-    ).also {
-        block?.invoke(it)
-    }.build(id)
-)
+    ))

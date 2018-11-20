@@ -4,8 +4,8 @@ import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.devutils.debugbar.DebugBar
 import org.apache.wicket.markup.html.basic.Label
-import org.kwicket.component.builder.DebugBarBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.DebugBarConfig
+import org.kwicket.component.factory.debugBarFactory
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -42,19 +42,21 @@ fun MarkupContainer.debugBar(
     behaviors: List<Behavior>? = null,
     onConfig: (DebugBar.() -> Unit)? = null,
     postInit: (DebugBar.() -> Unit)? = null,
-    block: (DebugBarBuilder.() -> Unit)? = null
-): DebugBar = q(DebugBarBuilder(
-    markupId = markupId,
-    isInitiallyExpanded = isInitiallyExpanded,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    block: (DebugBarConfig.() -> Unit)? = null
+): DebugBar = q(
+    id = id, block = block, factory = { cid, config -> debugBarFactory(cid, config) }, config = DebugBarConfig(
+        markupId = markupId,
+        isInitiallyExpanded = isInitiallyExpanded,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        postInit = postInit
+    )
+)

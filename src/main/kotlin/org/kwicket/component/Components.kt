@@ -3,13 +3,26 @@ package org.kwicket.component
 import org.apache.wicket.Component
 import org.apache.wicket.MarkupContainer
 import org.apache.wicket.Page
+import org.apache.wicket.WicketRuntimeException
+import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Button
+import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.form.FormComponent
+import org.apache.wicket.markup.html.form.LabeledWebMarkupContainer
+import org.apache.wicket.markup.html.image.Image
+import org.apache.wicket.markup.html.link.Link
+import org.apache.wicket.markup.html.media.MediaComponent
 import org.apache.wicket.model.IModel
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.validation.IValidator
+import org.kwicket.component.config.IAbstractButtonConfig
+import org.kwicket.component.config.IAbstractFormConfig
+import org.kwicket.component.config.IAbstractLinkConfig
 import org.kwicket.component.config.IComponentConfig
+import org.kwicket.component.config.IFormComponentConfig
+import org.kwicket.component.config.IImageConfig
+import org.kwicket.component.config.IMediaComponentConfig
 import kotlin.reflect.KClass
 
 /**
@@ -80,7 +93,7 @@ internal fun <C : Component> C.config(
     return this
 }
 
-internal fun <C : Component> C.config(config: IComponentConfig<C, *>) =
+internal fun <C : Component> C.config(config: IComponentConfig<C, *>): C {
     config(
         markupId = config.markupId,
         outputMarkupId = config.outputMarkupId,
@@ -93,6 +106,67 @@ internal fun <C : Component> C.config(config: IComponentConfig<C, *>) =
         behavior = config.behavior,
         behaviors = config.behaviors
     )
+    config.postInit?.invoke(this)
+    return this
+}
+
+internal fun <F : FormComponent<C>, C: Any, T: C?> F.config(config: IFormComponentConfig<F, C, T>): F {
+    this.config(config as IComponentConfig<F, T>)
+    config.isRequired?.let { isRequired = it }
+    config.label?.let { label = it }
+    config.validator?.let { add(it) }
+    config.validators?.let { add(*it.toTypedArray()) }
+    return this
+}
+
+internal fun <C : Button> C.config(config: IAbstractButtonConfig<C>): C {
+    this.config(config as IComponentConfig<C, *>)
+    config.defaultFormProcessing?.let { defaultFormProcessing = it }
+    return this
+}
+
+internal fun <C : Link<T>, T> C.config(config: IAbstractLinkConfig<C, T>): C {
+    this.config(config as IComponentConfig<C, *>)
+    config.popupSettings?.let { popupSettings = it }
+    return this
+}
+
+internal fun <C : MediaComponent, T> C.config(config: IMediaComponentConfig<C, T>): C {
+    this.config(config as IComponentConfig<C, *>)
+    config.isMuted?.let { isMuted = it }
+    config.hasControls?.let { setControls(it) }
+    config.preload?.let { preload = it }
+    config.isAutoPlay?.let { isAutoplay = it }
+    config.isLooping?.let { isLooping = it }
+    config.startTime?.let { startTime = it }
+    config.endTime?.let { endTime = it }
+    config.mediaGroup?.let { mediaGroup = it }
+    config.crossOrigin?.let { crossOrigin = it }
+    config.type?.let { type = it }
+    return this
+}
+
+internal fun <C : Image, T> C.config(config: IImageConfig<T>): C {
+    this.config(config as IComponentConfig<Image, T>)
+    config.resRef?.let { setImageResourceReference(it, config.resParams) }
+    config.resRefs?.let { setImageResourceReferences(config.resParams, *it.toTypedArray()) }
+    config.imageResource?.let { setImageResource(it) }
+    config.imageResources?.let { setImageResources(*it.toTypedArray()) }
+    config.xValues?.let { setXValues(*it.toTypedArray()) }
+    config.sizes?.let { setSizes(*it.toTypedArray()) }
+    config.postInit?.invoke(this)
+    return this
+}
+
+internal fun <C : Form<T>, T> C.config(config: IAbstractFormConfig<C, T>): C {
+    this.config(config as IComponentConfig<C, T>)
+    config.isMultiPart?.let { isMultiPart = it }
+    config.maxSize?.let { maxSize = it.bytes }
+    config.fileMaxSize?.let { fileMaxSize = it.bytes }
+    config.postInit?.invoke(this)
+    return this
+}
+
 
 /**
  * Configures the @receiver, a [FormComponent].
@@ -225,3 +299,9 @@ internal fun <B : Button> B.config(
 
 fun <P : Page> Component.setResponsePage(page: KClass<P>, params: PageParameters? = null) =
     setResponsePage(page.java, params)
+
+fun Component.target(target: AjaxRequestTarget? = null): AjaxRequestTarget =
+    target ?: requestCycle.find(AjaxRequestTarget::class.java)
+        .orElseThrow { WicketRuntimeException("No AjaxRequestTarget found in the request cycle") }
+
+fun Component.refresh(target: AjaxRequestTarget? = null) = target(target).add(this)

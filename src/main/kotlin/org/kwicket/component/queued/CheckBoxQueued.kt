@@ -5,8 +5,8 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.CheckBoxBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.CheckBoxConfig
+import org.kwicket.component.factory.checkBoxFactory
 
 /**
  * Creates and queues a [CheckBox] into the parent container.
@@ -46,8 +46,8 @@ fun <T: Any> MarkupContainer.checkBox(
     label: IModel<String>? = null,
     validator: IValidator<Boolean>? = null,
     validators: List<IValidator<Boolean>>? = null,
-    block: (CheckBoxBuilder.() -> Unit)? = null
-): CheckBox = q(CheckBoxBuilder(
+    block: (CheckBoxConfig.() -> Unit)? = null
+): CheckBox = q(id = id, block = block, factory = {cid, config -> checkBoxFactory(cid, config)}, config = CheckBoxConfig(
     model = model,
     markupId = markupId,
     outputMarkupId = outputMarkupId,
@@ -64,4 +64,4 @@ fun <T: Any> MarkupContainer.checkBox(
     validator = validator,
     validators = validators,
     postInit = postInit
-).also { block?.invoke(it) }.build(id))
+))

@@ -1,34 +1,54 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.extensions.markup.html.form.datetime.LocalDateTimeTextField
+import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.ILocalDateTimeTextFieldConfig
-import org.kwicket.component.config.useAnonSubClass
+import java.time.LocalDateTime
 
-fun localDateTimeTextFieldFactory(
+fun <T: LocalDateTime?>localDateTimeTextFieldFactory(
     id: String,
-    config: ILocalDateTimeTextFieldConfig
-): LocalDateTimeTextField =
-    if (config.useAnonSubClass()) {
+    config: ILocalDateTimeTextFieldConfig<T>
+): LocalDateTimeTextField {
+    @Suppress("UNCHECKED_CAST")
+    val model = config.model as IModel<LocalDateTime?>
+    return if (config.requiresSubclass) {
+        val onConfig = config.onConfig
+        val stateless = config.stateless
         if (config.dateTimePattern != null) {
-            object : LocalDateTimeTextField(id, config.model, config.dateTimePattern) {
+
+            object : LocalDateTimeTextField(id, model, config.dateTimePattern) {
+
                 override fun onConfigure() {
                     super.onConfigure()
-                    config.onConfig?.invoke(this)
+                    onConfig?.invoke(this)
                 }
+
+                override fun getStatelessHint(): Boolean =
+                    stateless ?: super.getStatelessHint()
+
             }
         } else {
-            object : LocalDateTimeTextField(id, config.model, config.dateStyle, config.timeStyle) {
+            @Suppress("UNCHECKED_CAST")
+            object :
+                LocalDateTimeTextField(id, model, config.dateStyle, config.timeStyle) {
+
                 override fun onConfigure() {
                     super.onConfigure()
-                    config.onConfig?.invoke(this)
+                    onConfig?.invoke(this)
                 }
+
+                override fun getStatelessHint(): Boolean =
+                    stateless ?: super.getStatelessHint()
+
             }
         }
     } else {
         if (config.dateTimePattern != null) {
-            LocalDateTimeTextField(id, config.model, config.dateTimePattern)
+            LocalDateTimeTextField(id, model, config.dateTimePattern)
         } else {
-            LocalDateTimeTextField(id, config.model, config.dateStyle, config.timeStyle)
+            @Suppress("UNCHECKED_CAST")
+            LocalDateTimeTextField(id, model, config.dateStyle, config.timeStyle)
         }
-    }.config(config).apply { config.postInit?.invoke(this) }
+    }.config(config)
+}

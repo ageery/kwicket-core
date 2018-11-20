@@ -24,4 +24,5 @@ fun Map<String, *>.toParams() = PageParameters().apply {
     this@toParams.entries.forEach { add(it.key, it.value) }
 }
 
+@Suppress("HasPlatformType")
 operator fun PageParameters.get(key: String) = get(key)

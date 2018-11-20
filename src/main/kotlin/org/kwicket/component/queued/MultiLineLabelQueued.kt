@@ -5,8 +5,8 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.basic.MultiLineLabel
 import org.apache.wicket.model.IModel
+import org.kwicket.component.config.MultiLineLabelConfig
 import org.kwicket.component.factory.multiLineLabelFactory
-import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -28,9 +28,9 @@ import org.kwicket.component.q
  * @param block optional block to execute to configure the component
  * @return the created [Label] that has been queued into the parent container
  */
-fun MarkupContainer.multiLineLabel(
+fun <T> MarkupContainer.multiLineLabel(
     id: String,
-    model: IModel<*>? = null,
+    model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -42,17 +42,17 @@ fun MarkupContainer.multiLineLabel(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     onConfig: (MultiLineLabel.() -> Unit)? = null,
-    postInit: (MultiLineLabel.() -> Unit)? = null
-): MultiLineLabel = q(
-    multiLineLabelFactory(
-        id = id,
+    postInit: (MultiLineLabel.() -> Unit)? = null,
+    block: (MultiLineLabelConfig<T>.() -> Unit)? = null
+): MultiLineLabel = q(id = id, block = block, factory = { cid, config -> multiLineLabelFactory(cid, config)}, config =
+    MultiLineLabelConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
+        isVisible = visible,
+        isEnabled = enabled,
+        isVisibilityAllowed = visibilityAllowed,
         escapeModelStrings = escapeModelStrings,
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,

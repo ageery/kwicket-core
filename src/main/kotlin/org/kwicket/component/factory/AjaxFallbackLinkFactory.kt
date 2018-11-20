@@ -2,29 +2,24 @@ package org.kwicket.component.factory
 
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
-import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.model.IModel
 import org.kwicket.component.config
-import java.util.*
+import org.kwicket.component.config.IAjaxFallbackLinkConfig
+import java.util.Optional
 
-fun <T> ajaxFallbackLinkFactory(
-    id: String,
-    model: IModel<T>? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    enabled: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    onConfig: (AjaxFallbackLink<T>.() -> Unit)? = null,
-    onClick: (AjaxFallbackLink<T>.(AjaxRequestTarget?) -> Unit)? = null,
-    postInit: (AjaxFallbackLink<T>.() -> Unit)? = null
-): AjaxFallbackLink<T> =
-    object : AjaxFallbackLink<T>(id, model) {
+/**
+ * Creates an [AjaxFallbackLink] object with the Wicket identifier set to [id] and configured using [config].
+ *
+ * @param T type of the model of the [AjaxFallbackLink]
+ * @param id Wicket component id
+ * @param config specifies the settings for the [AjaxFallbackLink]
+ * @return [AjaxFallbackLink] with the Wicket component id of [id] and configured by [config]
+ */
+fun <T> ajaxFallbackLinkFactory(id: String, config: IAjaxFallbackLinkConfig<T>): AjaxFallbackLink<T> {
+    val onConfig = config.onConfig
+    val model = config.model
+    val stateless = config.stateless
+    val onClick = config.onClick
+    return object : AjaxFallbackLink<T>(id, model) {
 
         override fun onConfigure() {
             super.onConfigure()
@@ -35,17 +30,8 @@ fun <T> ajaxFallbackLinkFactory(
             onClick?.invoke(this, target.orElse(null))
         }
 
-    }.config(
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors
-    ).also {
-        postInit?.invoke(it)
-    }
+        override fun getStatelessHint(): Boolean =
+            stateless ?: super.getStatelessHint()
+
+    }.config(config)
+}

@@ -7,9 +7,10 @@ import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.ButtonBuilder
-import org.kwicket.component.builder.IButtonBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.ButtonConfig
+import org.kwicket.component.config.IButtonConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.buttonFactory
 
 fun HTMLTag.button(
     id: String? = null,
@@ -33,20 +34,21 @@ fun HTMLTag.button(
     ButtonTag(
         id = id,
         tagName = tagName,
+        config = ButtonConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
         escapeModelStrings = escapeModelStrings,
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
-        initialAttributes = initialAttributes,
         onSubmit = onSubmit,
-        onError = onError,
+        onError = onError),
+        initialAttributes = initialAttributes,
         consumer = consumer
     ).visit(block)
 
@@ -55,54 +57,14 @@ open class ButtonTag(
     tagName: String = "form",
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
-    val builder: ButtonBuilder
-) : IButtonBuilder by builder,
-    ComponentTag<Button>(
+    config: IButtonConfig,
+    factory: (String, IButtonConfig) -> Button = { cid, c -> buttonFactory(cid, c) }
+) : IButtonConfig by config,
+    ConfigurableComponentTag<String, Button, IButtonConfig>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        tagName: String = "button",
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        model: IModel<String>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null,
-        onSubmit: (Button.() -> Unit)? = null,
-        onError: (Button.() -> Unit)? = null
-        ) : this(
-        id = id,
         tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = ButtonBuilder(
-            model = model,
-            markupId = markupId,
-            outputMarkupId = outputMarkupId,
-            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-            isVisible = visible,
-            isVisibilityAllowed = visibilityAllowed,
-            isEnabled = enabled,
-            escapeModelStrings = escapeModelStrings,
-            renderBodyOnly = renderBodyOnly,
-            behavior = behavior,
-            behaviors = behaviors,
-            onSubmit = onSubmit,
-            onError = onError
-        )
-    )
-
-    override fun build(id: String) = builder.build(id)
-}
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

@@ -42,8 +42,8 @@ fun MarkupContainer.video(
     onConfig: (Video.() -> Unit)? = null,
     postInit: (Video.() -> Unit)? = null,
     block: (IVideoConfig<*>.() -> Unit)? = null
-): Video = video<Any?>(
-    id = id, block = block, config = VideoConfig(
+): Video = q(
+    id = id, block = block, factory = {cid, config -> videoFactory(cid, config)}, config = VideoConfig<Unit>(
         width = width,
         height = height,
         resRef = resRef,

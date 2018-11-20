@@ -7,8 +7,9 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer
 import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.DropDownChoiceBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.DropDownChoiceConfig
+import org.kwicket.component.config.IDropDownChoiceConfig
+import org.kwicket.component.factory.dropDownChoiceFactory
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.
@@ -30,50 +31,6 @@ import org.kwicket.component.q
  * @param block optional block to execute to configure the component
  * @return the created [TextField] that has been queued into the parent container
  */
-fun <T> MarkupContainer.dropDownChoice(
-    id: String,
-    model: IModel<T?>? = null,
-    choices: IModel<List<T>>? = null,
-    choiceRenderer: IChoiceRenderer<T>? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    enabled: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    onConfig: (DropDownChoice<T>.() -> Unit)? = null,
-    postInit: (DropDownChoice<T>.() -> Unit)? = null,
-    label: IModel<String>? = null,
-    isRequired: Boolean? = null,
-    validator: IValidator<T>? = null,
-    validators: List<IValidator<T>>? = null,
-    block: (DropDownChoiceBuilder<T>.() -> Unit)? = null
-): DropDownChoice<T> = q(DropDownChoiceBuilder(
-    model = model,
-    choices = choices,
-    choiceRenderer = choiceRenderer,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    label = label,
-    isRequired = isRequired,
-    validator = validator,
-    validators = validators,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
-
 fun <T: Any> MarkupContainer.dropDownChoice(
     id: String,
     model: IModel<T>? = null,
@@ -94,9 +51,9 @@ fun <T: Any> MarkupContainer.dropDownChoice(
     label: IModel<String>? = null,
     validator: IValidator<T>? = null,
     validators: List<IValidator<T>>? = null,
-    block: (DropDownChoiceBuilder<T>.() -> Unit)? = null
-): DropDownChoice<T> = q(DropDownChoiceBuilder(
-    model = model as IModel<T?>,
+    block: (IDropDownChoiceConfig<T, T>.() -> Unit)? = null
+): DropDownChoice<T> = q(id = id, block = block, factory = {cid, config -> dropDownChoiceFactory(cid, config)}, config = DropDownChoiceConfig(
+    model = model,
     choices = choices,
     choiceRenderer = choiceRenderer,
     markupId = markupId,
@@ -115,4 +72,48 @@ fun <T: Any> MarkupContainer.dropDownChoice(
     validator = validator,
     validators = validators,
     postInit = postInit
-).also { block?.invoke(it) }.build(id))
+))
+
+fun <T: Any> MarkupContainer.dropDownChoice(
+    id: String,
+    model: IModel<T?>? = null,
+    choices: IModel<List<T>>? = null,
+    choiceRenderer: IChoiceRenderer<T>? = null,
+    markupId: String? = null,
+    outputMarkupId: Boolean? = null,
+    outputMarkupPlaceholderTag: Boolean? = null,
+    visible: Boolean? = null,
+    enabled: Boolean? = null,
+    visibilityAllowed: Boolean? = null,
+    escapeModelStrings: Boolean? = null,
+    renderBodyOnly: Boolean? = null,
+    behavior: Behavior? = null,
+    behaviors: List<Behavior>? = null,
+    onConfig: (DropDownChoice<T>.() -> Unit)? = null,
+    postInit: (DropDownChoice<T>.() -> Unit)? = null,
+    label: IModel<String>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
+    isRequired: Boolean? = null,
+    block: (IDropDownChoiceConfig<T, T?>.() -> Unit)? = null
+): DropDownChoice<T> = q(id = id, block = block, factory = {cid, config: IDropDownChoiceConfig<T, T?> -> dropDownChoiceFactory<T, T?>(cid, config)}, config = DropDownChoiceConfig<T, T?>(
+    model = model,
+    choices = choices,
+    choiceRenderer = choiceRenderer,
+    markupId = markupId,
+    outputMarkupId = outputMarkupId,
+    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+    isVisible = visible,
+    isVisibilityAllowed = visibilityAllowed,
+    isEnabled = enabled,
+    escapeModelStrings = escapeModelStrings,
+    renderBodyOnly = renderBodyOnly,
+    behavior = behavior,
+    behaviors = behaviors,
+    onConfig = onConfig,
+    label = label,
+    isRequired = isRequired,
+    validator = validator,
+    validators = validators,
+    postInit = postInit
+))

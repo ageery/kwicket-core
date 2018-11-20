@@ -7,8 +7,8 @@ import org.apache.wicket.markup.html.form.RadioChoice
 import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.RadioChoiceBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.RadioChoiceConfig
+import org.kwicket.component.factory.radioChoiceFactory
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.
@@ -30,11 +30,11 @@ import org.kwicket.component.q
  * @param block optional block to execute to configure the component
  * @return the created [TextField] that has been queued into the parent container
  */
-fun <T> MarkupContainer.radioChoice(
+fun <C: Any, T: C?> MarkupContainer.radioChoice(
     id: String,
     model: IModel<T>? = null,
-    choices: IModel<List<T>>,
-    choiceRenderer: IChoiceRenderer<T>? = null,
+    choices: IModel<List<C>>,
+    choiceRenderer: IChoiceRenderer<C>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -45,31 +45,33 @@ fun <T> MarkupContainer.radioChoice(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (RadioChoice<T>.() -> Unit)? = null,
-    postInit: (RadioChoice<T>.() -> Unit)? = null,
+    onConfig: (RadioChoice<C>.() -> Unit)? = null,
+    postInit: (RadioChoice<C>.() -> Unit)? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<T>? = null,
-    validators: List<IValidator<T>>? = null,
-    block: (RadioChoiceBuilder<T>.() -> Unit)? = null
-): RadioChoice<T> = q(RadioChoiceBuilder(
-    model = model,
-    choices = choices,
-    choiceRenderer = choiceRenderer,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    label = label,
-    isRequired = isRequired,
-    validator = validator,
-    validators = validators,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    validator: IValidator<C>? = null,
+    validators: List<IValidator<C>>? = null,
+    block: (RadioChoiceConfig<C, T>.() -> Unit)? = null
+): RadioChoice<C> = q(
+    id = id, block = block, factory = { cid, config -> radioChoiceFactory<C, T>(cid, config) }, config = RadioChoiceConfig<C, T>(
+        model = model,
+        choices = choices,
+        choiceRenderer = choiceRenderer,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        label = label,
+        isRequired = isRequired,
+        validator = validator,
+        validators = validators,
+        postInit = postInit
+    )
+)

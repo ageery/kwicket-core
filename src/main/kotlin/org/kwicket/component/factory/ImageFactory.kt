@@ -1,64 +1,24 @@
 package org.kwicket.component.factory
 
-import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.image.Image
-import org.apache.wicket.model.IModel
-import org.apache.wicket.request.mapper.parameter.PageParameters
-import org.apache.wicket.request.resource.IResource
-import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config
+import org.kwicket.component.config.IImageConfig
 
-fun imageFactory(
-    id: String,
-    resRef: ResourceReference? = null,
-    resParams: PageParameters? = null,
-    resRefs: List<ResourceReference>? = null,
-    imageResource: IResource? = null,
-    imageResources: List<IResource>? = null,
-    model: IModel<*>? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    enabled: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    xValues: List<String>? = null,
-    sizes: List<String>? = null,
-    behaviors: List<Behavior>? = null,
-    onConfig: (Image.() -> Unit)? = null,
-    postInit: (Image.() -> Unit)? = null
-): Image =
-    if (onConfig != null) {
-        object : Image(id, model) {
+fun <T> imageFactory(id: String, config: IImageConfig<T>): Image =
+    if (config.requiresSubclass) {
+        val onConfig = config.onConfig
+        val stateless = config.stateless
+        object : Image(id, config.model) {
 
             override fun onConfigure() {
                 super.onConfigure()
-                onConfig.invoke(this)
+                onConfig?.invoke(this)
             }
+
+            override fun getStatelessHint(): Boolean =
+                stateless ?: super.getStatelessHint()
 
         }
     } else {
-        Image(id, model)
-    }.config(
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors
-    ).also {  image ->
-        resRef?.let { image.setImageResourceReference(it, resParams) }
-        resRefs?.let { image.setImageResourceReferences(resParams, *it.toTypedArray()) }
-        imageResource?.let { image.setImageResource(it) }
-        imageResources?.let { image.setImageResources(*it.toTypedArray()) }
-        xValues?.let { image.setXValues(*it.toTypedArray()) }
-        sizes?.let { image.setSizes(*it.toTypedArray()) }
-        postInit?.invoke(image)
-    }
+        Image(id, config.model)
+    }.config(config)

@@ -6,10 +6,9 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.list.ListItem
 import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.IListViewBuilder
-import org.kwicket.component.builder.ListViewBuilder
+import org.kwicket.component.config.IListViewConfig
+import org.kwicket.component.config.ListViewConfig
 import org.kwicket.component.factory.listViewFactory
-import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -47,9 +46,9 @@ fun <T, L: List<T>> MarkupContainer.listView(
     onConfig: (ListView<T>.() -> Unit)? = null,
     postInit: (ListView<T>.() -> Unit)? = null,
     populateItem: (ListItem<T>.() -> Unit)? = null,
-    block: (IListViewBuilder<T, L>.() -> Unit)? = null
-): ListView<T> = q(
-    ListViewBuilder(
+    block: (IListViewConfig<T, L>.() -> Unit)? = null
+): ListView<T> = q(id = id, block = block, factory = { cid, config -> listViewFactory(cid, config) }, config =
+    ListViewConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -57,14 +56,11 @@ fun <T, L: List<T>> MarkupContainer.listView(
         isVisible = visible,
         isEnabled = enabled,
         isVisibilityAllowed = visibilityAllowed,
-        isEscapeModelStrings = escapeModelStrings,
-        isRenderBodyOnly = renderBodyOnly,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
         onConfig = onConfig,
         postInit = postInit,
         populateItem = populateItem
-    ).apply {
-        block?.invoke(this)
-    }.build(id)
-)
+    ))

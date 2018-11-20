@@ -7,9 +7,10 @@ import kotlinx.html.visit
 import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.AjaxLinkBuilder
-import org.kwicket.component.builder.IAjaxLinkBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.AjaxLinkConfig
+import org.kwicket.component.config.IAjaxLinkConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.ajaxLinkFactory
 
 fun <T> HTMLTag.ajaxLink(
     id: String? = null,
@@ -31,17 +32,18 @@ fun <T> HTMLTag.ajaxLink(
     AjaxLinkTag(
         id = id,
         tagName = tagName,
+        config = AjaxLinkConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
         escapeModelStrings = escapeModelStrings,
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
-        behaviors = behaviors,
+        behaviors = behaviors),
         initialAttributes = initialAttributes,
         consumer = consumer
     ).visit(block)
@@ -51,50 +53,14 @@ open class AjaxLinkTag<T>(
     tagName: String = "a",
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
-    val builder: AjaxLinkBuilder<T>
-) : IAjaxLinkBuilder<T> by builder,
-    ComponentTag<AjaxLink<T>>(
+    config: IAjaxLinkConfig<T>,
+    factory: (String, IAjaxLinkConfig<T>) -> AjaxLink<T> = { cid, c -> ajaxLinkFactory(cid, c) }
+) : IAjaxLinkConfig<T> by config,
+    ConfigurableComponentTag<T, AjaxLink<T>, IAjaxLinkConfig<T>>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        tagName: String = "a",
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        model: IModel<T>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
         tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = AjaxLinkBuilder(
-            model = model,
-            markupId = markupId,
-            outputMarkupId = outputMarkupId,
-            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-            isVisible = visible,
-            isVisibilityAllowed = visibilityAllowed,
-            isEnabled = enabled,
-            escapeModelStrings = escapeModelStrings,
-            renderBodyOnly = renderBodyOnly,
-            behavior = behavior,
-            behaviors = behaviors
-        )
-    )
-
-    override fun build(id: String) = builder.build(id)
-}
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

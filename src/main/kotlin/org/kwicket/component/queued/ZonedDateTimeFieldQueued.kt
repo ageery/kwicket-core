@@ -7,12 +7,13 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IIZonedDateTimeFieldConfig
 import org.kwicket.component.config.ZonedDateTimeFieldConfig
 import org.kwicket.component.factory.zonedDateTimeFieldFactory
-import org.kwicket.component.q
-import java.time.*
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZonedDateTime
 
-fun MarkupContainer.zonedDateTimeField(
+fun <T: ZonedDateTime?> MarkupContainer.zonedDateTimeField(
     id: String,
-    model: IModel<ZonedDateTime>? = null,
+    model: IModel<T>? = null,
     toZonedDate: ((ZonedDateTime) -> LocalDate)? = null,
     toZonedTime: ((ZonedDateTime) -> LocalTime)? = null,
     defaultTime: (() -> LocalTime)? = null,
@@ -28,9 +29,12 @@ fun MarkupContainer.zonedDateTimeField(
     behaviors: List<Behavior>? = null,
     onConfig: (ZonedDateTimeField.() -> Unit)? = null,
     postInit: (ZonedDateTimeField.() -> Unit)? = null,
-    block: (IIZonedDateTimeFieldConfig.() -> Unit)? = null
-): ZonedDateTimeField = zonedDateTimeField(
-    id = id, block = block, config = ZonedDateTimeFieldConfig(
+    block: (IIZonedDateTimeFieldConfig<T>.() -> Unit)? = null
+): ZonedDateTimeField = q(
+    id = id,
+    block = block,
+    factory = { cid, config -> zonedDateTimeFieldFactory(cid, config) },
+    config = ZonedDateTimeFieldConfig(
         model = model,
         toZonedDate = toZonedDate,
         toZonedTime = toZonedTime,
@@ -49,12 +53,3 @@ fun MarkupContainer.zonedDateTimeField(
         postInit = postInit
     )
 )
-
-fun MarkupContainer.zonedDateTimeField(
-    id: String,
-    config: IIZonedDateTimeFieldConfig,
-    block: (IIZonedDateTimeFieldConfig.() -> Unit)? = null
-): ZonedDateTimeField {
-    block?.invoke(config)
-    return q(zonedDateTimeFieldFactory(id = id, config = config))
-}

@@ -6,8 +6,8 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.form.SubmitLink
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.SubmitLinkBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.SubmitLinkConfig
+import org.kwicket.component.factory.submitLinkFactory
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -45,20 +45,22 @@ fun <T> MarkupContainer.submitLink(
     behaviors: List<Behavior>? = null,
     onConfig: (SubmitLink.() -> Unit)? = null,
     postInit: (SubmitLink.() -> Unit)? = null,
-    block: (SubmitLinkBuilder<T>.() -> Unit)? = null
-): SubmitLink = q(SubmitLinkBuilder(
-    model = model,
-    form = form,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    block: (SubmitLinkConfig<T>.() -> Unit)? = null
+): SubmitLink = q(
+    id = id, block = block, factory = { cid, config -> submitLinkFactory(cid, config) }, config = SubmitLinkConfig(
+        model = model,
+        form = form,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        postInit = postInit
+    )
+)

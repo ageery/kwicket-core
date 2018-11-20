@@ -47,6 +47,7 @@ abstract class MediaComponentConfig<C: MediaComponent, T>(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    stateless: Boolean? = null,
     onConfig: (C.() -> Unit)? = null,
     postInit: (C.() -> Unit)? = null
 ) : IMediaComponentConfig<C, T>,
@@ -62,6 +63,7 @@ abstract class MediaComponentConfig<C: MediaComponent, T>(
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors,
+            stateless = stateless,
             onConfig = onConfig,
             postInit = postInit
         )

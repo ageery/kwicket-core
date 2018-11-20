@@ -2,15 +2,18 @@ package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.Link
+import org.apache.wicket.markup.html.link.PopupSettings
 import org.apache.wicket.model.IModel
 
-interface ILinkConfig<T, L : Link<T>> : IComponentConfig<L, T> {
-    var onClick: (L.() -> Unit)?
+interface ILinkConfig<T> : IAbstractLinkConfig<Link<T>, T> {
+    var onClick: (Link<T>.() -> Unit)?
+    override val requiresSubclass: Boolean get() = true
 }
 
-open class LinkConfig<T, L : Link<T>>(
+open class LinkConfig<T>(
     model: IModel<T>? = null,
-    override var onClick: (L.() -> Unit)? = null,
+    override var onClick: (Link<T>.() -> Unit)? = null,
+    popupSettings: PopupSettings? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -21,11 +24,13 @@ open class LinkConfig<T, L : Link<T>>(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (L.() -> Unit)? = null,
-    postInit: (L.() -> Unit)? = null
-) : ILinkConfig<T, L>,
-    ComponentConfig<L, T>(
+    stateless: Boolean? = null,
+    onConfig: (Link<T>.() -> Unit)? = null,
+    postInit: (Link<T>.() -> Unit)? = null
+) : ILinkConfig<T>,
+    AbstractLinkConfig<Link<T>, T>(
         model = model,
+        popupSettings = popupSettings,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -36,11 +41,7 @@ open class LinkConfig<T, L : Link<T>>(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
+        stateless = stateless,
         onConfig = onConfig,
         postInit = postInit
-    ) {
-
-    override val requiresSubclass: Boolean
-        get() = super<ComponentConfig>.requiresSubclass || onClick != null
-
-}
+    )

@@ -6,10 +6,8 @@ import org.apache.wicket.markup.html.form.TextArea
 import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.TextAreaBuilder
-import org.kwicket.component.builder.TextFieldBuilder
-import org.kwicket.component.q
-import kotlin.reflect.KClass
+import org.kwicket.component.config.TextAreaConfig
+import org.kwicket.component.factory.textAreaFactory
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.
@@ -33,6 +31,50 @@ import kotlin.reflect.KClass
  */
 fun <T: Any> MarkupContainer.textArea(
     id: String,
+    model: IModel<T>? = null,
+    markupId: String? = null,
+    outputMarkupId: Boolean? = null,
+    outputMarkupPlaceholderTag: Boolean? = null,
+    visible: Boolean? = null,
+    enabled: Boolean? = null,
+    visibilityAllowed: Boolean? = null,
+    escapeModelStrings: Boolean? = null,
+    renderBodyOnly: Boolean? = null,
+    behavior: Behavior? = null,
+    behaviors: List<Behavior>? = null,
+    onConfig: (TextArea<T>.() -> Unit)? = null,
+    postInit: (TextArea<T>.() -> Unit)? = null,
+    label: IModel<String>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
+    block: (TextAreaConfig<T, T>.() -> Unit)? = null
+): TextArea<T> = q(
+    id = id,
+    block = block,
+    factory = { cid, config -> textAreaFactory(id = cid, config = config) },
+    config = TextAreaConfig(
+        model = model,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        label = label,
+        isRequired = true,
+        validator = validator,
+        validators = validators,
+        postInit = postInit
+    )
+)
+
+fun <T: Any> MarkupContainer.textArea(
+    id: String,
     model: IModel<T?>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -50,23 +92,28 @@ fun <T: Any> MarkupContainer.textArea(
     isRequired: Boolean? = null,
     validator: IValidator<T>? = null,
     validators: List<IValidator<T>>? = null,
-    block: (TextAreaBuilder<T>.() -> Unit)? = null
-): TextArea<T> = q(TextAreaBuilder(
-    model = model,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isVisibilityAllowed = visibilityAllowed,
-    isEnabled = enabled,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    label = label,
-    isRequired = isRequired,
-    validator = validator,
-    validators = validators,
-    postInit = postInit
-).also { block?.invoke(it) }.build(id))
+    block: (TextAreaConfig<T, T?>.() -> Unit)? = null
+): TextArea<T> = q(
+    id = id,
+    block = block,
+    factory = { cid, config -> textAreaFactory<T, T?>(id = cid, config = config) },
+    config = TextAreaConfig<T, T?>(
+        model = model,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        label = label,
+        isRequired = isRequired,
+        validator = validator,
+        validators = validators,
+        postInit = postInit
+    )
+)

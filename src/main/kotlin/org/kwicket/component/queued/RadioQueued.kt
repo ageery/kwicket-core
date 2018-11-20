@@ -5,8 +5,8 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.markup.html.form.Radio
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.RadioBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.RadioConfig
+import org.kwicket.component.factory.radioFactory
 
 /**
  * Creates and queues a [CheckBox] into the parent container.
@@ -43,9 +43,9 @@ fun <T : Any> MarkupContainer.radio(
     behaviors: List<Behavior>? = null,
     onConfig: (Radio<T>.() -> Unit)? = null,
     postInit: (Radio<T>.() -> Unit)? = null,
-    block: (RadioBuilder<T>.() -> Unit)? = null
-): Radio<T> = q(
-    RadioBuilder(
+    block: (RadioConfig<T>.() -> Unit)? = null
+): Radio<T> = q(id = id, block = block, factory = { cid, config -> radioFactory(cid, config)}, config =
+    RadioConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -59,7 +59,4 @@ fun <T : Any> MarkupContainer.radio(
         behaviors = behaviors,
         onConfig = onConfig,
         postInit = postInit
-    ).also {
-        block?.invoke(it)
-    }.build(id)
-)
+    ))

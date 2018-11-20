@@ -2,37 +2,31 @@ package org.kwicket.component.factory
 
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.form.AjaxButton
-import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.form.Form
-import org.apache.wicket.model.IModel
 import org.kwicket.component.config
+import org.kwicket.component.config.IAjaxButtonConfig
 
-fun ajaxButtonFactory(
-    id: String,
-    model: IModel<String>? = null,
-    defaultFormProcessing: Boolean? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    enabled: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    onConfig: (AjaxButton.() -> Unit)? = null,
-    onSubmit: (AjaxButton.(AjaxRequestTarget) -> Unit)? = null,
-    onError: (AjaxButton.(AjaxRequestTarget) -> Unit)? = null,
-    form: Form<*>? = null,
-    postInit: (AjaxButton.() -> Unit)? = null
-): AjaxButton =
-    object : AjaxButton(id, model, form) {
+/**
+ * Creates an [AjaxButton] object with the Wicket identifier set to [id] and configured using [config].
+ *
+ * @param id Wicket component id
+ * @param config specifies the settings for the [AjaxButton]
+ * @return [AjaxButton] with the Wicket component id of [id] and configured by [config]
+ */
+fun ajaxButtonFactory(id: String, config: IAjaxButtonConfig): AjaxButton {
+    val onConfig = config.onConfig
+    val model = config.model
+    val form = config.form
+    val stateless = config.stateless
+    val onSubmit = config.onSubmit
+    val onError = config.onError
+    return object : AjaxButton(id, model, form) {
 
         override fun onConfigure() {
             super.onConfigure()
             onConfig?.invoke(this)
         }
+
+        override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
 
         override fun onSubmit(target: AjaxRequestTarget) {
             super.onSubmit()
@@ -44,19 +38,5 @@ fun ajaxButtonFactory(
             onError?.invoke(this, target)
         }
 
-    }.config(
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors
-    ).apply {
-        defaultFormProcessing?.let { this.defaultFormProcessing = it }
-    }.also {
-        postInit?.invoke(it)
-    }
+    }.config(config)
+}

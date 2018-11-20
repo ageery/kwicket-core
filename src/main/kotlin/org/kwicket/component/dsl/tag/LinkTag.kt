@@ -7,9 +7,10 @@ import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.Link
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.ILinkBuilder
-import org.kwicket.component.builder.LinkBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.ILinkConfig
+import org.kwicket.component.config.LinkConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.linkFactory
 
 fun <T> HTMLTag.link(
     id: String? = null,
@@ -31,17 +32,19 @@ fun <T> HTMLTag.link(
     LinkTag(
         id = id,
         tagName = tagName,
-        model = model,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
+        config = LinkConfig(
+            model = model,
+            markupId = markupId,
+            outputMarkupId = outputMarkupId,
+            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+            isVisible = visible,
+            isVisibilityAllowed = visibilityAllowed,
+            isEnabled = enabled,
+            escapeModelStrings = escapeModelStrings,
+            renderBodyOnly = renderBodyOnly,
+            behavior = behavior,
+            behaviors = behaviors
+        ),
         initialAttributes = initialAttributes,
         consumer = consumer
     ).visit(block)
@@ -65,57 +68,7 @@ fun HTMLTag.link(
     LinkTag<Any?>(
         id = id,
         tagName = tagName,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class LinkTag<T>(
-    id: String? = null,
-    tagName: String = "a",
-    initialAttributes: Map<String, String> = emptyMap(),
-    consumer: TagConsumer<*>,
-    val builder: LinkBuilder<T>
-) : ILinkBuilder<T> by builder,
-    ComponentTag<Link<T>>(
-        id = id,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        tagName: String = "a",
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        model: IModel<T>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = LinkBuilder(
-            model = model,
+        config = LinkConfig(
             markupId = markupId,
             outputMarkupId = outputMarkupId,
             outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -126,8 +79,24 @@ open class LinkTag<T>(
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors
-        )
-    )
+        ),
+        initialAttributes = initialAttributes,
+        consumer = consumer
+    ).visit(block)
 
-    override fun build(id: String) = builder.build(id)
-}
+open class LinkTag<T>(
+    id: String? = null,
+    tagName: String = "a",
+    initialAttributes: Map<String, String> = emptyMap(),
+    consumer: TagConsumer<*>,
+    config: ILinkConfig<T>,
+    factory: (String, ILinkConfig<T>) -> Link<T> = { cid, c -> linkFactory(cid, c) }
+) : ILinkConfig<T> by config,
+    ConfigurableComponentTag<T, Link<T>, ILinkConfig<T>>(
+        id = id,
+        initialAttributes = initialAttributes,
+        consumer = consumer,
+        tagName = tagName,
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

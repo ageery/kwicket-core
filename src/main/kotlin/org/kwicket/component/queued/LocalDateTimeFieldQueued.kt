@@ -7,15 +7,13 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IILocalDateTimeFieldConfig
 import org.kwicket.component.config.LocalDateTimeFieldConfig
 import org.kwicket.component.factory.localDateTimeFieldFactory
-import org.kwicket.component.factory.localDateTimeTextFieldFactory
-import org.kwicket.component.q
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-fun MarkupContainer.localDateTimeField(
+fun <T: LocalDateTime?> MarkupContainer.localDateTimeField(
     id: String,
-    model: IModel<LocalDateTime>? = null,
+    model: IModel<T>? = null,
     toLocalDate: ((LocalDateTime) -> LocalDate)? = null,
     toLocalTime: ((LocalDateTime) -> LocalTime)? = null,
     defaultTime: (() -> LocalTime)? = null,
@@ -31,9 +29,9 @@ fun MarkupContainer.localDateTimeField(
     behaviors: List<Behavior>? = null,
     onConfig: (LocalDateTimeField.() -> Unit)? = null,
     postInit: (LocalDateTimeField.() -> Unit)? = null,
-    block: (IILocalDateTimeFieldConfig.() -> Unit)? = null
-): LocalDateTimeField = localDateTimeField(
-    id = id, block = block, config = LocalDateTimeFieldConfig(
+    block: (IILocalDateTimeFieldConfig<T>.() -> Unit)? = null
+): LocalDateTimeField = q(
+    id = id, block = block, factory = { cid, config -> localDateTimeFieldFactory(cid, config) }, config = LocalDateTimeFieldConfig(
         model = model,
         toLocalDate = toLocalDate,
         toLocalTime = toLocalTime,
@@ -52,12 +50,3 @@ fun MarkupContainer.localDateTimeField(
         postInit = postInit
     )
 )
-
-fun MarkupContainer.localDateTimeField(
-    id: String,
-    config: IILocalDateTimeFieldConfig,
-    block: (IILocalDateTimeFieldConfig.() -> Unit)? = null
-): LocalDateTimeField {
-    block?.invoke(config)
-    return q(localDateTimeFieldFactory(id = id, config = config))
-}

@@ -8,9 +8,10 @@ import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.AjaxFallbackButtonBuilder
-import org.kwicket.component.builder.IAjaxFallbackButtonBuilder
+import org.kwicket.component.config.AjaxFallbackButtonConfig
+import org.kwicket.component.config.IAjaxFallbackButtonConfig
 import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.factory.ajaxFallbackButtonFactory
 
 fun HTMLTag.ajaxFallbackButton(
     id: String? = null,
@@ -33,59 +34,7 @@ fun HTMLTag.ajaxFallbackButton(
     AjaxFallbackButtonTag(
         id = id,
         tagName = tagName,
-        model = model,
-        form = form,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class AjaxFallbackButtonTag(
-    id: String? = null,
-    tagName: String = "button",
-    initialAttributes: Map<String, String> = emptyMap(),
-    consumer: TagConsumer<*>,
-    val builder: AjaxFallbackButtonBuilder
-) : IAjaxFallbackButtonBuilder by builder,
-    ComponentTag<AjaxFallbackButton>(
-        id = id,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        tagName: String = "button",
-        form: Form<*>? = null,
-        initialAttributes: Map<String, String> = emptyMap(),
-        consumer: TagConsumer<*>,
-        model: IModel<String>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
-        tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = AjaxFallbackButtonBuilder(
+        config = AjaxFallbackButtonConfig(
             model = model,
             form = form,
             markupId = markupId,
@@ -98,8 +47,25 @@ open class AjaxFallbackButtonTag(
             renderBodyOnly = renderBodyOnly,
             behavior = behavior,
             behaviors = behaviors
-        )
-    )
+        ),
+        initialAttributes = initialAttributes,
+        consumer = consumer
+    ).visit(block)
 
-    override fun build(id: String) = builder.build(id)
+open class AjaxFallbackButtonTag(
+    id: String? = null,
+    tagName: String = "button",
+    initialAttributes: Map<String, String> = emptyMap(),
+    consumer: TagConsumer<*>,
+    val config: IAjaxFallbackButtonConfig
+) : IAjaxFallbackButtonConfig by config,
+    ComponentTag<AjaxFallbackButton>(
+        id = id,
+        initialAttributes = initialAttributes,
+        consumer = consumer,
+        tagName = tagName
+    ), HtmlBlockTag {
+
+    override fun build(id: String) = ajaxFallbackButtonFactory(id, config)
+
 }

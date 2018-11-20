@@ -8,9 +8,10 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.CheckBoxBuilder
-import org.kwicket.component.builder.ICheckBoxBuilder
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.config.CheckBoxConfig
+import org.kwicket.component.config.ICheckBoxConfig
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.factory.checkBoxFactory
 
 fun HTMLTag.checkBox(
     id: String? = null,
@@ -35,6 +36,7 @@ fun HTMLTag.checkBox(
     CheckBoxTag(
         id = id,
         tagName = tagName,
+        config = CheckBoxConfig(
         label = label,
         validator = validator,
         validators = validators,
@@ -42,13 +44,13 @@ fun HTMLTag.checkBox(
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        visibilityAllowed = visibilityAllowed,
-        enabled = enabled,
+        isVisible = visible,
+        isVisibilityAllowed = visibilityAllowed,
+        isEnabled = enabled,
         escapeModelStrings = escapeModelStrings,
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
-        behaviors = behaviors,
+        behaviors = behaviors),
         initialAttributes = initialAttributes,
         consumer = consumer
     ).visit(block)
@@ -58,56 +60,14 @@ open class CheckBoxTag(
     tagName: String = "input",
     initialAttributes: Map<String, String> = mapOf("type" to "checkbox"),
     consumer: TagConsumer<*>,
-    val builder: CheckBoxBuilder
-) : ICheckBoxBuilder by builder,
-    ComponentTag<CheckBox>(
+    config: ICheckBoxConfig,
+    factory: (String, ICheckBoxConfig) -> CheckBox = { cid, c -> checkBoxFactory(cid, c) }
+) : ICheckBoxConfig by config,
+    ConfigurableComponentTag<Boolean, CheckBox, ICheckBoxConfig>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    constructor(
-        id: String? = null,
-        label: IModel<String>? = null,
-        validator: IValidator<Boolean>? = null,
-        validators: List<IValidator<Boolean>>? = null,
-        tagName: String = "input",
-        initialAttributes: Map<String, String> = mapOf("type" to "checkbox"),
-        consumer: TagConsumer<*>,
-        model: IModel<Boolean>? = null,
-        markupId: String? = null,
-        outputMarkupId: Boolean? = null,
-        outputMarkupPlaceholderTag: Boolean? = null,
-        visible: Boolean? = null,
-        visibilityAllowed: Boolean? = null,
-        enabled: Boolean? = null,
-        escapeModelStrings: Boolean? = null,
-        renderBodyOnly: Boolean? = null,
-        behavior: Behavior? = null,
-        behaviors: List<Behavior>? = null
-    ) : this(
-        id = id,
         tagName = tagName,
-        initialAttributes = initialAttributes,
-        consumer = consumer,
-        builder = CheckBoxBuilder(
-            model = model,
-            validators = validators,
-            validator = validator,
-            label = label,
-            markupId = markupId,
-            outputMarkupId = outputMarkupId,
-            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-            isVisible = visible,
-            isVisibilityAllowed = visibilityAllowed,
-            isEnabled = enabled,
-            escapeModelStrings = escapeModelStrings,
-            renderBodyOnly = renderBodyOnly,
-            behavior = behavior,
-            behaviors = behaviors
-        )
-    )
-
-    override fun build(id: String) = builder.build(id)
-}
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

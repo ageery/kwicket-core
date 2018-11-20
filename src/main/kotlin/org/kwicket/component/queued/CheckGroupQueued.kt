@@ -6,8 +6,8 @@ import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.markup.html.form.CheckGroup
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.CheckGroupBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.CheckGroupConfig
+import org.kwicket.component.factory.checkGroupFactory
 
 /**
  * Creates and queues a [CheckBox] into the parent container.
@@ -47,9 +47,10 @@ fun <T : Any> MarkupContainer.checkGroup(
     label: IModel<String>? = null,
     validator: IValidator<MutableCollection<T>>? = null,
     validators: List<IValidator<MutableCollection<T>>>? = null,
-    block: (CheckGroupBuilder<T>.() -> Unit)? = null
+    block: (CheckGroupConfig<T, *>.() -> Unit)? = null
 ): CheckGroup<T> = q(
-    CheckGroupBuilder(
+    id = id, block = block, factory = { cid, config -> checkGroupFactory(cid, config) }, config =
+    CheckGroupConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -66,7 +67,5 @@ fun <T : Any> MarkupContainer.checkGroup(
         validator = validator,
         validators = validators,
         postInit = postInit
-    ).also {
-        block?.invoke(it)
-    }.build(id)
+    )
 )

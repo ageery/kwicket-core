@@ -7,18 +7,14 @@ import org.apache.wicket.validation.IValidator
 import java.time.LocalDateTime
 import java.time.format.FormatStyle
 
-// FIXME: can we just say: whatever the answer is true of the superclass + ...
-internal val ILocalDateTimeTextFieldConfig.useAnonSubClass: Boolean
-    get() = onConfig != null
-
-interface ILocalDateTimeTextFieldConfig : IFormComponentConfig<LocalDateTimeTextField, LocalDateTime> {
+interface ILocalDateTimeTextFieldConfig<T: LocalDateTime?> : IFormComponentConfig<LocalDateTimeTextField, LocalDateTime, T> {
     var dateTimePattern: String?
     var dateStyle: FormatStyle?
     var timeStyle: FormatStyle?
 }
 
-class LocalDateTimeTextFieldConfig(
-    model: IModel<LocalDateTime>? = null,
+class LocalDateTimeTextFieldConfig<T: LocalDateTime?>(
+    model: IModel<T>? = null,
     override var dateTimePattern: String? = null,
     override var dateStyle: FormatStyle? = null,
     override var timeStyle: FormatStyle? = null,
@@ -36,10 +32,11 @@ class LocalDateTimeTextFieldConfig(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    stateless: Boolean? = null,
     onConfig: (LocalDateTimeTextField.() -> Unit)? = null,
     postInit: (LocalDateTimeTextField.() -> Unit)? = null
-) : ILocalDateTimeTextFieldConfig,
-    FormComponentConfig<LocalDateTimeTextField, LocalDateTime>(
+) : ILocalDateTimeTextFieldConfig<T>,
+    FormComponentConfig<LocalDateTimeTextField, LocalDateTime, T>(
         model = model,
         label = label,
         isRequired = isRequired,
@@ -55,6 +52,7 @@ class LocalDateTimeTextFieldConfig(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
+        stateless = stateless,
         onConfig = onConfig,
         postInit = postInit
     )

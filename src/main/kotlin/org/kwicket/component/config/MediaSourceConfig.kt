@@ -33,6 +33,7 @@ class MediaSourceConfig<T>(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
+    stateless: Boolean? = null,
     onConfig: (Source.() -> Unit)? = null,
     postInit: (Source.() -> Unit)? = null
 ) : IMediaSourceConfig<T>,
@@ -48,6 +49,7 @@ class MediaSourceConfig<T>(
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,
         behaviors = behaviors,
+        stateless = stateless,
         onConfig = onConfig,
         postInit = postInit
     )

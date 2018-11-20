@@ -1,13 +1,18 @@
 package org.kwicket.component.dsl.tag
 
-import kotlinx.html.*
+import kotlinx.html.HTMLTag
+import kotlinx.html.HtmlBlockTag
+import kotlinx.html.InputType
+import kotlinx.html.TagConsumer
+import kotlinx.html.visit
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.extensions.markup.html.form.datetime.LocalDateTextField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.ILocalDateTextFieldConfig
 import org.kwicket.component.config.LocalDateTextFieldConfig
-import org.kwicket.component.dsl.ComponentTag
+import org.kwicket.component.dsl.ConfigurableComponentTag
+import org.kwicket.component.dsl.toAttr
 import org.kwicket.component.factory.localDateTextFieldFactory
 import java.time.LocalDate
 import java.time.format.FormatStyle
@@ -15,7 +20,7 @@ import java.time.format.FormatStyle
 private const val defaultTagName = "input"
 private val defaultInputType = InputType.text
 
-fun HTMLTag.localDateTextField(
+fun <T: LocalDate?> HTMLTag.localDateTextField(
     id: String? = null,
     tagName: String = defaultTagName,
     inputType: InputType? = defaultInputType,
@@ -23,7 +28,7 @@ fun HTMLTag.localDateTextField(
     validator: IValidator<LocalDate>? = null,
     isRequired: Boolean? = null,
     validators: List<IValidator<LocalDate>>? = null,
-    model: IModel<LocalDate>? = null,
+    model: IModel<T>? = null,
     formatPattern: String? = null,
     parsePattern: String? = null,
     dateStyle: FormatStyle? = null,
@@ -39,7 +44,7 @@ fun HTMLTag.localDateTextField(
     behaviors: List<Behavior>? = null,
     onConfig: (LocalDateTextField.() -> Unit)? = null,
     postInit: (LocalDateTextField.() -> Unit)? = null,
-    block: LocalDateTextFieldTag.() -> Unit = {}
+    block: LocalDateTextFieldTag<T>.() -> Unit = {}
 ): Unit =
     LocalDateTextFieldTag(
         id = id,
@@ -70,20 +75,19 @@ fun HTMLTag.localDateTextField(
         )
     ).visit(block)
 
-open class LocalDateTextFieldTag(
+open class LocalDateTextFieldTag<T: LocalDate?>(
     id: String? = null,
     tagName: String = defaultTagName,
     inputType: InputType? = defaultInputType,
     consumer: TagConsumer<*>,
-    val config: ILocalDateTextFieldConfig
-) : ILocalDateTextFieldConfig by config,
-    ComponentTag<LocalDateTextField>(
+    config: ILocalDateTextFieldConfig<T>,
+    factory: (String, ILocalDateTextFieldConfig<T>) -> LocalDateTextField = { cid, c -> localDateTextFieldFactory(cid, c) }
+) : ILocalDateTextFieldConfig<T> by config,
+    ConfigurableComponentTag<T, LocalDateTextField, ILocalDateTextFieldConfig<T>>(
         id = id,
         initialAttributes = inputType.toAttr(),
         consumer = consumer,
-        tagName = tagName
-    ), HtmlBlockTag {
-
-    override fun build(id: String) = localDateTextFieldFactory(id = id, config = config)
-
-}
+        tagName = tagName,
+        config = config,
+        factory = factory
+    ), HtmlBlockTag

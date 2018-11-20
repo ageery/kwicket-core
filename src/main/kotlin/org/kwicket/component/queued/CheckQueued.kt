@@ -5,10 +5,8 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Check
 import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.model.IModel
-import org.kwicket.component.builder.CheckBuilder
-import org.kwicket.component.config.ICheckConfig
+import org.kwicket.component.config.CheckConfig
 import org.kwicket.component.factory.checkFactory
-import org.kwicket.component.q
 
 /**
  * Creates and queues a [CheckBox] into the parent container.
@@ -46,9 +44,9 @@ fun <T : Any> MarkupContainer.check(
     behaviors: List<Behavior>? = null,
     onConfig: (Check<T>.() -> Unit)? = null,
     postInit: (Check<T>.() -> Unit)? = null,
-    block: (CheckBuilder<T>.() -> Unit)? = null
-): Check<T> = q(
-    CheckBuilder(
+    block: (CheckConfig<T>.() -> Unit)? = null
+): Check<T> = q(id = id, block = block, factory = { cid, config -> checkFactory(cid, config) }, config =
+    CheckConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -62,16 +60,4 @@ fun <T : Any> MarkupContainer.check(
         behaviors = behaviors,
         onConfig = onConfig,
         postInit = postInit
-    ).also {
-        block?.invoke(it)
-    }.build(id)
-)
-
-fun <T : Any> MarkupContainer.check2(
-    id: String,
-    config: ICheckConfig<T>,
-    block: (ICheckConfig<T>.() -> Unit)? = null
-): Check<T> {
-    block?.invoke(config)
-    return q(checkFactory(id = id, config = config))
-}
+    ))

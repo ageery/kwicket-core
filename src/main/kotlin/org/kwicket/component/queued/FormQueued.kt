@@ -6,8 +6,9 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
 import org.kwicket.FileSize
-import org.kwicket.component.builder.FormBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.FormConfig
+import org.kwicket.component.config.IFormConfig
+import org.kwicket.component.factory.formFactory
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -46,9 +47,9 @@ fun <T> MarkupContainer.form(
     isMultiPart: Boolean? = null,
     maxSize: FileSize? = null,
     fileMaxSize: FileSize? = null,
-    block: (FormBuilder<T>.() -> Unit)? = null
-): Form<T> = q(
-    FormBuilder(
+    block: (IFormConfig<T>.() -> Unit)? = null
+): Form<T> = q(id = id, block = block, factory = { cid, config: IFormConfig<T> -> formFactory(cid, config) }, config =
+    FormConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -64,7 +65,4 @@ fun <T> MarkupContainer.form(
         isMultiPart = isMultiPart,
         maxSize = maxSize,
         fileMaxSize = fileMaxSize
-    ).apply{
-        block?.invoke(this)
-    }.build(id)
-)
+    ))

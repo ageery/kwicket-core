@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.link.StatelessLink
 import org.kwicket.component.config.IStatelessLinkConfig
 import org.kwicket.component.config.StatelessLinkConfig
 import org.kwicket.component.factory.statelessLinkFactory
-import org.kwicket.component.q
 
 fun MarkupContainer.statelessLink(
     id: String,
@@ -24,8 +23,8 @@ fun MarkupContainer.statelessLink(
     onConfig: (StatelessLink<*>.() -> Unit)? = null,
     postInit: (StatelessLink<*>.() -> Unit)? = null,
     block: (IStatelessLinkConfig<*>.() -> Unit)? = null
-): StatelessLink<*> = statelessLink<Unit>(
-    id = id, block = block, config = StatelessLinkConfig(
+): StatelessLink<*> = q(
+    id = id, block = block, factory = {cid, config -> statelessLinkFactory(cid, config)}, config = StatelessLinkConfig<Unit>(
         onClick = onClick,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -41,12 +40,3 @@ fun MarkupContainer.statelessLink(
         postInit = postInit
     )
 )
-
-fun <T> MarkupContainer.statelessLink(
-    id: String,
-    config: IStatelessLinkConfig<T>,
-    block: (IStatelessLinkConfig<T>.() -> Unit)? = null
-): StatelessLink<T> {
-    block?.invoke(config)
-    return q(statelessLinkFactory(id = id, config = config))
-}

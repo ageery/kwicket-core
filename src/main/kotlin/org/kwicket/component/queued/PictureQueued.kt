@@ -4,8 +4,9 @@ import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.image.Picture
 import org.apache.wicket.model.IModel
+import org.kwicket.component.config.IPictureConfig
+import org.kwicket.component.config.PictureConfig
 import org.kwicket.component.factory.pictureFactory
-import org.kwicket.component.q
 
 /**
  * Creates and queues a [Picture] into the parent container.
@@ -27,9 +28,9 @@ import org.kwicket.component.q
  * @param block optional block to execute to configure the component
  * @return the created [Picture] that has been queued into the parent container
  */
-fun MarkupContainer.picture(
+fun <T> MarkupContainer.picture(
     id: String,
-    model: IModel<*>? = null,
+    model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -41,17 +42,51 @@ fun MarkupContainer.picture(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     onConfig: (Picture.() -> Unit)? = null,
-    postInit: (Picture.() -> Unit)? = null
+    postInit: (Picture.() -> Unit)? = null,
+    block: (IPictureConfig<T>.() -> Unit)? = null
 ): Picture = q(
-    pictureFactory(
-        id = id,
+    id = id, block = block, factory = { cid, config -> pictureFactory(cid, config) }, config =
+    PictureConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        visible = visible,
-        enabled = enabled,
-        visibilityAllowed = visibilityAllowed,
+        isVisible = visible,
+        isEnabled = enabled,
+        isVisibilityAllowed = visibilityAllowed,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        postInit = postInit
+    )
+)
+
+fun MarkupContainer.picture(
+    id: String,
+    markupId: String? = null,
+    outputMarkupId: Boolean? = null,
+    outputMarkupPlaceholderTag: Boolean? = null,
+    visible: Boolean? = null,
+    enabled: Boolean? = null,
+    visibilityAllowed: Boolean? = null,
+    escapeModelStrings: Boolean? = null,
+    renderBodyOnly: Boolean? = null,
+    behavior: Behavior? = null,
+    behaviors: List<Behavior>? = null,
+    onConfig: (Picture.() -> Unit)? = null,
+    postInit: (Picture.() -> Unit)? = null,
+    block: (IPictureConfig<*>.() -> Unit)? = null
+): Picture = q(
+    id = id, block = block, factory = { cid, config -> pictureFactory(cid, config) }, config =
+    PictureConfig<Any?>(
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isEnabled = enabled,
+        isVisibilityAllowed = visibilityAllowed,
         escapeModelStrings = escapeModelStrings,
         renderBodyOnly = renderBodyOnly,
         behavior = behavior,

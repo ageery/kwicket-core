@@ -7,8 +7,8 @@ import org.apache.wicket.markup.html.form.upload.FileUpload
 import org.apache.wicket.markup.html.form.upload.FileUploadField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
-import org.kwicket.component.builder.FileUploadFieldBuilder
-import org.kwicket.component.q
+import org.kwicket.component.config.FileUploadFieldConfig
+import org.kwicket.component.factory.fileUploadFieldFactory
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.
@@ -49,8 +49,8 @@ fun MarkupContainer.fileUploadField(
     isRequired: Boolean? = null,
     validator: IValidator<MutableList<FileUpload>>? = null,
     validators: List<IValidator<MutableList<FileUpload>>>? = null,
-    block: (FileUploadFieldBuilder.() -> Unit)? = null
-): FileUploadField = q(FileUploadFieldBuilder(
+    block: (FileUploadFieldConfig.() -> Unit)? = null
+): FileUploadField = q(id = id, block = block, factory = { cid, config -> fileUploadFieldFactory(cid, config) }, config = FileUploadFieldConfig(
     model = model,
     markupId = markupId,
     outputMarkupId = outputMarkupId,
@@ -68,4 +68,4 @@ fun MarkupContainer.fileUploadField(
     validator = validator,
     validators = validators,
     postInit = postInit
-).also { block?.invoke(it) }.build(id))
+))
