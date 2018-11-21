@@ -7,7 +7,7 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxFallbackLinkConfig
 import org.kwicket.component.config.IAjaxFallbackLinkConfig
-import org.kwicket.component.factory.ajaxFallbackLinkFactory
+import org.kwicket.component.factory.invoke
 
 fun MarkupContainer.ajaxFallbackLink(
     id: String,
@@ -29,7 +29,7 @@ fun MarkupContainer.ajaxFallbackLink(
 ) = q(
     id = id,
     block = block,
-    factory = { cid, config -> ajaxFallbackLinkFactory(cid, config) },
+    factory = { cid, config -> config(cid) },
     config = AjaxFallbackLinkConfig<Unit>(
         markupId = markupId,
         outputMarkupId = outputMarkupId,
@@ -69,7 +69,7 @@ fun <T> MarkupContainer.ajaxFallbackLink(
 ) = q(
     id = id,
     block = block,
-    factory = { cid, config -> ajaxFallbackLinkFactory(cid, config) },
+    factory = { cid, config -> config(cid) },
     config = AjaxFallbackLinkConfig(
         model = model,
         markupId = markupId,

@@ -11,7 +11,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxButtonConfig
 import org.kwicket.component.config.IAjaxButtonConfig
 import org.kwicket.component.dsl.ComponentTag
-import org.kwicket.component.factory.ajaxButtonFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.ajaxButton(
     id: String? = null,
@@ -65,6 +65,6 @@ class AjaxButtonTag(
     ),
     HtmlBlockTag {
 
-    override fun build(id: String) = ajaxButtonFactory(id = id, config = config)
+    override fun build(id: String) = config(id)
 
 }

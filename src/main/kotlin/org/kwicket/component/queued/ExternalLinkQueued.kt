@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.ExternalLink
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.ExternalLinkConfig
-import org.kwicket.component.factory.externalLinkFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -45,7 +45,7 @@ fun MarkupContainer.externalLink(
     onConfig: (ExternalLink.() -> Unit)? = null,
     postInit: (ExternalLink.() -> Unit)? = null,
     block: (ExternalLinkConfig.() -> Unit)? = null
-): ExternalLink = q(id = id, block = block, factory = { cid, config -> externalLinkFactory(cid, config) }, config = ExternalLinkConfig(
+): ExternalLink = q(id = id, block = block, factory = { cid, config -> config(cid) }, config = ExternalLinkConfig(
     model = model,
     label = label,
     markupId = markupId,

@@ -12,11 +12,11 @@ import org.kwicket.component.config.IWebMarkupContainerConfig
  * @param config specifies the settings for the [WebMarkupContainer] component
  * @return [WebMarkupContainer] with the Wicket component id of [id] and configured by [config]
  */
-fun <T> webMarkupContainerFactory(id: String, config: IWebMarkupContainerConfig<T>): WebMarkupContainer =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : WebMarkupContainer(id, config.model) {
+operator fun <T> IWebMarkupContainerConfig<T>.invoke(id: String): WebMarkupContainer =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        object : WebMarkupContainer(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -27,5 +27,5 @@ fun <T> webMarkupContainerFactory(id: String, config: IWebMarkupContainerConfig<
 
         }
     } else {
-        WebMarkupContainer(id, config.model)
-    }.config(config)
+        WebMarkupContainer(id, model)
+    }.config(this)

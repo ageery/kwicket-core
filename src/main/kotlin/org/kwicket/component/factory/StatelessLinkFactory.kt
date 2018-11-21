@@ -5,17 +5,17 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IStatelessLinkConfig
 
 /**
- * Creates a [StatelessLink] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [StatelessLink] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [StatelessLink]
- * @param id Wicket component id
- * @param config specifies the settings for the [StatelessLink] component
- * @return [StatelessLink] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [StatelessLink]
+ * @receiver configuration for creating the [StatelessLink]
+ * @return [StatelessLink] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> statelessLinkFactory(id: String, config: IStatelessLinkConfig<T>): StatelessLink<T> {
-    val onConfig = config.onConfig
-    val stateless = config.stateless
-    val onClick = config.onClick
+operator fun <T> IStatelessLinkConfig<T>.invoke(id: String): StatelessLink<T> {
+    val onConfig = onConfig
+    val stateless = stateless
+    val onClick = onClick
     return object : StatelessLink<T>(id) {
 
         override fun onConfigure() {
@@ -29,5 +29,5 @@ fun <T> statelessLinkFactory(id: String, config: IStatelessLinkConfig<T>): State
             onClick?.invoke(this)
         }
 
-    }.config(config)
+    }.config(this)
 }

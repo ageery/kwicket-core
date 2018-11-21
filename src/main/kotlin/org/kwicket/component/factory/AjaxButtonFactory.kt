@@ -6,19 +6,19 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IAjaxButtonConfig
 
 /**
- * Creates an [AjaxButton] component with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [AjaxButton] component based on the configuration and with a Wicket identifier of [id].
  *
- * @param id Wicket component id
- * @param config specifies the settings for the [AjaxButton]
- * @return [AjaxButton] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [AjaxButton]
+ * @receiver configuration for creating the [AjaxButton]
+ * @return [AjaxButton] component based on the configuration and with a Wicket identifier of [id]
  */
-fun ajaxButtonFactory(id: String, config: IAjaxButtonConfig): AjaxButton {
-    val onConfig = config.onConfig
-    val model = config.model
-    val form = config.form
-    val stateless = config.stateless
-    val onSubmit = config.onSubmit
-    val onError = config.onError
+operator fun IAjaxButtonConfig.invoke(id: String): AjaxButton {
+    val onConfig = this.onConfig
+    val model = this.model
+    val form = this.form
+    val stateless = this.stateless
+    val onSubmit = this.onSubmit
+    val onError = this.onError
     return object : AjaxButton(id, model, form) {
 
         override fun onConfigure() {
@@ -38,5 +38,5 @@ fun ajaxButtonFactory(id: String, config: IAjaxButtonConfig): AjaxButton {
             onError?.invoke(this, target)
         }
 
-    }.config(config)
+    }.config(this)
 }

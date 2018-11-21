@@ -11,7 +11,7 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.ISelectConfig
 import org.kwicket.component.config.SelectConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.selectFactory
+import org.kwicket.component.factory.invoke
 
 fun <C: Any, T: C?> HTMLTag.select(
     id: String? = null,
@@ -105,7 +105,7 @@ open class SelectTag<C: Any, T: C?>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: ISelectConfig<C, T>,
-    factory: (String, ISelectConfig<C, T>) -> Select<C> = { cid, c -> selectFactory<C, T>(cid, c) }
+    factory: (String, ISelectConfig<C, T>) -> Select<C> = { cid, c -> c<C, T>(cid) }
 ) : ISelectConfig<C, T> by config,
     ConfigurableComponentTag<T, Select<C>, ISelectConfig<C, T>>(
         id = id,

@@ -1,23 +1,24 @@
 package org.kwicket.component.factory
 
+import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.apache.wicket.markup.html.form.Button
 import org.kwicket.component.config
 import org.kwicket.component.config.IButtonConfig
 
 /**
- * Creates an [Button] component with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [Button] component based on the configuration and with a Wicket identifier of [id].
  *
- * @param id Wicket component id
- * @param config specifies the settings for the [Button]
- * @return [Button] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Button]
+ * @receiver configuration for creating the [Button]
+ * @return [Button] component based on the configuration and with a Wicket identifier of [id]
  */
-fun buttonFactory(id: String, config: IButtonConfig): Button =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        val onSubmit = config.onSubmit
-        val onError = config.onError
-        object : Button(id, config.model) {
+operator fun IButtonConfig.invoke(id: String): Button =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val onSubmit = onSubmit
+        val onError = onError
+        object : Button(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -38,5 +39,5 @@ fun buttonFactory(id: String, config: IButtonConfig): Button =
 
         }
     } else {
-        Button(id, config.model)
-    }.config(config)
+        Button(id, model)
+    }.config(this)

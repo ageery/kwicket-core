@@ -11,7 +11,7 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.CheckBoxConfig
 import org.kwicket.component.config.ICheckBoxConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.checkBoxFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.checkBox(
     id: String? = null,
@@ -61,7 +61,7 @@ open class CheckBoxTag(
     initialAttributes: Map<String, String> = mapOf("type" to "checkbox"),
     consumer: TagConsumer<*>,
     config: ICheckBoxConfig,
-    factory: (String, ICheckBoxConfig) -> CheckBox = { cid, c -> checkBoxFactory(cid, c) }
+    factory: (String, ICheckBoxConfig) -> CheckBox = { cid, c -> c(cid) }
 ) : ICheckBoxConfig by config,
     ConfigurableComponentTag<Boolean, CheckBox, ICheckBoxConfig>(
         id = id,

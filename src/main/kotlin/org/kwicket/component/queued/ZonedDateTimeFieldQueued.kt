@@ -6,7 +6,7 @@ import org.apache.wicket.extensions.markup.html.form.datetime.ZonedDateTimeField
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IIZonedDateTimeFieldConfig
 import org.kwicket.component.config.ZonedDateTimeFieldConfig
-import org.kwicket.component.factory.zonedDateTimeFieldFactory
+import org.kwicket.component.factory.invoke
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
@@ -33,7 +33,7 @@ fun <T: ZonedDateTime?> MarkupContainer.zonedDateTimeField(
 ): ZonedDateTimeField = q(
     id = id,
     block = block,
-    factory = { cid, config -> zonedDateTimeFieldFactory(cid, config) },
+    factory = { cid, config -> config(cid) },
     config = ZonedDateTimeFieldConfig(
         model = model,
         toZonedDate = toZonedDate,

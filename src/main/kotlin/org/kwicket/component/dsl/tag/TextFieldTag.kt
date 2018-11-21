@@ -11,7 +11,7 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.ITextFieldConfig
 import org.kwicket.component.config.TextFieldConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.textFieldFactory
+import org.kwicket.component.factory.invoke
 
 fun <T: Any> HTMLTag.textField(
     id: String? = null,
@@ -108,7 +108,7 @@ open class TextFieldTag<C : Any, T : C?>(
     initialAttributes: Map<String, String> = mapOf("type" to "text"),
     consumer: TagConsumer<*>,
     config: ITextFieldConfig<C, T>,
-    factory: (String, ITextFieldConfig<C, T>) -> TextField<C> = { cid, c -> textFieldFactory<C, T>(cid, c) }
+    factory: (String, ITextFieldConfig<C, T>) -> TextField<C> = { cid, c -> c.invoke<C, T>(cid) }
 ) : ITextFieldConfig<C, T> by config,
     ConfigurableComponentTag<T, TextField<C>, ITextFieldConfig<C, T>>(
         id = id,

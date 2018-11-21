@@ -6,7 +6,7 @@ import org.apache.wicket.extensions.markup.html.form.datetime.LocalDateTimeField
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IILocalDateTimeFieldConfig
 import org.kwicket.component.config.LocalDateTimeFieldConfig
-import org.kwicket.component.factory.localDateTimeFieldFactory
+import org.kwicket.component.factory.invoke
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -31,7 +31,7 @@ fun <T: LocalDateTime?> MarkupContainer.localDateTimeField(
     postInit: (LocalDateTimeField.() -> Unit)? = null,
     block: (IILocalDateTimeFieldConfig<T>.() -> Unit)? = null
 ): LocalDateTimeField = q(
-    id = id, block = block, factory = { cid, config -> localDateTimeFieldFactory(cid, config) }, config = LocalDateTimeFieldConfig(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = LocalDateTimeFieldConfig(
         model = model,
         toLocalDate = toLocalDate,
         toLocalTime = toLocalTime,

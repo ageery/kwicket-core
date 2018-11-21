@@ -5,17 +5,17 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IDebugBarConfig
 
 /**
- * Creates an [DebugBar] component with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [DebugBar] component based on the configuration and with a Wicket identifier of [id].
  *
- * @param id Wicket component id
- * @param config specifies the settings for the [DebugBar]
- * @return [DebugBar] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [DebugBar]
+ * @receiver configuration for creating the [DebugBar]
+ * @return [DebugBar] component based on the configuration and with a Wicket identifier of [id]
  */
-fun debugBarFactory(id: String, config: IDebugBarConfig): DebugBar {
-    var isInitiallyExpanded = config.isInitiallyExpanded ?: true
-    return if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
+operator fun IDebugBarConfig.invoke(id: String): DebugBar {
+    var isInitiallyExpanded = isInitiallyExpanded ?: true
+    return if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
         object : DebugBar(id, isInitiallyExpanded) {
 
             override fun onConfigure() {
@@ -28,5 +28,5 @@ fun debugBarFactory(id: String, config: IDebugBarConfig): DebugBar {
         }
     } else {
         DebugBar(id, isInitiallyExpanded)
-    }.config(config)
+    }.config(this)
 }

@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.SelectConfig
-import org.kwicket.component.factory.selectFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.
@@ -50,7 +50,7 @@ fun <C: Any, T: C?> MarkupContainer.select(
     validators: List<IValidator<C>>? = null,
     block: (SelectConfig<C, T>.() -> Unit)? = null
 ): Select<C> = q(
-    id = id, block = block, factory = { cid, config -> selectFactory<C, T>(cid, config) }, config = SelectConfig<C, T>(
+    id = id, block = block, factory = { cid, config -> config<C, T>(cid) }, config = SelectConfig<C, T>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

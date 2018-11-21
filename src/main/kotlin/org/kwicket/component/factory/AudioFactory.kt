@@ -12,12 +12,12 @@ import org.kwicket.component.config.IAudioConfig
  * @param config specifies the settings for the [Audio]
  * @return [Audio] with the Wicket component id of [id] and configured by [config]
  */
-fun <T> audioFactory(id: String, config: IAudioConfig<T>): Audio =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        if (config.url != null) {
-            object : Audio(id, config.model, config.url, config.pageParams) {
+operator fun <T> IAudioConfig<T>.invoke(id: String): Audio =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        if (url != null) {
+            object : Audio(id, model, url, pageParams) {
 
                 override fun onConfigure() {
                     super.onConfigure()
@@ -29,7 +29,7 @@ fun <T> audioFactory(id: String, config: IAudioConfig<T>): Audio =
 
             }
         } else {
-            object : Audio(id, config.model, config.resRef, config.pageParams) {
+            object : Audio(id, model, resRef, pageParams) {
 
                 override fun onConfigure() {
                     super.onConfigure()
@@ -42,9 +42,9 @@ fun <T> audioFactory(id: String, config: IAudioConfig<T>): Audio =
             }
         }
     } else {
-        if (config.url != null) {
-            Audio(id, config.model, config.url, config.pageParams)
+        if (url != null) {
+            Audio(id, model, url, pageParams)
         } else {
-            Audio(id, config.model, config.resRef, config.pageParams)
+            Audio(id, model, resRef, pageParams)
         }
-    }.config(config)
+    }.config(this)

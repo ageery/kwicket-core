@@ -1,6 +1,5 @@
 package org.kwicket.component.factory
 
-import org.apache.wicket.markup.html.form.SubmitLink
 import org.apache.wicket.markup.html.media.video.Video
 import org.kwicket.component.config
 import org.kwicket.component.config.IVideoConfig
@@ -13,12 +12,15 @@ import org.kwicket.component.config.IVideoConfig
  * @param config specifies the settings for the [Video] component
  * @return [Video] with the Wicket component id of [id] and configured by [config]
  */
-fun <T> videoFactory(id: String, config: IVideoConfig<T>): Video =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        if (config.url != null) {
-            object : Video(id, config.model, config.url, config.pageParams) {
+operator fun <T> IVideoConfig<T>.invoke(id: String): Video =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val model = model
+        val pageParams = pageParams
+        if (url != null) {
+            val url = url
+            object : Video(id, model, url, pageParams) {
 
                 override fun onConfigure() {
                     super.onConfigure()
@@ -29,7 +31,8 @@ fun <T> videoFactory(id: String, config: IVideoConfig<T>): Video =
 
             }
         } else {
-            object : Video(id, config.model, config.resRef, config.pageParams) {
+            val resRef = resRef
+            object : Video(id, model, resRef, pageParams) {
 
                 override fun onConfigure() {
                     super.onConfigure()
@@ -41,24 +44,24 @@ fun <T> videoFactory(id: String, config: IVideoConfig<T>): Video =
             }
         }
     } else {
-        if (config.url != null) {
-            Video(id, config.model, config.url, config.pageParams)
+        if (url != null) {
+            Video(id, model, url, pageParams)
         } else {
-            Video(id, config.model, config.resRef, config.pageParams)
+            Video(id, model, resRef, pageParams)
         }
-    }.config(config)
+    }.config(this)
         .apply {
-        config.width?.let { width = it }
-        config.height?.let { height = it }
-        config.poster?.let { poster = it }
-        config.isMuted?.let { isMuted = it }
-        config.hasControls?.let { setControls(it) }
-        config.preload?.let { preload = it }
-        config.isAutoPlay?.let { isAutoplay = it }
-        config.isLooping?.let { isLooping = it }
-        config.startTime?.let { startTime = it }
-        config.endTime?.let { endTime = it }
-        config.mediaGroup?.let { mediaGroup = it }
-        config.crossOrigin?.let { crossOrigin = it }
-        config.type?.let { type = it }
-    }
+            this@invoke.width?.let { width = it }
+            this@invoke.height?.let { height = it }
+            this@invoke.poster?.let { poster = it }
+            this@invoke.isMuted?.let { isMuted = it }
+            this@invoke.hasControls?.let { setControls(it) }
+            this@invoke.preload?.let { preload = it }
+            this@invoke.isAutoPlay?.let { isAutoplay = it }
+            this@invoke.isLooping?.let { isLooping = it }
+            this@invoke.startTime?.let { startTime = it }
+            this@invoke.endTime?.let { endTime = it }
+            this@invoke.mediaGroup?.let { mediaGroup = it }
+            this@invoke.crossOrigin?.let { crossOrigin = it }
+            this@invoke.type?.let { type = it }
+        }

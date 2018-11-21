@@ -6,20 +6,20 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IRadioGroupConfig
 
 /**
- * Creates a [RadioGroup] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [RadioGroup] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param C type of the [RadioGroup]
  * @param T type of the model of the [RadioGroup]
- * @param id Wicket component id
- * @param config specifies the settings for the [RadioGroup] component
- * @return [RadioGroup] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [RadioGroup]
+ * @receiver configuration for creating the [RadioGroup]
+ * @return [RadioGroup] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <C: Any, T: C?> radioGroupFactory(id: String, config: IRadioGroupConfig<C, T>): RadioGroup<C> {
+operator fun <C: Any, T: C?> IRadioGroupConfig<C, T>.invoke(id: String): RadioGroup<C> {
     @Suppress("UNCHECKED_CAST")
-    val model = config.model as IModel<C?>
-    return if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
+    val model = model as IModel<C?>
+    return if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
 
         object : RadioGroup<C>(id, model) {
 
@@ -33,5 +33,5 @@ fun <C: Any, T: C?> radioGroupFactory(id: String, config: IRadioGroupConfig<C, T
         }
     } else {
         RadioGroup<C>(id, model)
-    }.config(config)
+    }.config(this)
 }

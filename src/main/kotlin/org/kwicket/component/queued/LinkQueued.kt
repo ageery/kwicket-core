@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.Link
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.LinkConfig
-import org.kwicket.component.factory.linkFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -46,7 +46,7 @@ fun <T> MarkupContainer.link(
     postInit: (Link<T>.() -> Unit)? = null,
     block: (LinkConfig<T>.() -> Unit)? = null
 ): Link<T> = q(
-    id = id, block = block, factory = { cid, config -> linkFactory(cid, config) }, config =
+    id = id, block = block, factory = { cid, config -> config(cid)}, config =
     LinkConfig(
         model = model,
         markupId = markupId,
@@ -82,7 +82,7 @@ fun MarkupContainer.link(
     postInit: (Link<*>.() -> Unit)? = null,
     block: (LinkConfig<*>.() -> Unit)? = null
 ): Link<*> = q(
-    id = id, block = block, factory = { cid, config -> linkFactory(cid, config) }, config = LinkConfig<Unit>(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = LinkConfig<Unit>(
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,

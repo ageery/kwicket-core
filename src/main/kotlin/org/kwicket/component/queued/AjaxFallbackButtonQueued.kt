@@ -9,7 +9,7 @@ import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxFallbackButtonConfig
 import org.kwicket.component.config.IAjaxFallbackButtonConfig
-import org.kwicket.component.factory.ajaxFallbackButtonFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [AjaxButton] into the parent container.
@@ -51,7 +51,7 @@ fun MarkupContainer.ajaxFallbackButton(
     postInit: (AjaxFallbackButton.() -> Unit)? = null,
     block: (IAjaxFallbackButtonConfig.() -> Unit)? = null
 ) = q(
-    id = id, block = block, factory = ::ajaxFallbackButtonFactory, config = AjaxFallbackButtonConfig(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = AjaxFallbackButtonConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

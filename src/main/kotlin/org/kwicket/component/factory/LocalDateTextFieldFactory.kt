@@ -7,22 +7,22 @@ import org.kwicket.component.config.ILocalDateTextFieldConfig
 import java.time.LocalDate
 
 /**
- * Creates a [LocalDateTextField] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [LocalDateTextField] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [LocalDateTextField]
- * @param id Wicket component id
- * @param config specifies the settings for the [LocalDateTextField] component
- * @return [LocalDateTextField] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [LocalDateTextField]
+ * @receiver configuration for creating the [LocalDateTextField]
+ * @return [LocalDateTextField] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T: LocalDate?> localDateTextFieldFactory(id: String, config: ILocalDateTextFieldConfig<T>): LocalDateTextField {
+operator fun <T: LocalDate?> ILocalDateTextFieldConfig<T>.invoke(id: String): LocalDateTextField {
     @Suppress("UNCHECKED_CAST")
-    val model = config.model as IModel<LocalDate?>
-    return if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        if (config.dateStyle != null) {
-
-            object : LocalDateTextField(id, model, config.dateStyle) {
+    val model = model as IModel<LocalDate?>
+    return if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        if (dateStyle != null) {
+            val dateStyle = dateStyle
+            object : LocalDateTextField(id, model, dateStyle) {
 
                 override fun onConfigure() {
                     super.onConfigure()
@@ -33,8 +33,10 @@ fun <T: LocalDate?> localDateTextFieldFactory(id: String, config: ILocalDateText
 
             }
         } else {
+            val formatPattern = formatPattern
+            val parsePattern = parsePattern
             object :
-                LocalDateTextField(id, model, config.formatPattern, config.parsePattern) {
+                LocalDateTextField(id, model, formatPattern, parsePattern) {
 
                 override fun onConfigure() {
                     super.onConfigure()
@@ -46,10 +48,10 @@ fun <T: LocalDate?> localDateTextFieldFactory(id: String, config: ILocalDateText
             }
         }
     } else {
-        if (config.dateStyle != null) {
-            LocalDateTextField(id, model, config.dateStyle)
+        if (dateStyle != null) {
+            LocalDateTextField(id, model, dateStyle)
         } else {
-            LocalDateTextField(id, model, config.formatPattern, config.parsePattern)
+            LocalDateTextField(id, model, formatPattern, parsePattern)
         }
-    }.config(config)
+    }.config(this)
 }

@@ -7,18 +7,20 @@ import org.kwicket.component.config.IRadioConfig
 //  FIXME: should radio config extend labelcomponent should there be a generic method for that?
 
 /**
- * Creates a [Radio] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [Radio] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [Radio]
- * @param id Wicket component id
- * @param config specifies the settings for the [Radio] component
- * @return [Radio] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Radio]
+ * @receiver configuration for creating the [Radio]
+ * @return [Radio] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> radioFactory(id: String, config: IRadioConfig<T>): Radio<T> =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : Radio<T>(id, config.model, config.group) {
+operator fun <T> IRadioConfig<T>.invoke(id: String): Radio<T> =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val model = model
+        val group = group
+        object : Radio<T>(id, model, group) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -29,8 +31,8 @@ fun <T> radioFactory(id: String, config: IRadioConfig<T>): Radio<T> =
 
         }
     } else {
-        Radio(id, config.model, config.group)
-    }.config(config)
+        Radio(id, model, group)
+    }.config(this)
         .also { radio ->
-            config.label?.let { radio.label = it }
+            label?.let { radio.label = it }
         }

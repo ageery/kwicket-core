@@ -8,8 +8,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.markup.html.link.PopupSettings
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.kwicket.component.config.BookmarkablePageLinkConfig
-import org.kwicket.component.config.IBookmarkablePageLinkConfig
-import org.kwicket.component.factory.bookmarkablePageLinkFactory
+import org.kwicket.component.factory.invoke
 import kotlin.reflect.KClass
 
 /**
@@ -52,7 +51,7 @@ fun <P: Page> MarkupContainer.bookmarkablePageLink(
     block: (BookmarkablePageLinkConfig<*, P>.() -> Unit)? = null
 ): BookmarkablePageLink<*> = q(id = id,
     block = block,
-    factory = { cid, config -> bookmarkablePageLinkFactory(cid, config) },
+    factory = { cid, config -> config(cid) },
     config = BookmarkablePageLinkConfig<Any?, P>(
         page = page,
         pageParams = params,

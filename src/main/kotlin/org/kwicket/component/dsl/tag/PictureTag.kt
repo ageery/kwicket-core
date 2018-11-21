@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IPictureConfig
 import org.kwicket.component.config.PictureConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.pictureFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.picture(
     model: IModel<T>? = null,
@@ -57,7 +57,7 @@ open class PictureTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IPictureConfig<T>,
-    factory: (String, IPictureConfig<T>) -> Picture = { cid, c -> pictureFactory(cid, c) }
+    factory: (String, IPictureConfig<T>) -> Picture = { cid, c -> c(cid) }
 ) : IPictureConfig<T> by config,
     ConfigurableComponentTag<T, Picture, IPictureConfig<T>>(
         id = id,

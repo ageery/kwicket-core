@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxFallbackLinkConfig
 import org.kwicket.component.config.IAjaxFallbackLinkConfig
 import org.kwicket.component.dsl.ComponentTag
-import org.kwicket.component.factory.ajaxFallbackLinkFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.ajaxFallbackLink(
     id: String? = null,
@@ -62,5 +62,5 @@ open class AjaxFallbackLinkTag<T>(
         consumer = consumer,
         tagName = tagName
     ), HtmlBlockTag {
-    override fun build(id: String) = ajaxFallbackLinkFactory(id = id, config = config)
+    override fun build(id: String) = config(id)
 }

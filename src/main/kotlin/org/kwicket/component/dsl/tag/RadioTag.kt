@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IRadioConfig
 import org.kwicket.component.config.RadioConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.radioFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.radio(
     id: String? = null,
@@ -55,7 +55,7 @@ open class RadioTag<T>(
     initialAttributes: Map<String, String> = mapOf("type" to "radio"),
     consumer: TagConsumer<*>,
     config: RadioConfig<T>,
-    factory: (String, IRadioConfig<T>) -> Radio<T> = { cid, c -> radioFactory(cid, c) }
+    factory: (String, IRadioConfig<T>) -> Radio<T> = { cid, c -> c(cid) }
 ) : IRadioConfig<T> by config,
     ConfigurableComponentTag<T, Radio<T>, IRadioConfig<T>>(
         id = id,

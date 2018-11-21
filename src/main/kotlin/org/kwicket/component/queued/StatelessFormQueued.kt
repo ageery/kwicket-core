@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.form.StatelessForm
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IStatelessFormConfig
 import org.kwicket.component.config.StatelessFormConfig
-import org.kwicket.component.factory.statelessFormFactory
+import org.kwicket.component.factory.invoke
 
 fun MarkupContainer.statelessForm(
     id: String,
@@ -26,7 +26,7 @@ fun MarkupContainer.statelessForm(
     postInit: (StatelessForm<*>.() -> Unit)? = null,
     block: (IStatelessFormConfig<*>.() -> Unit)? = null
 ): StatelessForm<*> = q(
-    id = id, block = block, factory = { cid, config -> statelessFormFactory(cid, config) }, config = StatelessFormConfig<Unit>(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = StatelessFormConfig<Unit>(
         onSubmit = onSubmit,
         onError = onError,
         markupId = markupId,
@@ -62,21 +62,22 @@ fun <T> MarkupContainer.statelessForm(
     onConfig: (StatelessForm<T>.() -> Unit)? = null,
     postInit: (StatelessForm<T>.() -> Unit)? = null,
     block: (IStatelessFormConfig<T>.() -> Unit)? = null
-): StatelessForm<T> = q(id = id, block = block, factory = { cid, config ->
-    statelessFormFactory(cid, config) }, config = StatelessFormConfig(
-    model = model,
-    onSubmit = onSubmit,
-    onError = onError,
-    markupId = markupId,
-    outputMarkupId = outputMarkupId,
-    outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-    isVisible = visible,
-    isEnabled = enabled,
-    isVisibilityAllowed = visibilityAllowed,
-    escapeModelStrings = escapeModelStrings,
-    renderBodyOnly = renderBodyOnly,
-    behavior = behavior,
-    behaviors = behaviors,
-    onConfig = onConfig,
-    postInit = postInit
-))
+): StatelessForm<T> = q(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = StatelessFormConfig(
+        model = model,
+        onSubmit = onSubmit,
+        onError = onError,
+        markupId = markupId,
+        outputMarkupId = outputMarkupId,
+        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
+        isVisible = visible,
+        isEnabled = enabled,
+        isVisibilityAllowed = visibilityAllowed,
+        escapeModelStrings = escapeModelStrings,
+        renderBodyOnly = renderBodyOnly,
+        behavior = behavior,
+        behaviors = behaviors,
+        onConfig = onConfig,
+        postInit = postInit
+    )
+)

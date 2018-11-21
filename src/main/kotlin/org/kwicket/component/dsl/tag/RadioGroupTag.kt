@@ -11,7 +11,7 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.IRadioGroupConfig
 import org.kwicket.component.config.RadioGroupConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.radioGroupFactory
+import org.kwicket.component.factory.invoke
 
 fun <C: Any, T: C?> HTMLTag.radioGroup(
     id: String? = null,
@@ -62,7 +62,7 @@ open class RadioGroupTag<C: Any, T: C?>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IRadioGroupConfig<C, T>,
-    factory: (String, IRadioGroupConfig<C, T>) -> RadioGroup<C> = { cid, c -> radioGroupFactory<C, T>(cid, c) }
+    factory: (String, IRadioGroupConfig<C, T>) -> RadioGroup<C> = { cid, c -> c<C,T>(cid) }
 ) : IRadioGroupConfig<C, T> by config,
     ConfigurableComponentTag<T, RadioGroup<C>, IRadioGroupConfig<C, T>>(
         id = id,

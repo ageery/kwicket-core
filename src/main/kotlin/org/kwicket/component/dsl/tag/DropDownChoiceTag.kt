@@ -12,7 +12,7 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.DropDownChoiceConfig
 import org.kwicket.component.config.IDropDownChoiceConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.dropDownChoiceFactory
+import org.kwicket.component.factory.invoke
 
 fun <T: Any> HTMLTag.dropDownChoice(
     id: String? = null,
@@ -116,7 +116,7 @@ open class DropDownChoiceTag<C: Any, T: C?>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IDropDownChoiceConfig<C, T>,
-    factory: (String, IDropDownChoiceConfig<C, T>) -> DropDownChoice<C> = { cid, c -> dropDownChoiceFactory<C, T>(cid, c) }
+    factory: (String, IDropDownChoiceConfig<C, T>) -> DropDownChoice<C> = { cid, c: IDropDownChoiceConfig<C,T> -> c.invoke<C, T>(cid) }
 ) : IDropDownChoiceConfig<C, T> by config,
     ConfigurableComponentTag<T, DropDownChoice<C>, IDropDownChoiceConfig<C, T>>(
         id = id,

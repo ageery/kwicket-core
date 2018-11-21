@@ -5,18 +5,18 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IImageConfig
 
 /**
- * Creates a [Image] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [Image] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [Image]
- * @param id Wicket component id
- * @param config specifies the settings for the [Image] component
- * @return [Image] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Image]
+ * @receiver configuration for creating the [Image]
+ * @return [Image] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> imageFactory(id: String, config: IImageConfig<T>): Image =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : Image(id, config.model) {
+operator fun <T> IImageConfig<T>.invoke(id: String): Image =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        object : Image(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -27,5 +27,5 @@ fun <T> imageFactory(id: String, config: IImageConfig<T>): Image =
 
         }
     } else {
-        Image(id, config.model)
-    }.config(config)
+        Image(id, model)
+    }.config(this)

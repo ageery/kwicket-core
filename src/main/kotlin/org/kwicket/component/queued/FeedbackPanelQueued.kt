@@ -6,7 +6,7 @@ import org.apache.wicket.feedback.IFeedbackMessageFilter
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.FeedbackPanel
 import org.kwicket.component.config.FeedbackPanelConfig
-import org.kwicket.component.factory.feedbackPanelFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -44,7 +44,7 @@ fun MarkupContainer.feedbackPanel(
     onConfig: (FeedbackPanel.() -> Unit)? = null,
     postInit: (FeedbackPanel.() -> Unit)? = null,
     block: (FeedbackPanelConfig.() -> Unit)? = null
-): FeedbackPanel = q(id = id, block = block, factory = { cid, config -> feedbackPanelFactory(cid, config) }, config =
+): FeedbackPanel = q(id = id, block = block, factory = { cid, config -> config(cid) }, config =
     FeedbackPanelConfig(
         filter = filter,
         markupId = markupId,

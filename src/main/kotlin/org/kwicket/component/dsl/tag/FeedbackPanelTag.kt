@@ -10,7 +10,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel
 import org.kwicket.component.config.FeedbackPanelConfig
 import org.kwicket.component.config.IFeedbackPanelConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.feedbackPanelFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.feedbackPanel(
     tagName: String = "div",
@@ -57,7 +57,7 @@ open class FeedbackPanelTag(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IFeedbackPanelConfig,
-    factory: (String, IFeedbackPanelConfig) -> FeedbackPanel = { cid, c -> feedbackPanelFactory(cid, c) }
+    factory: (String, IFeedbackPanelConfig) -> FeedbackPanel = { cid, c -> c(cid) }
 ) : IFeedbackPanelConfig by config,
     ConfigurableComponentTag<Unit, FeedbackPanel, IFeedbackPanelConfig>(
         id = id,

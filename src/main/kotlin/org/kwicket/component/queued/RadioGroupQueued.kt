@@ -6,8 +6,8 @@ import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.markup.html.form.RadioGroup
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
+import org.kwicket.component.factory.invoke
 import org.kwicket.component.config.RadioGroupConfig
-import org.kwicket.component.factory.radioGroupFactory
 
 /**
  * Creates and queues a [CheckBox] into the parent container.
@@ -48,7 +48,7 @@ fun <C: Any, T : C?> MarkupContainer.radioGroup(
     validator: IValidator<C>? = null,
     validators: List<IValidator<C>>? = null,
     block: (RadioGroupConfig<C, T>.() -> Unit)? = null
-): RadioGroup<C> = q(id = id, block = block, factory = { cid, config -> radioGroupFactory<C, T>(cid, config) }, config =
+): RadioGroup<C> = q(id = id, block = block, factory = { cid, config -> config<C,T>(cid)}, config =
     RadioGroupConfig<C, T>(
         model = model,
         markupId = markupId,

@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.CheckConfig
 import org.kwicket.component.config.ICheckConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.checkFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.check(
     id: String? = null,
@@ -55,7 +55,7 @@ open class CheckTag<T>(
     initialAttributes: Map<String, String> = mapOf("type" to "checkbox"),
     consumer: TagConsumer<*>,
     config: ICheckConfig<T>,
-    factory: (String, ICheckConfig<T>) -> Check<T> = { cid, c -> checkFactory(cid, c) }
+    factory: (String, ICheckConfig<T>) -> Check<T> = { cid, c -> c(cid) }
 ) : ICheckConfig<T> by config,
     ConfigurableComponentTag<T, Check<T>, ICheckConfig<T>>(
         id = id,

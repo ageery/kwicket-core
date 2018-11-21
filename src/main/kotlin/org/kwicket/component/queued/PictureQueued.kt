@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.image.Picture
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IPictureConfig
 import org.kwicket.component.config.PictureConfig
-import org.kwicket.component.factory.pictureFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Picture] into the parent container.
@@ -45,7 +45,7 @@ fun <T> MarkupContainer.picture(
     postInit: (Picture.() -> Unit)? = null,
     block: (IPictureConfig<T>.() -> Unit)? = null
 ): Picture = q(
-    id = id, block = block, factory = { cid, config -> pictureFactory(cid, config) }, config =
+    id = id, block = block, factory = { cid, config -> config(cid) }, config =
     PictureConfig(
         model = model,
         markupId = markupId,
@@ -79,7 +79,7 @@ fun MarkupContainer.picture(
     postInit: (Picture.() -> Unit)? = null,
     block: (IPictureConfig<*>.() -> Unit)? = null
 ): Picture = q(
-    id = id, block = block, factory = { cid, config -> pictureFactory(cid, config) }, config =
+    id = id, block = block, factory = { cid, config -> config(cid) }, config =
     PictureConfig<Any?>(
         markupId = markupId,
         outputMarkupId = outputMarkupId,

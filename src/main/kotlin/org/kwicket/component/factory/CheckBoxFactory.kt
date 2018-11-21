@@ -1,21 +1,22 @@
 package org.kwicket.component.factory
 
+import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.markup.html.form.CheckBox
 import org.kwicket.component.config
 import org.kwicket.component.config.ICheckBoxConfig
 
 /**
- * Creates an [CheckBox] component with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [CheckBox] component based on the configuration and with a Wicket identifier of [id].
  *
- * @param id Wicket component id
- * @param config specifies the settings for the [CheckBox]
- * @return [CheckBox] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [CheckBox]
+ * @receiver configuration for creating the [CheckBox]
+ * @return [CheckBox] component based on the configuration and with a Wicket identifier of [id]
  */
-fun checkBoxFactory(id: String, config: ICheckBoxConfig): CheckBox =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : CheckBox(id, config.model) {
+operator fun ICheckBoxConfig.invoke(id: String): CheckBox =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        object : CheckBox(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -27,5 +28,5 @@ fun checkBoxFactory(id: String, config: ICheckBoxConfig): CheckBox =
 
         }
     } else {
-        CheckBox(id, config.model)
-    }.config(config)
+        CheckBox(id, model)
+    }.config()

@@ -9,7 +9,7 @@ import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.DropDownChoiceConfig
 import org.kwicket.component.config.IDropDownChoiceConfig
-import org.kwicket.component.factory.dropDownChoiceFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.
@@ -52,7 +52,7 @@ fun <T: Any> MarkupContainer.dropDownChoice(
     validator: IValidator<T>? = null,
     validators: List<IValidator<T>>? = null,
     block: (IDropDownChoiceConfig<T, T>.() -> Unit)? = null
-): DropDownChoice<T> = q(id = id, block = block, factory = {cid, config -> dropDownChoiceFactory(cid, config)}, config = DropDownChoiceConfig(
+): DropDownChoice<T> = q(id = id, block = block, factory = {cid, config -> config(cid) }, config = DropDownChoiceConfig(
     model = model,
     choices = choices,
     choiceRenderer = choiceRenderer,
@@ -96,7 +96,7 @@ fun <T: Any> MarkupContainer.dropDownChoice(
     validators: List<IValidator<T>>? = null,
     isRequired: Boolean? = null,
     block: (IDropDownChoiceConfig<T, T?>.() -> Unit)? = null
-): DropDownChoice<T> = q(id = id, block = block, factory = {cid, config: IDropDownChoiceConfig<T, T?> -> dropDownChoiceFactory<T, T?>(cid, config)}, config = DropDownChoiceConfig<T, T?>(
+): DropDownChoice<T> = q(id = id, block = block, factory = {cid, config: IDropDownChoiceConfig<T, T?> -> config<T, T?>(cid)}, config = DropDownChoiceConfig<T, T?>(
     model = model,
     choices = choices,
     choiceRenderer = choiceRenderer,

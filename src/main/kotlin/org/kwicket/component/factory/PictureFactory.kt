@@ -5,18 +5,19 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IPictureConfig
 
 /**
- * Creates a [Picture] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [Picture] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [Picture]
- * @param id Wicket component id
- * @param config specifies the settings for the [Picture] component
- * @return [Picture] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Picture]
+ * @receiver configuration for creating the [Picture]
+ * @return [Picture] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> pictureFactory(id: String, config: IPictureConfig<T>): Picture =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : Picture(id, config.model) {
+operator fun <T> IPictureConfig<T>.invoke(id: String): Picture =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val model = model
+        object : Picture(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -27,5 +28,5 @@ fun <T> pictureFactory(id: String, config: IPictureConfig<T>): Picture =
 
         }
     } else {
-        Picture(id, config.model)
-    }.config(config)
+        Picture(id, model)
+    }.config(this)

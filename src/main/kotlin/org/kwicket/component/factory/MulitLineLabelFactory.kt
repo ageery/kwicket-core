@@ -5,18 +5,18 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IMultiLineLabelConfig
 
 /**
- * Creates a [MultiLineLabel] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [MultiLineLabel] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [MultiLineLabel]
- * @param id Wicket component id
- * @param config specifies the settings for the [MultiLineLabel] component
- * @return [MultiLineLabel] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [MultiLineLabel]
+ * @receiver configuration for creating the [MultiLineLabel]
+ * @return [MultiLineLabel] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> multiLineLabelFactory(id: String, config: IMultiLineLabelConfig<T>): MultiLineLabel =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : MultiLineLabel(id, config.model) {
+operator fun <T> IMultiLineLabelConfig<T>.invoke(id: String): MultiLineLabel =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        object : MultiLineLabel(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -27,5 +27,5 @@ fun <T> multiLineLabelFactory(id: String, config: IMultiLineLabelConfig<T>): Mul
 
         }
     } else {
-        MultiLineLabel(id, config.model)
-    }.config(config)
+        MultiLineLabel(id, model)
+    }.config(this)

@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.ButtonConfig
-import org.kwicket.component.factory.buttonFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -47,7 +47,7 @@ fun MarkupContainer.button(
     postInit: (Button.() -> Unit)? = null,
     block: (ButtonConfig.() -> Unit)? = null
 ): Button = q(
-    id = id, block = block, factory = { cid, config -> buttonFactory(cid, config) }, config = ButtonConfig(
+    id = id, block = block, factory = { cid, config -> config.invoke(cid) }, config = ButtonConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

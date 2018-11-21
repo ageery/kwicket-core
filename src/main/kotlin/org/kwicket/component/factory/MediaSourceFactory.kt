@@ -5,19 +5,21 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IMediaSourceConfig
 
 /**
- * Creates a [Source] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [Source] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [Source]
- * @param id Wicket component id
- * @param config specifies the settings for the [Source] component
- * @return [Source] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Source]
+ * @receiver configuration for creating the [Source]
+ * @return [Source] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> mediaSourceFactory(id: String, config: IMediaSourceConfig<T>): Source =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        if (config.url != null) {
-            object : Source(id, config.model, config.url) {
+operator fun <T> IMediaSourceConfig<T>.invoke(id: String): Source =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val model = model
+        if (url != null) {
+            val url = url
+            object : Source(id, model, url) {
 
                 override fun onConfigure() {
                     super.onConfigure()
@@ -28,7 +30,8 @@ fun <T> mediaSourceFactory(id: String, config: IMediaSourceConfig<T>): Source =
 
             }
         } else {
-            object : Source(id, config.model, config.resRef) {
+            val resRef = resRef
+            object : Source(id, model, resRef) {
 
                 override fun onConfigure() {
                     super.onConfigure()
@@ -40,16 +43,16 @@ fun <T> mediaSourceFactory(id: String, config: IMediaSourceConfig<T>): Source =
             }
         }
     } else {
-        if (config.url != null) {
-            Source(id, config.model, config.url)
+        if (url != null) {
+            Source(id, model, url)
         } else {
-            Source(id, config.model, config.resRef)
+            Source(id, model, resRef)
         }
-    }.config(config)
+    }.config(this)
         .apply {
-            config.pageParams?.let { pageParameters = it }
-            config.isDisplayType?.let { displayType = it }
-            config.type?.let { type = it }
-            config.media?.let { type = it }
-            config.type?.let { type = it }
+            pageParams?.let { pageParameters = it }
+            isDisplayType?.let { displayType = it }
+            type?.let { type = it }
+            media?.let { type = it }
+            type?.let { type = it }
         }

@@ -8,19 +8,19 @@ import org.kwicket.component.config.IAjaxFallbackButtonConfig
 import java.util.Optional
 
 /**
- * Creates an [AjaxFallbackButton] component with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [AjaxFallbackButton] component based on the configuration and with a Wicket identifier of [id].
  *
- * @param id Wicket component id
- * @param config specifies the settings for the [AjaxFallbackButton]
- * @return [AjaxFallbackButton] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [AjaxFallbackButton]
+ * @receiver configuration for creating the [AjaxFallbackButton]
+ * @return [AjaxFallbackButton] component based on the configuration and with a Wicket identifier of [id]
  */
-fun ajaxFallbackButtonFactory(id: String, config: IAjaxFallbackButtonConfig): AjaxFallbackButton {
-    val onConfig = config.onConfig
-    val model = config.model
-    val form = config.form
-    val stateless = config.stateless
-    val onSubmit = config.onSubmit
-    val onError = config.onError
+operator fun IAjaxFallbackButtonConfig.invoke(id: String): AjaxFallbackButton {
+    val onConfig = this.onConfig
+    val model = this.model
+    val form = this.form
+    val stateless = this.stateless
+    val onSubmit = this.onSubmit
+    val onError = this.onError
     return object : AjaxFallbackButton(id, model, form) {
 
         override fun onConfigure() {
@@ -41,5 +41,5 @@ fun ajaxFallbackButtonFactory(id: String, config: IAjaxFallbackButtonConfig): Aj
             onError?.invoke(this, target.orElse(null))
         }
 
-    }.config(config)
+    }.config(this)
 }

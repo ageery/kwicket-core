@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.ExternalLinkConfig
 import org.kwicket.component.config.IExternalLinkConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.externalLinkFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.externalLink(
     id: String? = null,
@@ -57,7 +57,7 @@ open class ExternalLinkTag(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IExternalLinkConfig,
-    factory: (String, IExternalLinkConfig) -> ExternalLink = { cid, c -> externalLinkFactory(cid, c) }
+    factory: (String, IExternalLinkConfig) -> ExternalLink = { cid, c -> c(cid) }
 ) : IExternalLinkConfig by config,
     ConfigurableComponentTag<String, ExternalLink, IExternalLinkConfig>(
         id = id,

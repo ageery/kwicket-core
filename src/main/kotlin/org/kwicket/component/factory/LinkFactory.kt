@@ -1,22 +1,23 @@
 package org.kwicket.component.factory
 
+import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.Link
 import org.kwicket.component.config
 import org.kwicket.component.config.ILinkConfig
 
 /**
- * Creates a [Link] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [Link] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [Link]
- * @param id Wicket component id
- * @param config specifies the settings for the [Link] component
- * @return [Link] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Link]
+ * @receiver configuration for creating the [Link]
+ * @return [Link] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> linkFactory(id: String, config: ILinkConfig<T>): Link<T> {
-    val onConfig = config.onConfig
-    val stateless = config.stateless
-    val onClick = config.onClick
-    return object : Link<T>(id, config.model) {
+operator fun <T> ILinkConfig<T>.invoke(id: String): Link<T> {
+    val onConfig = onConfig
+    val stateless = stateless
+    val onClick = onClick
+    return object : Link<T>(id, model) {
 
         override fun onConfigure() {
             super.onConfigure()
@@ -29,5 +30,5 @@ fun <T> linkFactory(id: String, config: ILinkConfig<T>): Link<T> {
             onClick?.invoke(this)
         }
 
-    }.config(config)
+    }.config(this)
 }

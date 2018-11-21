@@ -5,7 +5,7 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.StatelessLink
 import org.kwicket.component.config.IStatelessLinkConfig
 import org.kwicket.component.config.StatelessLinkConfig
-import org.kwicket.component.factory.statelessLinkFactory
+import org.kwicket.component.factory.invoke
 
 fun MarkupContainer.statelessLink(
     id: String,
@@ -24,7 +24,7 @@ fun MarkupContainer.statelessLink(
     postInit: (StatelessLink<*>.() -> Unit)? = null,
     block: (IStatelessLinkConfig<*>.() -> Unit)? = null
 ): StatelessLink<*> = q(
-    id = id, block = block, factory = {cid, config -> statelessLinkFactory(cid, config)}, config = StatelessLinkConfig<Unit>(
+    id = id, block = block, factory = {cid, config -> config(cid)}, config = StatelessLinkConfig<Unit>(
         onClick = onClick,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

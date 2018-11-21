@@ -1,23 +1,24 @@
 package org.kwicket.component.factory
 
+import org.apache.wicket.extensions.markup.html.form.select.Select
 import org.apache.wicket.markup.html.image.Source
 import org.kwicket.component.config
 import org.kwicket.component.config.ISourceConfig
 
 /**
- * Creates a [Source] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [Source] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [Source]
- * @param id Wicket component id
- * @param config specifies the settings for the [Source] component
- * @return [Source] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Source]
+ * @receiver configuration for creating the [Source]
+ * @return [Source] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> sourceFactory(id: String, config: ISourceConfig<T>): Source =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-
-        object : Source(id, config.model) {
+operator fun <T> ISourceConfig<T>.invoke(id: String): Source =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val model = model
+        object : Source(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -28,9 +29,9 @@ fun <T> sourceFactory(id: String, config: ISourceConfig<T>): Source =
 
         }
     } else {
-        Source(id, config.model)
-    }.config(config)
+        Source(id, model)
+    }.config(this)
         .also { source ->
-            config.media?.let { source.media = it }
-            config.crossOrigin?.let { source.crossOrigin = it }
+            media?.let { source.media = it }
+            crossOrigin?.let { source.crossOrigin = it }
         }

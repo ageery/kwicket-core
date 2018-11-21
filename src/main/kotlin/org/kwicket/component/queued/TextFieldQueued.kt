@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.TextFieldConfig
-import org.kwicket.component.factory.textFieldFactory
+import org.kwicket.component.factory.invoke
 import kotlin.reflect.KClass
 
 /**
@@ -49,7 +49,7 @@ fun <T: Any> MarkupContainer.textField(
     validator: IValidator<T>? = null,
     validators: List<IValidator<T>>? = null,
     block: (TextFieldConfig<T, T>.() -> Unit)? = null
-): TextField<T> = q(id = id, block = block, factory = {cid, config -> textFieldFactory(cid, config) }, config = TextFieldConfig(
+): TextField<T> = q(id = id, block = block, factory = {cid, config -> config(cid) }, config = TextFieldConfig(
     model = model,
     type = type,
     markupId = markupId,
@@ -91,7 +91,7 @@ fun <C: Any> MarkupContainer.textField(
     validator: IValidator<C>? = null,
     validators: List<IValidator<C>>? = null,
     block: (TextFieldConfig<C, C?>.() -> Unit)? = null
-): TextField<C> = q(id = id, block = block, factory = {cid, config -> textFieldFactory<C, C?>(cid, config) }, config = TextFieldConfig<C, C?>(
+): TextField<C> = q(id = id, block = block, factory = {cid, config -> config<C, C?>(cid) }, config = TextFieldConfig<C, C?>(
     model = model,
     type = type,
     markupId = markupId,

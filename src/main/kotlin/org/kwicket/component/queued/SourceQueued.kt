@@ -10,7 +10,7 @@ import org.apache.wicket.request.resource.IResource
 import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.ISourceConfig
 import org.kwicket.component.config.SourceConfig
-import org.kwicket.component.factory.sourceFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -57,7 +57,7 @@ fun <T> MarkupContainer.source(
     postInit: (Source.() -> Unit)? = null,
     block: (ISourceConfig<T>.() -> Unit)? = null
 ): Source = q(
-    id = id, block = block, factory = { cid, config -> sourceFactory(cid, config) }, config =
+    id = id, block = block, factory = { cid, config -> config(cid) }, config =
     SourceConfig(
         resRef = resRef,
         resParams = resParams,
@@ -107,7 +107,7 @@ fun MarkupContainer.source(
     postInit: (Source.() -> Unit)? = null,
     block: (ISourceConfig<*>.() -> Unit)? = null
 ): Source = q(
-    id = id, block = block, factory = { cid, config -> sourceFactory(cid, config) }, config =
+    id = id, block = block, factory = { cid, config -> config(cid) }, config =
     SourceConfig<Any?>(
         resRef = resRef,
         resParams = resParams,

@@ -8,7 +8,7 @@ import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.RadioChoiceConfig
-import org.kwicket.component.factory.radioChoiceFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.
@@ -53,7 +53,7 @@ fun <C: Any, T: C?> MarkupContainer.radioChoice(
     validators: List<IValidator<C>>? = null,
     block: (RadioChoiceConfig<C, T>.() -> Unit)? = null
 ): RadioChoice<C> = q(
-    id = id, block = block, factory = { cid, config -> radioChoiceFactory<C, T>(cid, config) }, config = RadioChoiceConfig<C, T>(
+    id = id, block = block, factory = { cid, config -> config.invoke<C, T>(cid) }, config = RadioChoiceConfig<C, T>(
         model = model,
         choices = choices,
         choiceRenderer = choiceRenderer,

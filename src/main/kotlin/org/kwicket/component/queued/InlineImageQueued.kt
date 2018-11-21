@@ -8,7 +8,7 @@ import org.apache.wicket.model.IModel
 import org.apache.wicket.request.resource.PackageResourceReference
 import org.kwicket.component.config.IInlineImageConfig
 import org.kwicket.component.config.InlineImageConfig
-import org.kwicket.component.factory.inlineImageFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Picture] into the parent container.
@@ -48,7 +48,7 @@ fun <T> MarkupContainer.inlineImage(
     postInit: (InlineImage.() -> Unit)? = null,
     block: (IInlineImageConfig<T>.() -> Unit)? = null
 ): InlineImage = q(
-    id = id, block = block, factory = { cid, config -> inlineImageFactory(cid, config) }, config =
+    id = id, block = block, factory = { cid, config -> config(cid) }, config =
     InlineImageConfig(
         resRef = resRef,
         model = model,
@@ -84,7 +84,7 @@ fun MarkupContainer.inlineImage(
     postInit: (InlineImage.() -> Unit)? = null,
     block: (IInlineImageConfig<*>.() -> Unit)? = null
 ): InlineImage = q(
-    id = id, block = block, factory = { cid, config -> inlineImageFactory(cid, config) }, config =
+    id = id, block = block, factory = { cid, config -> config(cid) }, config =
     InlineImageConfig<Any?>(
         resRef = resRef,
         markupId = markupId,

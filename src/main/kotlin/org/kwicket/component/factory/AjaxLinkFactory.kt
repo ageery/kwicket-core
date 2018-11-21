@@ -1,17 +1,19 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.markup.html.AjaxLink
+import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.kwicket.component.config
 import org.kwicket.component.config.IAjaxLinkConfig
 
 /**
- * Creates an [AjaxLink] component with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [AjaxLink] component based on the configuration and with a Wicket identifier of [id].
  *
  * @param T type of the model of the [AjaxLink]
- * @param id Wicket component id
- * @param config specifies the settings for the [AjaxLink]
- * @return [AjaxLink] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [AjaxLink]
+ * @receiver configuration for creating the [AjaxButton]
+ * @return [AjaxLink] component based on the configuration and with a Wicket identifier of [id]
  */
 fun <T> ajaxLinkFactory(id: String, config: IAjaxLinkConfig<T>): AjaxLink<T> {
     val onConfig = config.onConfig

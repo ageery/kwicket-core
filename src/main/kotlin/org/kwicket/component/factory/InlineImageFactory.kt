@@ -5,18 +5,18 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IInlineImageConfig
 
 /**
- * Creates a [InlineImage] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [InlineImage] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [InlineImage]
- * @param id Wicket component id
- * @param config specifies the settings for the [InlineImage] component
- * @return [InlineImage] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [InlineImage]
+ * @receiver configuration for creating the [InlineImage]
+ * @return [InlineImage] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> inlineImageFactory(id: String, config: IInlineImageConfig<T>): InlineImage =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : InlineImage(id, config.model, config.resRef) {
+operator fun <T> IInlineImageConfig<T>.invoke(id: String): InlineImage =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        object : InlineImage(id, model, resRef) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -27,5 +27,5 @@ fun <T> inlineImageFactory(id: String, config: IInlineImageConfig<T>): InlineIma
 
         }
     } else {
-        InlineImage(id, config.model, config.resRef)
-    }.config(config)
+        InlineImage(id, model, resRef)
+    }.config(this)

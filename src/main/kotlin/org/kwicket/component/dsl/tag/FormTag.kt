@@ -11,7 +11,7 @@ import org.kwicket.FileSize
 import org.kwicket.component.config.FormConfig
 import org.kwicket.component.config.IFormConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.formFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.form(
     id: String? = null,
@@ -62,7 +62,7 @@ open class FormTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IFormConfig<T>,
-    factory: (String, IFormConfig<T>) -> Form<T> = { cid, c -> formFactory(cid, c) }
+    factory: (String, IFormConfig<T>) -> Form<T> = { cid, c -> c(cid) }
 ) : IFormConfig<T> by config,
     ConfigurableComponentTag<T, Form<T>, IFormConfig<T>>(
         id = id,

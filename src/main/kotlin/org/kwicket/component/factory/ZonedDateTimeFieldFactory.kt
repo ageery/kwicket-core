@@ -16,18 +16,15 @@ import java.time.ZonedDateTime
  * @param config specifies the settings for the [ZonedDateTimeField] component
  * @return [ZonedDateTimeField] with the Wicket component id of [id] and configured by [config]
  */
-fun <T : ZonedDateTime?> zonedDateTimeFieldFactory(
-    id: String,
-    config: IIZonedDateTimeFieldConfig<T>
-): ZonedDateTimeField {
+operator fun <T : ZonedDateTime?> IIZonedDateTimeFieldConfig<T>.invoke(id: String): ZonedDateTimeField {
     @Suppress("UNCHECKED_CAST")
-    val model = config.model as IModel<ZonedDateTime?>
-    return if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        val toZonedDate = config.toZonedDate
-        val toZonedTime = config.toZonedTime
-        val defaultTime = config.defaultTime
+    val model = model as IModel<ZonedDateTime?>
+    return if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val toZonedDate = toZonedDate
+        val toZonedTime = toZonedTime
+        val defaultTime = defaultTime
         object : ZonedDateTimeField(id, model) {
 
             override fun onConfigure() {
@@ -48,5 +45,5 @@ fun <T : ZonedDateTime?> zonedDateTimeFieldFactory(
         }
     } else {
         ZonedDateTimeField(id, model)
-    }.config(config)
+    }.config(this)
 }

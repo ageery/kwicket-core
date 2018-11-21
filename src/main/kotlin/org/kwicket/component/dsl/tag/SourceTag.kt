@@ -13,7 +13,7 @@ import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.ISourceConfig
 import org.kwicket.component.config.SourceConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.sourceFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.source(
     resRef: ResourceReference? = null,
@@ -76,7 +76,7 @@ open class SourceTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: ISourceConfig<T>,
-    factory: (String, ISourceConfig<T>) -> Source = { cid, c -> sourceFactory(cid, c) }
+    factory: (String, ISourceConfig<T>) -> Source = { cid, c -> c(cid) }
 ) : ISourceConfig<T> by config,
     ConfigurableComponentTag<T, Source, ISourceConfig<T>>(
         id = id,

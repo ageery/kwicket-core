@@ -12,7 +12,7 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.IRadioChoiceConfig
 import org.kwicket.component.config.RadioChoiceConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.radioChoiceFactory
+import org.kwicket.component.factory.invoke
 
 fun <C: Any, T: C?> HTMLTag.radioChoice(
     id: String? = null,
@@ -114,7 +114,7 @@ open class RadioChoiceTag<C: Any, T: C?>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IRadioChoiceConfig<C, T>,
-    factory: (String, IRadioChoiceConfig<C, T>) -> RadioChoice<C> = { cid, c -> radioChoiceFactory<C, T>(cid, c) }
+    factory: (String, IRadioChoiceConfig<C, T>) -> RadioChoice<C> = { cid, c -> c.invoke<C, T>(cid) }
 ) : IRadioChoiceConfig<C, T> by config,
     ConfigurableComponentTag<T, RadioChoice<C>, IRadioChoiceConfig<C, T>>(
         id = id,

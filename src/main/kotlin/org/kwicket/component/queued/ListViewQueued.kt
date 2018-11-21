@@ -8,7 +8,7 @@ import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IListViewConfig
 import org.kwicket.component.config.ListViewConfig
-import org.kwicket.component.factory.listViewFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -47,7 +47,7 @@ fun <T, L: List<T>> MarkupContainer.listView(
     postInit: (ListView<T>.() -> Unit)? = null,
     populateItem: (ListItem<T>.() -> Unit)? = null,
     block: (IListViewConfig<T, L>.() -> Unit)? = null
-): ListView<T> = q(id = id, block = block, factory = { cid, config -> listViewFactory(cid, config) }, config =
+): ListView<T> = q(id = id, block = block, factory = { cid, config -> config(cid) }, config =
     ListViewConfig(
         model = model,
         markupId = markupId,

@@ -6,18 +6,19 @@ import org.kwicket.component.config
 import org.kwicket.component.config.ISubmitLinkConfig
 
 /**
- * Creates a [SubmitLink] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [SubmitLink] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [SubmitLink]
- * @param id Wicket component id
- * @param config specifies the settings for the [SubmitLink] component
- * @return [SubmitLink] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [SubmitLink]
+ * @receiver configuration for creating the [SubmitLink]
+ * @return [SubmitLink] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> submitLinkFactory(id: String, config: ISubmitLinkConfig<T>): SubmitLink =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : SubmitLink(id, config.model) {
+operator fun <T> ISubmitLinkConfig<T>.invoke(id: String): SubmitLink =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val model = model
+        object : SubmitLink(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -28,5 +29,5 @@ fun <T> submitLinkFactory(id: String, config: ISubmitLinkConfig<T>): SubmitLink 
 
         }
     } else {
-        SubmitLink(id, config.model)
-    }.config(config)
+        SubmitLink(id, model)
+    }.config(this)

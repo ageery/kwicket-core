@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IMultiLineLabelConfig
 import org.kwicket.component.config.MultiLineLabelConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.multiLineLabelFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.multiLineLabel(
     model: IModel<T>? = null,
@@ -57,7 +57,7 @@ open class MultiLineLabelTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IMultiLineLabelConfig<T>,
-    factory: (String, IMultiLineLabelConfig<T>) -> MultiLineLabel = { cid, c -> multiLineLabelFactory(cid, c) }
+    factory: (String, IMultiLineLabelConfig<T>) -> MultiLineLabel = { cid, c -> c(cid) }
 ) : IMultiLineLabelConfig<T> by config,
     ConfigurableComponentTag<T, MultiLineLabel, IMultiLineLabelConfig<T>>(
         id = id,

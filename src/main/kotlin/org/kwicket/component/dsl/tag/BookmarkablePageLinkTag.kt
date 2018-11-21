@@ -11,7 +11,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.kwicket.component.config.BookmarkablePageLinkConfig
 import org.kwicket.component.config.IBookmarkablePageLinkConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.bookmarkablePageLinkFactory
+import org.kwicket.component.factory.invoke
 import kotlin.reflect.KClass
 
 fun <P: Page> HTMLTag.bookmarkablePageLink(
@@ -59,7 +59,7 @@ open class BookmarkablePageLinkTag<T, P: Page>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IBookmarkablePageLinkConfig<T, P>,
-    factory: (String, IBookmarkablePageLinkConfig<T, P>) -> BookmarkablePageLink<T> = { cid, c -> bookmarkablePageLinkFactory(cid, c) }
+    factory: (String, IBookmarkablePageLinkConfig<T, P>) -> BookmarkablePageLink<T> = { cid, c -> c(cid) }
 ) : IBookmarkablePageLinkConfig<T, P> by config,
     ConfigurableComponentTag<T, BookmarkablePageLink<T>, IBookmarkablePageLinkConfig<T, P>>(
         id = id,

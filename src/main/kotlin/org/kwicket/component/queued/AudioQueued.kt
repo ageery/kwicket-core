@@ -9,7 +9,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.AudioConfig
 import org.kwicket.component.config.IAudioConfig
-import org.kwicket.component.factory.audioFactory
+import org.kwicket.component.factory.invoke
 
 fun MarkupContainer.audio(
     id: String,
@@ -40,7 +40,7 @@ fun MarkupContainer.audio(
     postInit: (Audio.() -> Unit)? = null,
     block: (IAudioConfig<*>.() -> Unit)? = null
 ): Audio = q(
-    id = id, block = block, factory = { cid, config -> audioFactory(cid, config) }, config = AudioConfig<Unit>(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = AudioConfig<Unit>(
         resRef = resRef,
         url = url,
         pageParams = pageParams,
@@ -99,7 +99,7 @@ fun <T> MarkupContainer.audio(
     postInit: (Audio.() -> Unit)? = null,
     block: (IAudioConfig<T>.() -> Unit)? = null
 ): Audio = q(
-    id = id, block = block, factory = { cid, config -> audioFactory(cid, config) }, config = AudioConfig(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = AudioConfig(
         model = model,
         resRef = resRef,
         url = url,

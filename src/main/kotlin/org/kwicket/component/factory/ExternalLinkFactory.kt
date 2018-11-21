@@ -5,17 +5,17 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IExternalLinkConfig
 
 /**
- * Creates an [ExternalLink] component with the Wicket identifier set to [id] and configured using [config].
-
- * @param id Wicket component id
- * @param config specifies the settings for the [ExternalLink] component
- * @return [ExternalLink] with the Wicket component id of [id] and configured by [config]
+ * Creates an [ExternalLink] component based on the configuration and with a Wicket identifier of [id].
+ *
+ * @param id Wicket component id to use for the [ExternalLink]
+ * @receiver configuration for creating the [ExternalLink]
+ * @return [ExternalLink] component based on the configuration and with a Wicket identifier of [id]
  */
-fun externalLinkFactory(id: String, config: IExternalLinkConfig): ExternalLink =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : ExternalLink(id, config.model, config.label) {
+operator fun IExternalLinkConfig.invoke(id: String): ExternalLink =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        object : ExternalLink(id, model, label) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -26,5 +26,5 @@ fun externalLinkFactory(id: String, config: IExternalLinkConfig): ExternalLink =
 
         }
     } else {
-        ExternalLink(id, config.model, config.label)
-    }.config(config)
+        ExternalLink(id, model, label)
+    }.config(this)

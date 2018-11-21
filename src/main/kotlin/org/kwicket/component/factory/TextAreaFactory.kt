@@ -1,25 +1,26 @@
 package org.kwicket.component.factory
 
+import org.apache.wicket.markup.html.form.SubmitLink
 import org.apache.wicket.markup.html.form.TextArea
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.ITextAreaConfig
 
 /**
- * Creates a [TextArea] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [TextArea] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param C type of the [TextArea]
  * @param T type of the model of the [TextArea]
- * @param id Wicket component id
- * @param config specifies the settings for the [TextArea] component
- * @return [TextArea] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [TextArea]
+ * @receiver configuration for creating the [TextArea]
+ * @return [TextArea] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <C : Any, T : C?> textAreaFactory(id: String, config: ITextAreaConfig<C, T> ): TextArea<C> {
+operator fun <C : Any, T : C?> ITextAreaConfig<C, T>.invoke(id: String): TextArea<C> {
     @Suppress("UNCHECKED_CAST")
-    val model = config.model as IModel<C?>
-    return if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
+    val model = model as IModel<C?>
+    return if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
         object : TextArea<C>(id, model) {
 
             override fun onConfigure() {
@@ -32,5 +33,5 @@ fun <C : Any, T : C?> textAreaFactory(id: String, config: ITextAreaConfig<C, T> 
         }
     } else {
         TextArea<C>(id, model)
-    }.config(config)
+    }.config(this)
 }

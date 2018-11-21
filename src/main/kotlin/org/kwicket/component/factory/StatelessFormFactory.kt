@@ -1,24 +1,26 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.markup.html.form.StatelessForm
+import org.apache.wicket.markup.html.image.Image
 import org.kwicket.component.config
 import org.kwicket.component.config.IStatelessFormConfig
 
 /**
- * Creates a [StatelessForm] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [StatelessForm] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [StatelessForm]
- * @param id Wicket component id
- * @param config specifies the settings for the [StatelessForm] component
- * @return [StatelessForm] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [StatelessForm]
+ * @receiver configuration for creating the [StatelessForm]
+ * @return [StatelessForm] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> statelessFormFactory(id: String, config: IStatelessFormConfig<T>): StatelessForm<T> =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        val onSubmit = config.onSubmit
-        val onError = config.onError
-        object : StatelessForm<T>(id, config.model) {
+operator fun <T> IStatelessFormConfig<T>.invoke(id: String): StatelessForm<T> =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val onSubmit = onSubmit
+        val onError = onError
+        val model = model
+        object : StatelessForm<T>(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -37,5 +39,5 @@ fun <T> statelessFormFactory(id: String, config: IStatelessFormConfig<T>): State
 
         }
     } else {
-        StatelessForm(id, config.model)
-    }.config(config)
+        StatelessForm(id, model)
+    }.config(this)

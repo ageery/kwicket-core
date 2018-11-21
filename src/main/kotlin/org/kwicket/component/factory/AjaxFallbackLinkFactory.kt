@@ -2,23 +2,24 @@ package org.kwicket.component.factory
 
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
+import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.kwicket.component.config
 import org.kwicket.component.config.IAjaxFallbackLinkConfig
 import java.util.Optional
 
 /**
- * Creates an [AjaxFallbackLink] component with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [AjaxButton] component based on the configuration and with a Wicket identifier of [id].
  *
  * @param T type of the model of the [AjaxFallbackLink]
- * @param id Wicket component id
- * @param config specifies the settings for the [AjaxFallbackLink]
- * @return [AjaxFallbackLink] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [AjaxFallbackLink]
+ * @receiver configuration for creating the [AjaxFallbackLink]
+ * @return [AjaxFallbackLink] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> ajaxFallbackLinkFactory(id: String, config: IAjaxFallbackLinkConfig<T>): AjaxFallbackLink<T> {
-    val onConfig = config.onConfig
-    val model = config.model
-    val stateless = config.stateless
-    val onClick = config.onClick
+operator fun <T> IAjaxFallbackLinkConfig<T>.invoke(id: String): AjaxFallbackLink<T> {
+    val onConfig = onConfig
+    val model = model
+    val stateless = stateless
+    val onClick = onClick
     return object : AjaxFallbackLink<T>(id, model) {
 
         override fun onConfigure() {
@@ -33,5 +34,5 @@ fun <T> ajaxFallbackLinkFactory(id: String, config: IAjaxFallbackLinkConfig<T>):
         override fun getStatelessHint(): Boolean =
             stateless ?: super.getStatelessHint()
 
-    }.config(config)
+    }.config(this)
 }

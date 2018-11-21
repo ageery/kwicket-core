@@ -8,7 +8,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.IMediaSourceConfig
 import org.kwicket.component.config.MediaSourceConfig
-import org.kwicket.component.factory.mediaSourceFactory
+import org.kwicket.component.factory.invoke
 
 fun MarkupContainer.mediaSource(
     id: String,
@@ -34,7 +34,7 @@ fun MarkupContainer.mediaSource(
 ): Source = q(
     id = id,
     block = block,
-    factory = { cid, config -> mediaSourceFactory(cid, config) },
+    factory = { cid, config -> config(cid) },
     config = MediaSourceConfig<Unit>(
         resRef = resRef,
         url = url,
@@ -80,7 +80,7 @@ fun <T> MarkupContainer.mediaSource(
     postInit: (Source.() -> Unit)? = null,
     block: (IMediaSourceConfig<T>.() -> Unit)? = null
 ): Source = q(
-    id = id, block = block, factory = { cid, config -> mediaSourceFactory(cid, config) }, config = MediaSourceConfig(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = MediaSourceConfig(
         model = model,
         resRef = resRef,
         url = url,

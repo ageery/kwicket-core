@@ -11,7 +11,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxFallbackButtonConfig
 import org.kwicket.component.config.IAjaxFallbackButtonConfig
 import org.kwicket.component.dsl.ComponentTag
-import org.kwicket.component.factory.ajaxFallbackButtonFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.ajaxFallbackButton(
     id: String? = null,
@@ -66,6 +66,6 @@ open class AjaxFallbackButtonTag(
         tagName = tagName
     ), HtmlBlockTag {
 
-    override fun build(id: String) = ajaxFallbackButtonFactory(id, config)
+    override fun build(id: String) = config.invoke(id)
 
 }

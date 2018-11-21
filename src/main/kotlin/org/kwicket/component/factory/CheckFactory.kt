@@ -5,18 +5,18 @@ import org.kwicket.component.config
 import org.kwicket.component.config.ICheckConfig
 
 /**
- * Creates an [Check] component with the Wicket identifier set to [id] and configured using [config].
+ * Creates an [Check] component based on the configuration and with a Wicket identifier of [id].
  *
  * @param T type of the model of the [Check]
- * @param id Wicket component id
- * @param config specifies the settings for the [Check]
- * @return [Check] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Check]
+ * @receiver configuration for creating the [Check]
+ * @return [Check] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> checkFactory(id: String, config: ICheckConfig<T>): Check<T> =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : Check<T>(id, config.model, config.group) {
+operator fun <T> ICheckConfig<T>.invoke(id: String): Check<T> =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        object : Check<T>(id, model, group) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -27,5 +27,5 @@ fun <T> checkFactory(id: String, config: ICheckConfig<T>): Check<T> =
 
         }
     } else {
-        Check(id, config.model, config.group)
-    }.config(config)
+        Check(id, model, group)
+    }.config(this)

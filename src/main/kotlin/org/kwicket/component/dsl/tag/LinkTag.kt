@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.ILinkConfig
 import org.kwicket.component.config.LinkConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.linkFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.link(
     id: String? = null,
@@ -90,7 +90,7 @@ open class LinkTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: ILinkConfig<T>,
-    factory: (String, ILinkConfig<T>) -> Link<T> = { cid, c -> linkFactory(cid, c) }
+    factory: (String, ILinkConfig<T>) -> Link<T> = { cid, c -> c(cid) }
 ) : ILinkConfig<T> by config,
     ConfigurableComponentTag<T, Link<T>, ILinkConfig<T>>(
         id = id,

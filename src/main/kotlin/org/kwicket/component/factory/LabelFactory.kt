@@ -1,23 +1,22 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.image.InlineImage
 import org.kwicket.component.config
 import org.kwicket.component.config.ILabelConfig
 
 /**
- * Creates a [Label] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [Label] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [Label]
- * @param id Wicket component id
- * @param config specifies the settings for the [Label] component
- * @return [Label] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Label]
+ * @receiver configuration for creating the [Label]
+ * @return [Label] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> labelFactory(id: String, config: ILabelConfig<T>): Label =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : Label(id, config.model) {
+operator fun <T> ILabelConfig<T>.invoke(id: String): Label =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        object : Label(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -28,5 +27,5 @@ fun <T> labelFactory(id: String, config: ILabelConfig<T>): Label =
 
         }
     } else {
-        Label(id, config.model)
-    }.config(config)
+        Label(id, model)
+    }.config(this)

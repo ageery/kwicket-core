@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.ILabelConfig
 import org.kwicket.component.config.LabelConfig
-import org.kwicket.component.factory.labelFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -44,7 +44,7 @@ fun <T> MarkupContainer.label(
     onConfig: (Label.() -> Unit)? = null,
     postInit: (Label.() -> Unit)? = null,
     block: (ILabelConfig<T>.() -> Unit)? = null
-): Label = q(id = id, block = block, factory = { cid, config -> labelFactory(cid, config) }, config =
+): Label = q(id = id, block = block, factory = { cid, config -> config(cid) }, config =
     LabelConfig(
         model = model,
         markupId = markupId,

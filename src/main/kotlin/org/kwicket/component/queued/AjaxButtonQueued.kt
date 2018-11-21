@@ -8,7 +8,7 @@ import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxButtonConfig
 import org.kwicket.component.config.IAjaxButtonConfig
-import org.kwicket.component.factory.ajaxButtonFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [AjaxButton] into the parent container.
@@ -51,7 +51,7 @@ fun MarkupContainer.ajaxButton(
     postInit: (AjaxButton.() -> Unit)? = null,
     block: (IAjaxButtonConfig.() -> Unit)? = null
 ) = q(
-    id = id, block = block, factory = ::ajaxButtonFactory, config = AjaxButtonConfig(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = AjaxButtonConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

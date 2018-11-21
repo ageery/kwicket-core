@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.ButtonConfig
 import org.kwicket.component.config.IButtonConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.buttonFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.button(
     id: String? = null,
@@ -58,7 +58,7 @@ open class ButtonTag(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IButtonConfig,
-    factory: (String, IButtonConfig) -> Button = { cid, c -> buttonFactory(cid, c) }
+    factory: (String, IButtonConfig) -> Button = { cid, c -> c(cid) }
 ) : IButtonConfig by config,
     ConfigurableComponentTag<String, Button, IButtonConfig>(
         id = id,

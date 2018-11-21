@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.basic.MultiLineLabel
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.MultiLineLabelConfig
-import org.kwicket.component.factory.multiLineLabelFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -44,7 +44,7 @@ fun <T> MarkupContainer.multiLineLabel(
     onConfig: (MultiLineLabel.() -> Unit)? = null,
     postInit: (MultiLineLabel.() -> Unit)? = null,
     block: (MultiLineLabelConfig<T>.() -> Unit)? = null
-): MultiLineLabel = q(id = id, block = block, factory = { cid, config -> multiLineLabelFactory(cid, config)}, config =
+): MultiLineLabel = q(id = id, block = block, factory = { cid, config -> config(cid)}, config =
     MultiLineLabelConfig(
         model = model,
         markupId = markupId,

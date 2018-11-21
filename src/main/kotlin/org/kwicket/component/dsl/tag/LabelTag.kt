@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.ILabelConfig
 import org.kwicket.component.config.LabelConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.labelFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.label(
     model: IModel<T>? = null,
@@ -57,7 +57,7 @@ open class LabelTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: ILabelConfig<T>,
-    factory: (String, ILabelConfig<T>) -> Label = { cid, c -> labelFactory(cid, c) }
+    factory: (String, ILabelConfig<T>) -> Label = { cid, c -> c(cid) }
 ) : ILabelConfig<T> by config,
     ConfigurableComponentTag<T, Label, ILabelConfig<T>>(
         id = id,

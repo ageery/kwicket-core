@@ -11,22 +11,22 @@ import org.kwicket.component.config.IDropDownChoiceConfig
 // val myLabel3: Label = LabelConfig(model = "test".m(), outputMarkupId = true)("myid3") ** winner, winner
 
 /**
- * Creates a [DropDownChoice] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [DropDownChoice] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param C type of the [DropDownChoice]
  * @param T type of the model of the [DropDownChoice]
- * @param id Wicket component id
- * @param config specifies the settings for the [DropDownChoice] component
- * @return [DropDownChoice] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [DropDownChoice]
+ * @receiver configuration for creating the [DropDownChoice]
+ * @return [DropDownChoice] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <C: Any, T: C?> dropDownChoiceFactory(id: String, config: IDropDownChoiceConfig<C, T> ): DropDownChoice<C> {
+operator fun <C: Any, T: C?> IDropDownChoiceConfig<C, T>.invoke(id: String): DropDownChoice<C> {
     @Suppress("UNCHECKED_CAST")
-    val model = config.model as IModel<C?>
-    val choices = config.choices
-    val choiceRenderer = config.choiceRenderer
-    return if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
+    val model = model as IModel<C?>
+    val choices = choices
+    val choiceRenderer = choiceRenderer
+    return if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
         object : DropDownChoice<C>(id, model, choices, choiceRenderer) {
 
             override fun onConfigure() {
@@ -40,5 +40,5 @@ fun <C: Any, T: C?> dropDownChoiceFactory(id: String, config: IDropDownChoiceCon
 
     } else {
         DropDownChoice<C>(id, model, choices, choiceRenderer)
-    }.config(config)
+    }.config(this)
 }

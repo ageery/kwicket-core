@@ -6,21 +6,23 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IRadioChoiceConfig
 
 /**
- * Creates a [RadioChoice] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [RadioChoice] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param C type of the [RadioChoice]
  * @param T type of the model of the [RadioChoice]
- * @param id Wicket component id
- * @param config specifies the settings for the [RadioChoice] component
- * @return [RadioChoice] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [RadioChoice]
+ * @receiver configuration for creating the [RadioChoice]
+ * @return [RadioChoice] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <C: Any, T: C?> radioChoiceFactory(id: String, config: IRadioChoiceConfig<C, T>): RadioChoice<C> {
+operator fun <C: Any, T: C?> IRadioChoiceConfig<C, T>.invoke(id: String): RadioChoice<C> {
     @Suppress("UNCHECKED_CAST")
-    val model = config.model as IModel<C?>
-    return if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : RadioChoice<C>(id, model, config.choices, config.choiceRenderer) {
+    val model = model as IModel<C?>
+    return if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val choices = choices
+        val choiceRenderer = choiceRenderer
+        object : RadioChoice<C>(id, model, choices, choiceRenderer) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -31,6 +33,6 @@ fun <C: Any, T: C?> radioChoiceFactory(id: String, config: IRadioChoiceConfig<C,
 
         }
     } else {
-        RadioChoice<C>(id, model, config.choices, config.choiceRenderer)
-    }.config(config)
+        RadioChoice<C>(id, model, choices, choiceRenderer)
+    }.config(this)
 }

@@ -1,22 +1,21 @@
 package org.kwicket.component.factory
 
-import org.apache.wicket.markup.html.link.ExternalLink
 import org.apache.wicket.markup.html.panel.FeedbackPanel
 import org.kwicket.component.config
 import org.kwicket.component.config.IFeedbackPanelConfig
 
 /**
- * Creates an [FeedbackPanel] component with the Wicket identifier set to [id] and configured using [config].
-
- * @param id Wicket component id
- * @param config specifies the settings for the [FeedbackPanel] component
- * @return [FeedbackPanel] with the Wicket component id of [id] and configured by [config]
+ * Creates an [FeedbackPanel] component based on the configuration and with a Wicket identifier of [id].
+ *
+ * @param id Wicket component id to use for the [FeedbackPanel]
+ * @receiver configuration for creating the [FeedbackPanel]
+ * @return [FeedbackPanel] component based on the configuration and with a Wicket identifier of [id]
  */
-fun feedbackPanelFactory(id: String, config: IFeedbackPanelConfig): FeedbackPanel =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        object : FeedbackPanel(id, config.filter) {
+operator fun IFeedbackPanelConfig.invoke(id: String): FeedbackPanel =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        object : FeedbackPanel(id, filter) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -27,5 +26,5 @@ fun feedbackPanelFactory(id: String, config: IFeedbackPanelConfig): FeedbackPane
 
         }
     } else {
-        FeedbackPanel(id, config.filter)
-    }.config(config)
+        FeedbackPanel(id, filter)
+    }.config(this)

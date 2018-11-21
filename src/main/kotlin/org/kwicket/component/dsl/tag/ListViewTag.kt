@@ -11,7 +11,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IListViewConfig
 import org.kwicket.component.config.ListViewConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.listViewFactory
+import org.kwicket.component.factory.invoke
 
 fun <T, L : List<T>> HTMLTag.listView(
     model: IModel<L>? = null,
@@ -60,7 +60,7 @@ open class ListViewTag<T, L : List<T>>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IListViewConfig<T, L>,
-    factory: (String, IListViewConfig<T, L>) -> ListView<T> = { cid, c -> listViewFactory(cid, c) }
+    factory: (String, IListViewConfig<T, L>) -> ListView<T> = { cid, c -> c(cid) }
 ) : IListViewConfig<T, L> by config,
     ConfigurableComponentTag<L, ListView<T>, IListViewConfig<T, L>>(
         id = id,

@@ -9,7 +9,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.IVideoConfig
 import org.kwicket.component.config.VideoConfig
-import org.kwicket.component.factory.videoFactory
+import org.kwicket.component.factory.invoke
 import org.kwicket.component.q
 
 fun MarkupContainer.video(
@@ -43,7 +43,7 @@ fun MarkupContainer.video(
     postInit: (Video.() -> Unit)? = null,
     block: (IVideoConfig<*>.() -> Unit)? = null
 ): Video = q(
-    id = id, block = block, factory = {cid, config -> videoFactory(cid, config)}, config = VideoConfig<Unit>(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = VideoConfig<Unit>(
         width = width,
         height = height,
         resRef = resRef,
@@ -144,5 +144,5 @@ fun <T> MarkupContainer.video(
     block: (IVideoConfig<T>.() -> Unit)? = null
 ): Video {
     block?.invoke(config)
-    return q(videoFactory(id = id, config = config))
+    return q(config(id))
 }

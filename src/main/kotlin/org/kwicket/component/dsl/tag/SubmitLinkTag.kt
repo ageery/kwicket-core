@@ -11,7 +11,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.ISubmitLinkConfig
 import org.kwicket.component.config.SubmitLinkConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.submitLinkFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.submitLink(
     id: String? = null,
@@ -58,7 +58,7 @@ open class SubmitLinkTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: ISubmitLinkConfig<T>,
-    factory: (String, ISubmitLinkConfig<T>) -> SubmitLink = { cid, c -> submitLinkFactory(cid, c) }
+    factory: (String, ISubmitLinkConfig<T>) -> SubmitLink = { cid, c -> c(cid) }
 ) : ISubmitLinkConfig<T> by config,
     ConfigurableComponentTag<T, SubmitLink, ISubmitLinkConfig<T>>(
         id = id,

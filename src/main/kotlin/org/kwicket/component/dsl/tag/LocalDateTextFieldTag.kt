@@ -13,7 +13,7 @@ import org.kwicket.component.config.ILocalDateTextFieldConfig
 import org.kwicket.component.config.LocalDateTextFieldConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
 import org.kwicket.component.dsl.toAttr
-import org.kwicket.component.factory.localDateTextFieldFactory
+import org.kwicket.component.factory.invoke
 import java.time.LocalDate
 import java.time.format.FormatStyle
 
@@ -81,7 +81,7 @@ open class LocalDateTextFieldTag<T: LocalDate?>(
     inputType: InputType? = defaultInputType,
     consumer: TagConsumer<*>,
     config: ILocalDateTextFieldConfig<T>,
-    factory: (String, ILocalDateTextFieldConfig<T>) -> LocalDateTextField = { cid, c -> localDateTextFieldFactory(cid, c) }
+    factory: (String, ILocalDateTextFieldConfig<T>) -> LocalDateTextField = { cid, c -> c(cid) }
 ) : ILocalDateTextFieldConfig<T> by config,
     ConfigurableComponentTag<T, LocalDateTextField, ILocalDateTextFieldConfig<T>>(
         id = id,

@@ -11,7 +11,7 @@ import org.apache.wicket.request.resource.PackageResourceReference
 import org.kwicket.component.config.IInlineImageConfig
 import org.kwicket.component.config.InlineImageConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.inlineImageFactory
+import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.inlineImage(
     resRef: PackageResourceReference,
@@ -60,7 +60,7 @@ open class InlineImageTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IInlineImageConfig<T>,
-    factory: (String, IInlineImageConfig<T>) -> InlineImage = { cid, c -> inlineImageFactory(cid, c) }
+    factory: (String, IInlineImageConfig<T>) -> InlineImage = { cid, c -> c(cid) }
 ) : IInlineImageConfig<T> by config,
     ConfigurableComponentTag<T, InlineImage, IInlineImageConfig<T>>(
         id = id,

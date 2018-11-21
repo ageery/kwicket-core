@@ -13,7 +13,7 @@ import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.IImageConfig
 import org.kwicket.component.config.ImageConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.imageFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.image(
     resRef: ResourceReference? = null,
@@ -74,7 +74,7 @@ open class ImageTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IImageConfig<T>,
-    factory: (String, IImageConfig<T>) -> Image = { cid, c -> imageFactory(cid, c) }
+    factory: (String, IImageConfig<T>) -> Image = { cid, c -> c(cid) }
 ) : IImageConfig<T> by config,
     ConfigurableComponentTag<T, Image, IImageConfig<T>>(
         id = id,

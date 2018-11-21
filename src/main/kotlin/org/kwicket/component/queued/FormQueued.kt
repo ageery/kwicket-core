@@ -8,7 +8,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.FileSize
 import org.kwicket.component.config.FormConfig
 import org.kwicket.component.config.IFormConfig
-import org.kwicket.component.factory.formFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -48,7 +48,7 @@ fun <T> MarkupContainer.form(
     maxSize: FileSize? = null,
     fileMaxSize: FileSize? = null,
     block: (IFormConfig<T>.() -> Unit)? = null
-): Form<T> = q(id = id, block = block, factory = { cid, config: IFormConfig<T> -> formFactory(cid, config) }, config =
+): Form<T> = q(id = id, block = block, factory = { cid, config: IFormConfig<T> -> config(cid) }, config =
     FormConfig(
         model = model,
         markupId = markupId,

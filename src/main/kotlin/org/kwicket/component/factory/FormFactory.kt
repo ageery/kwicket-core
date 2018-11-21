@@ -5,20 +5,20 @@ import org.kwicket.component.config
 import org.kwicket.component.config.IFormConfig
 
 /**
- * Creates a [Form] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates an [Form] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [Form]
- * @param id Wicket component id
- * @param config specifies the settings for the [Form] component
- * @return [Form] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Form]
+ * @receiver configuration for creating the [Form]
+ * @return [Form] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T> formFactory(id: String, config: IFormConfig<T>): Form<T> =
-    if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        val onSubmit = config.onSubmit
-        val onError = config.onError
-        object : Form<T>(id, config.model) {
+operator fun <T> IFormConfig<T>.invoke(id: String): Form<T> =
+    if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless =stateless
+        val onSubmit = onSubmit
+        val onError = onError
+        object : Form<T>(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -39,5 +39,5 @@ fun <T> formFactory(id: String, config: IFormConfig<T>): Form<T> =
 
         }
     } else {
-        Form<T>(id, config.model)
-    }.config(config)
+        Form<T>(id, model)
+    }.config(this)

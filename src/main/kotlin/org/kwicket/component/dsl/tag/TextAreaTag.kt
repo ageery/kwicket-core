@@ -11,7 +11,7 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.ITextAreaConfig
 import org.kwicket.component.config.TextAreaConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.textAreaFactory
+import org.kwicket.component.factory.invoke
 
 fun <T: Any> HTMLTag.textArea(
     id: String? = null,
@@ -118,7 +118,7 @@ open class TextAreaTag<C : Any, T: C?>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: ITextAreaConfig<C, T>,
-    factory: (String, ITextAreaConfig<C, T>) -> TextArea<C> = { cid, c -> textAreaFactory<C, T>(cid, c) }
+    factory: (String, ITextAreaConfig<C, T>) -> TextArea<C> = { cid, c -> c<C, T>(cid) }
 ) : ITextAreaConfig<C, T> by config,
     ConfigurableComponentTag<T, TextArea<C>, ITextAreaConfig<C, T>>(
         id = id,

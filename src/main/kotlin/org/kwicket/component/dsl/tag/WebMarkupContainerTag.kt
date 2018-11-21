@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IWebMarkupContainerConfig
 import org.kwicket.component.config.WebMarkupContainerConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.webMarkupContainerFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.webMarkupContainer(
     id: String? = null,
@@ -55,9 +55,7 @@ open class WebMarkupContainerTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IWebMarkupContainerConfig<T>,
-    factory: (String, IWebMarkupContainerConfig<T>) -> WebMarkupContainer = { cid, c ->
-        webMarkupContainerFactory(cid, c)
-    }
+    factory: (String, IWebMarkupContainerConfig<T>) -> WebMarkupContainer = { cid, c -> c(cid) }
 ) : IWebMarkupContainerConfig<T> by config,
     ConfigurableComponentTag<T, WebMarkupContainer, IWebMarkupContainerConfig<T>>(
         id = id,

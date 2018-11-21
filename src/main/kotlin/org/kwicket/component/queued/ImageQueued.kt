@@ -10,7 +10,7 @@ import org.apache.wicket.request.resource.IResource
 import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.IImageConfig
 import org.kwicket.component.config.ImageConfig
-import org.kwicket.component.factory.imageFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -56,7 +56,7 @@ fun <T> MarkupContainer.image(
     onConfig: (Image.() -> Unit)? = null,
     postInit: (Image.() -> Unit)? = null,
     block: (IImageConfig<T>.() -> Unit)? = null
-): Image = q(id = id, block = block, factory = { cid, config: IImageConfig<*> -> imageFactory(cid, config) }, config =
+): Image = q(id = id, block = block, factory = { cid, config: IImageConfig<*> -> config(cid) }, config =
 ImageConfig(
     model = model,
     resRef = resRef,
@@ -102,7 +102,7 @@ fun MarkupContainer.image(
     onConfig: (Image.() -> Unit)? = null,
     postInit: (Image.() -> Unit)? = null,
     block: (IImageConfig<*>.() -> Unit)? = null
-): Image = q(id = id, block = block, factory = { cid, config: IImageConfig<*> -> imageFactory(cid, config) }, config =
+): Image = q(id = id, block = block, factory = { cid, config: IImageConfig<*> -> config(cid) }, config =
     ImageConfig<Any?>(
         resRef = resRef,
         resParams = resParams,

@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.form.TextField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.TextAreaConfig
-import org.kwicket.component.factory.textAreaFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.
@@ -51,7 +51,7 @@ fun <T: Any> MarkupContainer.textArea(
 ): TextArea<T> = q(
     id = id,
     block = block,
-    factory = { cid, config -> textAreaFactory(id = cid, config = config) },
+    factory = { cid, config -> config.invoke<T, T>(cid) },
     config = TextAreaConfig(
         model = model,
         markupId = markupId,
@@ -96,7 +96,7 @@ fun <T: Any> MarkupContainer.textArea(
 ): TextArea<T> = q(
     id = id,
     block = block,
-    factory = { cid, config -> textAreaFactory<T, T?>(id = cid, config = config) },
+    factory = { cid, config -> config<T, T?>(cid) },
     config = TextAreaConfig<T, T?>(
         model = model,
         markupId = markupId,

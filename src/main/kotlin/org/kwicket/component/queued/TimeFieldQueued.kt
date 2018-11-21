@@ -6,7 +6,7 @@ import org.apache.wicket.extensions.markup.html.form.datetime.TimeField
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.ITimeFieldConfig
 import org.kwicket.component.config.TimeFieldConfig
-import org.kwicket.component.factory.timeFieldFactory
+import org.kwicket.component.factory.invoke
 import java.time.LocalTime
 
 fun MarkupContainer.timeField(
@@ -27,7 +27,7 @@ fun MarkupContainer.timeField(
     postInit: (TimeField.() -> Unit)? = null,
     block: (ITimeFieldConfig.() -> Unit)? = null
 ): TimeField = q(
-    id = id, block = block, factory = { cid, config -> timeFieldFactory(cid, config) }, config = TimeFieldConfig(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = TimeFieldConfig(
         model = model,
         use12HourFormat = use12HourFormat,
         markupId = markupId,

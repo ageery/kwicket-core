@@ -9,22 +9,22 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 /**
- * Creates a [LocalDateTimeField] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [LocalDateTimeField] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param T type of the model of the [LocalDateTimeField]
- * @param id Wicket component id
- * @param config specifies the settings for the [LocalDateTimeField] component
- * @return [LocalDateTimeField] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [LocalDateTimeField]
+ * @receiver configuration for creating the [LocalDateTimeField]
+ * @return [LocalDateTimeField] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <T : LocalDateTime?> localDateTimeFieldFactory(id: String, config: IILocalDateTimeFieldConfig<T>): LocalDateTimeField {
+operator fun <T : LocalDateTime?> IILocalDateTimeFieldConfig<T>.invoke(id: String): LocalDateTimeField {
     @Suppress("UNCHECKED_CAST")
-    val model = config.model as IModel<LocalDateTime?>
-    return if (config.requiresSubclass) {
-        val onConfig = config.onConfig
-        val stateless = config.stateless
-        val toLocalDate = config.toLocalDate
-        val toLocalTime = config.toLocalTime
-        val defaultTime = config.defaultTime
+    val model = model as IModel<LocalDateTime?>
+    return if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
+        val toLocalDate = toLocalDate
+        val toLocalTime = toLocalTime
+        val defaultTime = defaultTime
         object : LocalDateTimeField(id, model) {
 
             override fun onConfigure() {
@@ -45,5 +45,5 @@ fun <T : LocalDateTime?> localDateTimeFieldFactory(id: String, config: IILocalDa
         }
     } else {
         LocalDateTimeField(id, model)
-    }.config(config)
+    }.config(this)
 }

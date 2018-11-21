@@ -1,36 +1,36 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.extensions.markup.html.form.select.Select
-import org.apache.wicket.markup.html.form.RadioGroup
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.ISelectConfig
 
 /**
- * Creates a [Select] component with the Wicket identifier set to [id] and configured using [config].
-
+ * Creates a [Select] component based on the configuration and with a Wicket identifier of [id].
+ *
  * @param C type of the [Select]
  * @param T type of the model of the [Select]
- * @param id Wicket component id
- * @param config specifies the settings for the [Select] component
- * @return [Select] with the Wicket component id of [id] and configured by [config]
+ * @param id Wicket component id to use for the [Select]
+ * @receiver configuration for creating the [Select]
+ * @return [Select] component based on the configuration and with a Wicket identifier of [id]
  */
-fun <C: Any, T: C?> selectFactory(id: String, config: ISelectConfig<C, T>): Select<C> {
+operator fun <C: Any, T: C?> ISelectConfig<C, T>.invoke(id: String): Select<C> {
     @Suppress("UNCHECKED_CAST")
-    val model = config.model as IModel<C?>
-    return if (config.requiresSubclass) {
-
+    val model = model as IModel<C?>
+    return if (requiresSubclass) {
+        val onConfig = onConfig
+        val stateless = stateless
         object : Select<C>(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
-                config.onConfig?.invoke(this)
+                onConfig?.invoke(this)
             }
 
-            override fun getStatelessHint(): Boolean = config.stateless ?: super.getStatelessHint()
+            override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
 
         }
     } else {
         Select<C>(id, model)
-    }.config(config)
+    }.config(this)
 }

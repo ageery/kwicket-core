@@ -9,7 +9,7 @@ import org.apache.wicket.devutils.debugbar.DebugBar
 import org.kwicket.component.config.DebugBarConfig
 import org.kwicket.component.config.IDebugBarConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
-import org.kwicket.component.factory.debugBarFactory
+import org.kwicket.component.factory.invoke
 
 fun HTMLTag.debugBar(
     id: String? = null,
@@ -54,7 +54,7 @@ open class DebugBarTag(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IDebugBarConfig,
-    factory: (String, IDebugBarConfig) -> DebugBar = { cid, c -> debugBarFactory(cid, c) }
+    factory: (String, IDebugBarConfig) -> DebugBar = { cid, c -> c(cid) }
 ) : IDebugBarConfig by config,
     ConfigurableComponentTag<Unit, DebugBar, IDebugBarConfig>(
         id = id,

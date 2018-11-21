@@ -14,12 +14,12 @@ import org.kwicket.component.config.IAjaxSubmitLinkConfig
  * @param config specifies the settings for the [AjaxSubmitLink]
  * @return [AjaxSubmitLink] with the Wicket component id of [id] and configured by [config]
  */
-fun <T> ajaxSubmitLinkFactory(id: String, config: IAjaxSubmitLinkConfig<T>): AjaxSubmitLink {
-    val onConfig = config.onConfig
-    val form = config.form
-    val stateless = config.stateless
-    val onSubmit = config.onSubmit
-    val onError = config.onError
+operator fun <T> IAjaxSubmitLinkConfig<T>.invoke(id: String): AjaxSubmitLink {
+    val onConfig = onConfig
+    val form = form
+    val stateless = stateless
+    val onSubmit = onSubmit
+    val onError = onError
     return object : AjaxSubmitLink(id, form) {
 
         override fun onConfigure() {
@@ -39,5 +39,5 @@ fun <T> ajaxSubmitLinkFactory(id: String, config: IAjaxSubmitLinkConfig<T>): Aja
 
         override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
 
-    }.config(config)
+    }.config(this)
 }

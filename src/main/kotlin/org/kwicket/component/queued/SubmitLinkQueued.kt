@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.form.SubmitLink
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.SubmitLinkConfig
-import org.kwicket.component.factory.submitLinkFactory
+import org.kwicket.component.factory.invoke
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -47,7 +47,7 @@ fun <T> MarkupContainer.submitLink(
     postInit: (SubmitLink.() -> Unit)? = null,
     block: (SubmitLinkConfig<T>.() -> Unit)? = null
 ): SubmitLink = q(
-    id = id, block = block, factory = { cid, config -> submitLinkFactory(cid, config) }, config = SubmitLinkConfig(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = SubmitLinkConfig(
         model = model,
         form = form,
         markupId = markupId,
