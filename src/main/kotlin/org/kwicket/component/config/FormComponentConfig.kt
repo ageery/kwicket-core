@@ -13,10 +13,10 @@ interface IFormComponentConfig<F : FormComponent<C>, C: Any, T: C?> : IComponent
 }
 
 open class FormComponentConfig<F : FormComponent<C>, C: Any, T: C?>(
-    var label: IModel<String>? = null,
-    var isRequired: Boolean? = null,
-    var validator: IValidator<C>? = null,
-    var validators: List<IValidator<C>>? = null,
+    override var label: IModel<String>? = null,
+    override var isRequired: Boolean? = null,
+    override var validator: IValidator<C>? = null,
+    override var validators: List<IValidator<C>>? = null,
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -31,7 +31,8 @@ open class FormComponentConfig<F : FormComponent<C>, C: Any, T: C?>(
     stateless: Boolean? = null,
     onConfig: (F.() -> Unit)? = null,
     postInit: (F.() -> Unit)? = null
-) : ComponentConfig<F, T>(
+) : IFormComponentConfig<F, C, T>,
+    ComponentConfig<F, T>(
     model = model,
     markupId = markupId,
     outputMarkupId = outputMarkupId,
