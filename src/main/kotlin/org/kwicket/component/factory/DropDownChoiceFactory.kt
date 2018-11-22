@@ -1,6 +1,7 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.markup.html.form.DropDownChoice
+import org.apache.wicket.markup.html.form.IChoiceRenderer
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.IDropDownChoiceConfig
@@ -13,21 +14,19 @@ import org.kwicket.component.config.IDropDownChoiceConfig
 /**
  * Creates an [DropDownChoice] component based on the configuration and with a Wicket identifier of [id].
  *
- * @param C type of the [DropDownChoice]
  * @param T type of the model of the [DropDownChoice]
  * @param id Wicket component id to use for the [DropDownChoice]
  * @receiver configuration for creating the [DropDownChoice]
  * @return [DropDownChoice] component based on the configuration and with a Wicket identifier of [id]
  */
-operator fun <C: Any, T: C?> IDropDownChoiceConfig<C, T>.invoke(id: String): DropDownChoice<C> {
-    @Suppress("UNCHECKED_CAST")
-    val model = model as IModel<C?>
+operator fun <T> IDropDownChoiceConfig<T>.invoke(id: String): DropDownChoice<T> {
+    val model = model
     val choices = choices
     val choiceRenderer = choiceRenderer
     return if (requiresSubclass) {
         val onConfig = onConfig
         val stateless = stateless
-        object : DropDownChoice<C>(id, model, choices, choiceRenderer) {
+        object : DropDownChoice<T>(id, model, choices, choiceRenderer) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -39,6 +38,6 @@ operator fun <C: Any, T: C?> IDropDownChoiceConfig<C, T>.invoke(id: String): Dro
         }
 
     } else {
-        DropDownChoice<C>(id, model, choices, choiceRenderer)
+        DropDownChoice<T>(id, model, choices, choiceRenderer)
     }.config(this)
 }

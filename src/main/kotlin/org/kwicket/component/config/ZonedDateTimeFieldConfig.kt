@@ -8,7 +8,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
-interface IIZonedDateTimeFieldConfig<T: ZonedDateTime?> : IFormComponentConfig<ZonedDateTimeField, ZonedDateTime, T> {
+interface IIZonedDateTimeFieldConfig<T: ZonedDateTime?> : IFormComponentConfig<ZonedDateTimeField, T> {
     var toZonedDate: ((ZonedDateTime) -> LocalDate)?
     var toZonedTime: ((ZonedDateTime) -> LocalTime)?
     var defaultTime: (() -> LocalTime)?
@@ -23,8 +23,8 @@ class ZonedDateTimeFieldConfig<T: ZonedDateTime?>(
     override var defaultTime: (() -> LocalTime)? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<ZonedDateTime>? = null,
-    validators: List<IValidator<ZonedDateTime>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -38,7 +38,7 @@ class ZonedDateTimeFieldConfig<T: ZonedDateTime?>(
     onConfig: (ZonedDateTimeField.() -> Unit)? = null,
     postInit: (ZonedDateTimeField.() -> Unit)? = null
 ) : IIZonedDateTimeFieldConfig<T>,
-    FormComponentConfig<ZonedDateTimeField, ZonedDateTime, T>(
+    FormComponentConfig<ZonedDateTimeField, T>(
         model = model,
         label = label,
         isRequired = isRequired,

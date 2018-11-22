@@ -6,14 +6,14 @@ import org.apache.wicket.markup.html.form.RadioGroup
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
-interface IRadioGroupConfig<C: Any, T: C?> : IFormComponentConfig<RadioGroup<C>, C, T>
+interface IRadioGroupConfig<T> : IFormComponentConfig<RadioGroup<T>, T>
 
-class RadioGroupConfig<C: Any, T: C?>(
+class RadioGroupConfig<T>(
     model: IModel<T>? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -25,10 +25,10 @@ class RadioGroupConfig<C: Any, T: C?>(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
-    onConfig: (RadioGroup<C>.() -> Unit)? = null,
-    postInit: (RadioGroup<C>.() -> Unit)? = null
-) : IRadioGroupConfig<C, T>,
-    FormComponentConfig<RadioGroup<C>, C, T>(
+    onConfig: (RadioGroup<T>.() -> Unit)? = null,
+    postInit: (RadioGroup<T>.() -> Unit)? = null
+) : IRadioGroupConfig<T>,
+    FormComponentConfig<RadioGroup<T>, T>(
         model = model,
         label = label,
         isRequired = isRequired,

@@ -8,7 +8,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-interface IILocalDateTimeFieldConfig<T: LocalDateTime?> : IFormComponentConfig<LocalDateTimeField, LocalDateTime, T> {
+interface IILocalDateTimeFieldConfig<T: LocalDateTime?> : IFormComponentConfig<LocalDateTimeField, T> {
     var toLocalDate: ((LocalDateTime) -> LocalDate)?
     var toLocalTime: ((LocalDateTime) -> LocalTime)?
     var defaultTime: (() -> LocalTime)?
@@ -23,8 +23,8 @@ class LocalDateTimeFieldConfig<T: LocalDateTime?>(
     override var defaultTime: (() -> LocalTime)? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<LocalDateTime>? = null,
-    validators: List<IValidator<LocalDateTime>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -39,7 +39,7 @@ class LocalDateTimeFieldConfig<T: LocalDateTime?>(
     onConfig: (LocalDateTimeField.() -> Unit)? = null,
     postInit: (LocalDateTimeField.() -> Unit)? = null
 ) : IILocalDateTimeFieldConfig<T>,
-    FormComponentConfig<LocalDateTimeField, LocalDateTime, T>(
+    FormComponentConfig<LocalDateTimeField, T>(
         model = model,
         label = label,
         isRequired = isRequired,

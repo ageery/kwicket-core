@@ -33,6 +33,7 @@ fun <T : Serializable?> T.model(): IModel<T> = Model.of(this)
  * @receiver [List] of type [T]
  * @return model of the @receiver [List]
  */
+@Suppress("UNCHECKED_CAST")
 fun <T, L : List<T>> L.listModel(): IModel<L> = ListModel(this) as IModel<L>
 
 // FIXME: comment -- needed by Select2 components

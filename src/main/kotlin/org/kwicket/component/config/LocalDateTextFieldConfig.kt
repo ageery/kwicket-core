@@ -7,7 +7,7 @@ import org.apache.wicket.validation.IValidator
 import java.time.LocalDate
 import java.time.format.FormatStyle
 
-interface ILocalDateTextFieldConfig<T: LocalDate?> : IFormComponentConfig<LocalDateTextField, LocalDate, T> {
+interface ILocalDateTextFieldConfig<T: LocalDate?> : IFormComponentConfig<LocalDateTextField, T> {
     var formatPattern: String?
     var parsePattern: String?
     var dateStyle: FormatStyle?
@@ -20,8 +20,8 @@ class LocalDateTextFieldConfig<T: LocalDate?>(
     override var dateStyle: FormatStyle? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<LocalDate>? = null,
-    validators: List<IValidator<LocalDate>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -36,7 +36,7 @@ class LocalDateTextFieldConfig<T: LocalDate?>(
     onConfig: (LocalDateTextField.() -> Unit)? = null,
     postInit: (LocalDateTextField.() -> Unit)? = null
 ) : ILocalDateTextFieldConfig<T>,
-    FormComponentConfig<LocalDateTextField, LocalDate, T>(
+    FormComponentConfig<LocalDateTextField, T>(
         model = model,
         label = label,
         isRequired = isRequired,

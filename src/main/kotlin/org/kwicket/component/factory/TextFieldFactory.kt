@@ -15,15 +15,14 @@ import org.kwicket.toJavaType
  * @param config specifies the settings for the [TextField] component
  * @return [TextField] with the Wicket component id of [id] and configured by [config]
  */
-operator fun <C : Any, T : C?> ITextFieldConfig<C, T>.invoke(id: String): TextField<C> {
-    @Suppress("UNCHECKED_CAST")
-    val model = model as IModel<C?>
-    val type = type.toJavaType(isRequired = isRequired)
+operator fun <T> ITextFieldConfig<T>.invoke(id: String): TextField<T> {
+    val model = model
+    val type = type
 
     return if (requiresSubclass) {
         val onConfig = onConfig
         val stateless = stateless
-        object : TextField<C>(id, model, type) {
+        object : TextField<T>(id, model, type) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -33,6 +32,6 @@ operator fun <C : Any, T : C?> ITextFieldConfig<C, T>.invoke(id: String): TextFi
             override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
         }
     } else {
-        TextField<C>(id, model, type)
+        TextField<T>(id, model, type)
     }.config(this)
 }

@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.form.upload.FileUploadField
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
-interface IFileUploadFieldConfig : IFormComponentConfig<FileUploadField, MutableList<FileUpload>, MutableList<FileUpload>>
+interface IFileUploadFieldConfig : IFormComponentConfig<FileUploadField, MutableList<FileUpload>>
 
 class FileUploadFieldConfig(
     model: IModel<MutableList<FileUpload>>? = null,
@@ -29,7 +29,7 @@ class FileUploadFieldConfig(
     onConfig: (FileUploadField.() -> Unit)? = null,
     postInit: (FileUploadField.() -> Unit)? = null
 ) : IFileUploadFieldConfig,
-    FormComponentConfig<FileUploadField, MutableList<FileUpload>, MutableList<FileUpload>>(
+    FormComponentConfig<FileUploadField, MutableList<FileUpload>>(
         model = model,
         label = label,
         isRequired = isRequired,

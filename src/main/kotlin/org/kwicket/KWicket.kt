@@ -4,6 +4,7 @@ import org.apache.wicket.SharedResources
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.resource.IResource
 import org.apache.wicket.util.lang.Bytes
+import org.apache.wicket.util.string.StringValue
 
 internal const val wicketNamespacePrefix = "wicket"
 internal const val wicketIdAttr = "$wicketNamespacePrefix:id"
@@ -24,5 +25,5 @@ fun Map<String, *>.toParams() = PageParameters().apply {
     this@toParams.entries.forEach { add(it.key, it.value) }
 }
 
-@Suppress("HasPlatformType")
-operator fun PageParameters.get(key: String) = get(key)
+@Suppress("EXTENSION_SHADOWED_BY_MEMBER")
+operator fun PageParameters.get(key: String): StringValue = get(key)

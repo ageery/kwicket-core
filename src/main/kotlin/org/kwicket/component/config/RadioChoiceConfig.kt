@@ -6,19 +6,19 @@ import org.apache.wicket.markup.html.form.RadioChoice
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
-interface IRadioChoiceConfig<C: Any, T: C?> : IFormComponentConfig<RadioChoice<C>, C, T> {
-    var choices: IModel<List<C>>?
-    var choiceRenderer: IChoiceRenderer<C>?
+interface IRadioChoiceConfig<T> : IFormComponentConfig<RadioChoice<T>, T> {
+    var choices: IModel<List<T>>?
+    var choiceRenderer: IChoiceRenderer<T>?
 }
 
-class RadioChoiceConfig<C: Any, T: C?>(
+class RadioChoiceConfig<T>(
     model: IModel<T>? = null,
-    override var choices: IModel<List<C>>? = null,
-    override var choiceRenderer: IChoiceRenderer<C>? = null,
+    override var choices: IModel<List<T>>? = null,
+    override var choiceRenderer: IChoiceRenderer<T>? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -30,10 +30,10 @@ class RadioChoiceConfig<C: Any, T: C?>(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
-    onConfig: (RadioChoice<C>.() -> Unit)? = null,
-    postInit: (RadioChoice<C>.() -> Unit)? = null
-) : IRadioChoiceConfig<C, T>,
-    FormComponentConfig<RadioChoice<C>, C, T>(
+    onConfig: (RadioChoice<T>.() -> Unit)? = null,
+    postInit: (RadioChoice<T>.() -> Unit)? = null
+) : IRadioChoiceConfig<T>,
+    FormComponentConfig<RadioChoice<T>, T>(
         model = model,
         label = label,
         isRequired = isRequired,

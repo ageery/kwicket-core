@@ -110,7 +110,7 @@ internal fun <C : Component> C.config(config: IComponentConfig<C, *>): C {
     return this
 }
 
-internal fun <F : FormComponent<C>, C: Any, T: C?> F.config(config: IFormComponentConfig<F, C, T>): F {
+internal fun <F : FormComponent<T>, T> F.config(config: IFormComponentConfig<F, T>): F {
     this.config(config as IComponentConfig<F, T>)
     config.isRequired?.let { isRequired = it }
     config.label?.let { label = it }

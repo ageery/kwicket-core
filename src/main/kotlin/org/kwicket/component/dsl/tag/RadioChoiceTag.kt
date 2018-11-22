@@ -14,14 +14,14 @@ import org.kwicket.component.config.RadioChoiceConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
 import org.kwicket.component.factory.invoke
 
-fun <C: Any, T: C?> HTMLTag.radioChoice(
+fun <T> HTMLTag.radioChoice(
     id: String? = null,
-    choices: IModel<List<C>>,
-    choiceRenderer: IChoiceRenderer<C>? = null,
+    choices: IModel<List<T>>,
+    choiceRenderer: IChoiceRenderer<T>? = null,
     tagName: String = "select",
     label: IModel<String>? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     model: IModel<T>? = null,
     outputMarkupId: Boolean? = null,
     markupId: String? = null,
@@ -34,12 +34,12 @@ fun <C: Any, T: C?> HTMLTag.radioChoice(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: RadioChoiceTag<C, T>.() -> Unit = {}
+    block: RadioChoiceTag<T>.() -> Unit = {}
 ): Unit =
-    RadioChoiceTag<C, T>(
+    RadioChoiceTag(
         id = id,
         tagName = tagName,
-        config = RadioChoiceConfig<C, T>(
+        config = RadioChoiceConfig(
             choices = choices,
             choiceRenderer = choiceRenderer,
             label = label,
@@ -61,62 +61,15 @@ fun <C: Any, T: C?> HTMLTag.radioChoice(
         consumer = consumer
     ).visit(block)
 
-fun <C: Any, T: C?> HTMLTag.radioChoice(
-    id: String? = null,
-    choices: IModel<List<C>>,
-    choiceRenderer: IChoiceRenderer<C>,
-    tagName: String = "select",
-    label: IModel<String>? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
-    model: IModel<T>? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    enabled: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    initialAttributes: Map<String, String> = emptyMap(),
-    block: RadioChoiceTag<C, T>.() -> Unit = {}
-): Unit =
-    RadioChoiceTag<C, T>(
-        id = id,
-        tagName = tagName,
-        config = RadioChoiceConfig<C, T>(
-            choices = choices,
-            choiceRenderer = choiceRenderer,
-            label = label,
-            validator = validator,
-            validators = validators,
-            model = model,
-            markupId = markupId,
-            outputMarkupId = outputMarkupId,
-            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-            isVisible = visible,
-            isVisibilityAllowed = visibilityAllowed,
-            isEnabled = enabled,
-            escapeModelStrings = escapeModelStrings,
-            renderBodyOnly = renderBodyOnly,
-            behavior = behavior,
-            behaviors = behaviors
-        ),
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class RadioChoiceTag<C: Any, T: C?>(
+open class RadioChoiceTag<T>(
     id: String? = null,
     tagName: String = "span",
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
-    config: IRadioChoiceConfig<C, T>,
-    factory: (String, IRadioChoiceConfig<C, T>) -> RadioChoice<C> = { cid, c -> c.invoke<C, T>(cid) }
-) : IRadioChoiceConfig<C, T> by config,
-    ConfigurableComponentTag<T, RadioChoice<C>, IRadioChoiceConfig<C, T>>(
+    config: IRadioChoiceConfig<T>,
+    factory: (String, IRadioChoiceConfig<T>) -> RadioChoice<T> = { cid, c -> c(cid) }
+) : IRadioChoiceConfig<T> by config,
+    ConfigurableComponentTag<T, RadioChoice<T>, IRadioChoiceConfig<T>>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,

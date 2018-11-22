@@ -5,7 +5,7 @@ import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
-interface ICheckBoxConfig : IFormComponentConfig<CheckBox, Boolean, Boolean>
+interface ICheckBoxConfig : IFormComponentConfig<CheckBox, Boolean>
 
 class CheckBoxConfig(
     model: IModel<Boolean>? = null,
@@ -27,7 +27,7 @@ class CheckBoxConfig(
     onConfig: (CheckBox.() -> Unit)? = null,
     postInit: (CheckBox.() -> Unit)? = null
 ) : ICheckBoxConfig,
-    FormComponentConfig<CheckBox, Boolean, Boolean>(
+    FormComponentConfig<CheckBox, Boolean>(
         model = model,
         label = label,
         isRequired = isRequired,

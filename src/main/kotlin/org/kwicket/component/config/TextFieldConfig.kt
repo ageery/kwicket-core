@@ -6,17 +6,17 @@ import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import kotlin.reflect.KClass
 
-interface ITextFieldConfig<C : Any, T : C?> : IFormComponentConfig<TextField<C>, C, T> {
-    var type: KClass<C>?
+interface ITextFieldConfig<T> : IFormComponentConfig<TextField<T>, T> {
+    var type: Class<T>?
 }
 
-class TextFieldConfig<C : Any, T : C?>(
+class TextFieldConfig<T>(
     model: IModel<T>? = null,
-    override var type: KClass<C>? = null,
+    override var type: Class<T>? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -28,10 +28,10 @@ class TextFieldConfig<C : Any, T : C?>(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
-    onConfig: (TextField<C>.() -> Unit)? = null,
-    postInit: (TextField<C>.() -> Unit)? = null
-) : ITextFieldConfig<C, T>,
-    FormComponentConfig<TextField<C>, C, T>(
+    onConfig: (TextField<T>.() -> Unit)? = null,
+    postInit: (TextField<T>.() -> Unit)? = null
+) : ITextFieldConfig<T>,
+    FormComponentConfig<TextField<T>, T>(
         model = model,
         label = label,
         isRequired = isRequired,

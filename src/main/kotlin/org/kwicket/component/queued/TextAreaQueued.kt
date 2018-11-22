@@ -29,53 +29,9 @@ import org.kwicket.component.factory.invoke
  * @param block optional block to execute to configure the component
  * @return the created [TextField] that has been queued into the parent container
  */
-fun <T: Any> MarkupContainer.textArea(
+fun <T> MarkupContainer.textArea(
     id: String,
     model: IModel<T>? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    enabled: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    onConfig: (TextArea<T>.() -> Unit)? = null,
-    postInit: (TextArea<T>.() -> Unit)? = null,
-    label: IModel<String>? = null,
-    validator: IValidator<T>? = null,
-    validators: List<IValidator<T>>? = null,
-    block: (TextAreaConfig<T, T>.() -> Unit)? = null
-): TextArea<T> = q(
-    id = id,
-    block = block,
-    factory = { cid, config -> config.invoke<T, T>(cid) },
-    config = TextAreaConfig(
-        model = model,
-        markupId = markupId,
-        outputMarkupId = outputMarkupId,
-        outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-        isVisible = visible,
-        isVisibilityAllowed = visibilityAllowed,
-        isEnabled = enabled,
-        escapeModelStrings = escapeModelStrings,
-        renderBodyOnly = renderBodyOnly,
-        behavior = behavior,
-        behaviors = behaviors,
-        onConfig = onConfig,
-        label = label,
-        isRequired = true,
-        validator = validator,
-        validators = validators,
-        postInit = postInit
-    )
-)
-
-fun <T: Any> MarkupContainer.textArea(
-    id: String,
-    model: IModel<T?>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -92,12 +48,12 @@ fun <T: Any> MarkupContainer.textArea(
     isRequired: Boolean? = null,
     validator: IValidator<T>? = null,
     validators: List<IValidator<T>>? = null,
-    block: (TextAreaConfig<T, T?>.() -> Unit)? = null
+    block: (TextAreaConfig<T>.() -> Unit)? = null
 ): TextArea<T> = q(
     id = id,
     block = block,
-    factory = { cid, config -> config<T, T?>(cid) },
-    config = TextAreaConfig<T, T?>(
+    factory = { cid, config -> config.invoke(cid) },
+    config = TextAreaConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

@@ -29,7 +29,7 @@ import org.kwicket.component.factory.invoke
  * @param block optional block to execute to configure the component
  * @return the created [TextField] that has been queued into the parent container
  */
-fun <C: Any, T: C?> MarkupContainer.select(
+fun <T> MarkupContainer.select(
     id: String,
     model: IModel<T>? = null,
     markupId: String? = null,
@@ -42,15 +42,15 @@ fun <C: Any, T: C?> MarkupContainer.select(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (Select<C>.() -> Unit)? = null,
-    postInit: (Select<C>.() -> Unit)? = null,
+    onConfig: (Select<T>.() -> Unit)? = null,
+    postInit: (Select<T>.() -> Unit)? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
-    block: (SelectConfig<C, T>.() -> Unit)? = null
-): Select<C> = q(
-    id = id, block = block, factory = { cid, config -> config<C, T>(cid) }, config = SelectConfig<C, T>(
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
+    block: (SelectConfig<T>.() -> Unit)? = null
+): Select<T> = q(
+    id = id, block = block, factory = { cid, config -> config.invoke(cid) }, config = SelectConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

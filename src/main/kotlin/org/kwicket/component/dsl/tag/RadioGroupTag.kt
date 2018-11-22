@@ -8,17 +8,18 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.RadioGroup
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
+import org.kwicket.component.config.IComponentConfig
 import org.kwicket.component.config.IRadioGroupConfig
 import org.kwicket.component.config.RadioGroupConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
 import org.kwicket.component.factory.invoke
 
-fun <C: Any, T: C?> HTMLTag.radioGroup(
+fun <T> HTMLTag.radioGroup(
     id: String? = null,
     tagName: String = "input",
     label: IModel<String>? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -31,12 +32,12 @@ fun <C: Any, T: C?> HTMLTag.radioGroup(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: RadioGroupTag<C, T>.() -> Unit = {}
+    block: RadioGroupTag<T>.() -> Unit = {}
 ): Unit =
-    RadioGroupTag<C, T>(
+    RadioGroupTag(
         id = id,
         tagName = tagName,
-        config = RadioGroupConfig<C, T>(
+        config = RadioGroupConfig(
             label = label,
             validator = validator,
             validators = validators,
@@ -56,15 +57,17 @@ fun <C: Any, T: C?> HTMLTag.radioGroup(
         consumer = consumer
     ).visit(block)
 
-open class RadioGroupTag<C: Any, T: C?>(
+//typealias ComponentFactoryType<C, T> = (String, IComponentConfig<C, T>) -> C
+
+open class RadioGroupTag<T>(
     id: String? = null,
     tagName: String = "span",
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
-    config: IRadioGroupConfig<C, T>,
-    factory: (String, IRadioGroupConfig<C, T>) -> RadioGroup<C> = { cid, c -> c<C,T>(cid) }
-) : IRadioGroupConfig<C, T> by config,
-    ConfigurableComponentTag<T, RadioGroup<C>, IRadioGroupConfig<C, T>>(
+    config: IRadioGroupConfig<T>,
+    factory: (String, IRadioGroupConfig<T>) -> RadioGroup<T> = { cid, c -> c(cid) }
+) : IRadioGroupConfig<T> by config,
+    ConfigurableComponentTag<T, RadioGroup<T>, IRadioGroupConfig<T>>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,

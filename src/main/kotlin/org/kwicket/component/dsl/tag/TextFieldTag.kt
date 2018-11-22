@@ -13,12 +13,13 @@ import org.kwicket.component.config.TextFieldConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
 import org.kwicket.component.factory.invoke
 
-fun <T: Any> HTMLTag.textField(
+fun <T> HTMLTag.textField(
     id: String? = null,
     tagName: String = "input",
     label: IModel<String>? = null,
     validator: IValidator<T>? = null,
     validators: List<IValidator<T>>? = null,
+    isRequired: Boolean? = null,
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -31,57 +32,12 @@ fun <T: Any> HTMLTag.textField(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = mapOf("type" to "text"),
-    block: TextFieldTag<T, T>.() -> Unit = {}
+    block: TextFieldTag<T>.() -> Unit = {}
 ): Unit =
     TextFieldTag(
         id = id,
         tagName = tagName,
         config = TextFieldConfig(
-            label = label,
-            isRequired = true,
-            validator = validator,
-            validators = validators,
-            model = model,
-            markupId = markupId,
-            outputMarkupId = outputMarkupId,
-            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-            isVisible = visible,
-            isVisibilityAllowed = visibilityAllowed,
-            isEnabled = enabled,
-            escapeModelStrings = escapeModelStrings,
-            renderBodyOnly = renderBodyOnly,
-            behavior = behavior,
-            behaviors = behaviors
-        ),
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-fun <T: Any> HTMLTag.textField(
-    id: String? = null,
-    tagName: String = "input",
-    label: IModel<String>? = null,
-    validator: IValidator<T>? = null,
-    validators: List<IValidator<T>>? = null,
-    isRequired: Boolean? = null,
-    model: IModel<T?>? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    enabled: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    initialAttributes: Map<String, String> = mapOf("type" to "text"),
-    block: TextFieldTag<T, T?>.() -> Unit = {}
-): Unit =
-    TextFieldTag<T, T?>(
-        id = id,
-        tagName = tagName,
-        config = TextFieldConfig<T, T?>(
             label = label,
             isRequired = isRequired,
             validator = validator,
@@ -102,15 +58,15 @@ fun <T: Any> HTMLTag.textField(
         consumer = consumer
     ).visit(block)
 
-open class TextFieldTag<C : Any, T : C?>(
+open class TextFieldTag<T>(
     id: String? = null,
     tagName: String = "input",
     initialAttributes: Map<String, String> = mapOf("type" to "text"),
     consumer: TagConsumer<*>,
-    config: ITextFieldConfig<C, T>,
-    factory: (String, ITextFieldConfig<C, T>) -> TextField<C> = { cid, c -> c.invoke<C, T>(cid) }
-) : ITextFieldConfig<C, T> by config,
-    ConfigurableComponentTag<T, TextField<C>, ITextFieldConfig<C, T>>(
+    config: ITextFieldConfig<T>,
+    factory: (String, ITextFieldConfig<T>) -> TextField<T> = { cid, c -> c(cid) }
+) : ITextFieldConfig<T> by config,
+    ConfigurableComponentTag<T, TextField<T>, ITextFieldConfig<T>>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,

@@ -30,11 +30,11 @@ import org.kwicket.component.factory.invoke
  * @param block optional block to execute to configure the component
  * @return the created [TextField] that has been queued into the parent container
  */
-fun <C: Any, T: C?> MarkupContainer.radioChoice(
+fun <T> MarkupContainer.radioChoice(
     id: String,
     model: IModel<T>? = null,
-    choices: IModel<List<C>>,
-    choiceRenderer: IChoiceRenderer<C>? = null,
+    choices: IModel<List<T>>,
+    choiceRenderer: IChoiceRenderer<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -45,15 +45,15 @@ fun <C: Any, T: C?> MarkupContainer.radioChoice(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (RadioChoice<C>.() -> Unit)? = null,
-    postInit: (RadioChoice<C>.() -> Unit)? = null,
+    onConfig: (RadioChoice<T>.() -> Unit)? = null,
+    postInit: (RadioChoice<T>.() -> Unit)? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
-    block: (RadioChoiceConfig<C, T>.() -> Unit)? = null
-): RadioChoice<C> = q(
-    id = id, block = block, factory = { cid, config -> config.invoke<C, T>(cid) }, config = RadioChoiceConfig<C, T>(
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
+    block: (RadioChoiceConfig<T>.() -> Unit)? = null
+): RadioChoice<T> = q(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = RadioChoiceConfig(
         model = model,
         choices = choices,
         choiceRenderer = choiceRenderer,

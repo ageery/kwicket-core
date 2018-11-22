@@ -13,12 +13,12 @@ import org.kwicket.component.config.SelectConfig
 import org.kwicket.component.dsl.ConfigurableComponentTag
 import org.kwicket.component.factory.invoke
 
-fun <C: Any, T: C?> HTMLTag.select(
+fun <T> HTMLTag.select(
     id: String? = null,
     tagName: String = "select",
     label: IModel<String>? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     model: IModel<T>? = null,
     outputMarkupId: Boolean? = null,
     markupId: String? = null,
@@ -31,12 +31,12 @@ fun <C: Any, T: C?> HTMLTag.select(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     initialAttributes: Map<String, String> = emptyMap(),
-    block: SelectTag<C, T>.() -> Unit = {}
+    block: SelectTag<T>.() -> Unit = {}
 ): Unit =
-    SelectTag<C, T>(
+    SelectTag(
         id = id,
         tagName = tagName,
-        config = SelectConfig<C, T>(
+        config = SelectConfig(
             label = label,
             validator = validator,
             validators = validators,
@@ -56,58 +56,15 @@ fun <C: Any, T: C?> HTMLTag.select(
         consumer = consumer
     ).visit(block)
 
-fun <C: Any, T: C?> HTMLTag.select(
-    id: String? = null,
-    tagName: String = "select",
-    label: IModel<String>? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
-    model: IModel<T>? = null,
-    markupId: String? = null,
-    outputMarkupId: Boolean? = null,
-    outputMarkupPlaceholderTag: Boolean? = null,
-    visible: Boolean? = null,
-    visibilityAllowed: Boolean? = null,
-    enabled: Boolean? = null,
-    escapeModelStrings: Boolean? = null,
-    renderBodyOnly: Boolean? = null,
-    behavior: Behavior? = null,
-    behaviors: List<Behavior>? = null,
-    initialAttributes: Map<String, String> = emptyMap(),
-    block: SelectTag<C, T>.() -> Unit = {}
-): Unit =
-    SelectTag<C, T>(
-        id = id,
-        tagName = tagName,
-        config = SelectConfig<C, T>(
-            label = label,
-            validator = validator,
-            validators = validators,
-            model = model,
-            markupId = markupId,
-            outputMarkupId = outputMarkupId,
-            outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
-            isVisible = visible,
-            isVisibilityAllowed = visibilityAllowed,
-            isEnabled = enabled,
-            escapeModelStrings = escapeModelStrings,
-            renderBodyOnly = renderBodyOnly,
-            behavior = behavior,
-            behaviors = behaviors
-        ),
-        initialAttributes = initialAttributes,
-        consumer = consumer
-    ).visit(block)
-
-open class SelectTag<C: Any, T: C?>(
+open class SelectTag<T>(
     id: String? = null,
     tagName: String = "select",
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
-    config: ISelectConfig<C, T>,
-    factory: (String, ISelectConfig<C, T>) -> Select<C> = { cid, c -> c<C, T>(cid) }
-) : ISelectConfig<C, T> by config,
-    ConfigurableComponentTag<T, Select<C>, ISelectConfig<C, T>>(
+    config: ISelectConfig<T>,
+    factory: (String, ISelectConfig<T>) -> Select<T> = { cid, c -> c(cid) }
+) : ISelectConfig<T> by config,
+    ConfigurableComponentTag<T, Select<T>, ISelectConfig<T>>(
         id = id,
         initialAttributes = initialAttributes,
         consumer = consumer,

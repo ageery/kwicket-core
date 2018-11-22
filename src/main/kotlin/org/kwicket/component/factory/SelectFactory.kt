@@ -1,7 +1,6 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.extensions.markup.html.form.select.Select
-import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.ISelectConfig
 
@@ -14,13 +13,12 @@ import org.kwicket.component.config.ISelectConfig
  * @receiver configuration for creating the [Select]
  * @return [Select] component based on the configuration and with a Wicket identifier of [id]
  */
-operator fun <C: Any, T: C?> ISelectConfig<C, T>.invoke(id: String): Select<C> {
-    @Suppress("UNCHECKED_CAST")
-    val model = model as IModel<C?>
+operator fun <T> ISelectConfig<T>.invoke(id: String): Select<T> {
+    val model = model
     return if (requiresSubclass) {
         val onConfig = onConfig
         val stateless = stateless
-        object : Select<C>(id, model) {
+        object : Select<T>(id, model) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -31,6 +29,6 @@ operator fun <C: Any, T: C?> ISelectConfig<C, T>.invoke(id: String): Select<C> {
 
         }
     } else {
-        Select<C>(id, model)
+        Select<T>(id, model)
     }.config(this)
 }

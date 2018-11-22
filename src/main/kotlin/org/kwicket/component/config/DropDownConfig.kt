@@ -6,19 +6,19 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
-interface IDropDownChoiceConfig<C: Any, T: C?> : IFormComponentConfig<DropDownChoice<C>, C, T> {
-    var choices: IModel<List<C>>?
-    var choiceRenderer: IChoiceRenderer<C>?
+interface IDropDownChoiceConfig<T> : IFormComponentConfig<DropDownChoice<T>, T> {
+    var choices: IModel<out List<T>>?
+    var choiceRenderer: IChoiceRenderer<T>?
 }
 
-class DropDownChoiceConfig<C: Any, T: C?>(
+class DropDownChoiceConfig<T>(
     model: IModel<T>? = null,
-    override var choices: IModel<List<C>>? = null,
-    override var choiceRenderer: IChoiceRenderer<C>? = null,
+    override var choices: IModel<out List<T>>? = null,
+    override var choiceRenderer: IChoiceRenderer<T>? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -30,10 +30,10 @@ class DropDownChoiceConfig<C: Any, T: C?>(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
-    onConfig: (DropDownChoice<C>.() -> Unit)? = null,
-    postInit: (DropDownChoice<C>.() -> Unit)? = null
-) : IDropDownChoiceConfig<C, T>,
-    FormComponentConfig<DropDownChoice<C>, C, T>(
+    onConfig: (DropDownChoice<T>.() -> Unit)? = null,
+    postInit: (DropDownChoice<T>.() -> Unit)? = null
+) : IDropDownChoiceConfig<T>,
+    FormComponentConfig<DropDownChoice<T>, T>(
         model = model,
         label = label,
         isRequired = isRequired,

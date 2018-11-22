@@ -29,7 +29,7 @@ import org.kwicket.component.config.RadioGroupConfig
  * @param block optional block to execute to configure the component
  * @return the created [CheckBox] that has been queued into the parent container
  */
-fun <C: Any, T : C?> MarkupContainer.radioGroup(
+fun <T> MarkupContainer.radioGroup(
     id: String,
     model: IModel<T>? = null,
     markupId: String? = null,
@@ -42,14 +42,14 @@ fun <C: Any, T : C?> MarkupContainer.radioGroup(
     renderBodyOnly: Boolean? = null,
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
-    onConfig: (RadioGroup<C>.() -> Unit)? = null,
-    postInit: (RadioGroup<C>.() -> Unit)? = null,
+    onConfig: (RadioGroup<T>.() -> Unit)? = null,
+    postInit: (RadioGroup<T>.() -> Unit)? = null,
     label: IModel<String>? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
-    block: (RadioGroupConfig<C, T>.() -> Unit)? = null
-): RadioGroup<C> = q(id = id, block = block, factory = { cid, config -> config<C,T>(cid)}, config =
-    RadioGroupConfig<C, T>(
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
+    block: (RadioGroupConfig<T>.() -> Unit)? = null
+): RadioGroup<T> = q(id = id, block = block, factory = { cid, config -> config(cid)}, config =
+    RadioGroupConfig(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

@@ -8,14 +8,14 @@ import org.apache.wicket.markup.html.form.TextArea
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
-interface ITextAreaConfig<C: Any, T: C?> : IFormComponentConfig<TextArea<C>, C, T>
+interface ITextAreaConfig<T> : IFormComponentConfig<TextArea<T>, T>
 
-class TextAreaConfig<C: Any, T: C?>(
+class TextAreaConfig<T>(
     model: IModel<T>? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<C>? = null,
-    validators: List<IValidator<C>>? = null,
+    validator: IValidator<T>? = null,
+    validators: List<IValidator<T>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -27,10 +27,10 @@ class TextAreaConfig<C: Any, T: C?>(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
-    onConfig: (TextArea<C>.() -> Unit)? = null,
-    postInit: (TextArea<C>.() -> Unit)? = null
-) : ITextAreaConfig<C, T>,
-    FormComponentConfig<TextArea<C>, C, T>(
+    onConfig: (TextArea<T>.() -> Unit)? = null,
+    postInit: (TextArea<T>.() -> Unit)? = null
+) : ITextAreaConfig<T>,
+    FormComponentConfig<TextArea<T>, T>(
         model = model,
         label = label,
         isRequired = isRequired,
