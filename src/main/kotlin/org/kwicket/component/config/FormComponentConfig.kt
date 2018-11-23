@@ -14,15 +14,15 @@ import org.apache.wicket.validation.IValidator
 interface IFormComponentConfig<F : FormComponent<in T>, T> : IComponentConfig<F, T> {
     var label: IModel<String>?
     var isRequired: Boolean?
-    var validator: IValidator<T>?
-    var validators: List<IValidator<T>>?
+    var validator: IValidator<in T>?
+    var validators: List<IValidator<in T>>?
 }
 
 open class FormComponentConfig<F : FormComponent<in T>, T>(
     override var label: IModel<String>? = null,
     override var isRequired: Boolean? = null,
-    override var validator: IValidator<T>? = null,
-    override var validators: List<IValidator<T>>? = null,
+    override var validator: IValidator<in T>? = null,
+    override var validators: List<IValidator<in T>>? = null,
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,

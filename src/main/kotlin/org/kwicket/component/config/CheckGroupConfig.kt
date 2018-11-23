@@ -9,16 +9,16 @@ import org.apache.wicket.validation.IValidator
 interface ICheckGroupConfig<T, L: Collection<T>> : IComponentConfig<CheckGroup<T>, L> {
     var label: IModel<String>?
     var isRequired: Boolean?
-    var validator: IValidator<L>?
-    var validators: List<IValidator<L>>?
+    var validator: IValidator<in L>?
+    var validators: List<IValidator<in L>>?
 }
 
 class CheckGroupConfig<T, L: Collection<T>>(
     model: IModel<L>? = null,
     override var label: IModel<String>? = null,
     override var isRequired: Boolean? = null,
-    override var validator: IValidator<L>? = null,
-    override var validators: List<IValidator<L>>? = null,
+    override var validator: IValidator<in L>? = null,
+    override var validators: List<IValidator<in L>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,

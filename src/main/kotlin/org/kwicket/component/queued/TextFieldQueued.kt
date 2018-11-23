@@ -29,7 +29,7 @@ import kotlin.reflect.KClass
  * @param block optional block to execute to configure the component
  * @return the created [TextField] that has been queued into the parent container
  */
-fun <T> MarkupContainer.textField(
+fun <T, V: T> MarkupContainer.textField(
     id: String,
     model: IModel<T>? = null,
     type: Class<T>? = null,
@@ -47,8 +47,8 @@ fun <T> MarkupContainer.textField(
     postInit: (TextField<T>.() -> Unit)? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<T>? = null,
-    validators: List<IValidator<T>>? = null,
+    validator: IValidator<V>? = null,
+    validators: List<IValidator<in T>>? = null,
     block: (TextFieldConfig<T>.() -> Unit)? = null
 ): TextField<T> = q(id = id, block = block, factory = {cid, config -> config(cid) }, config = TextFieldConfig(
     model = model,
@@ -66,7 +66,7 @@ fun <T> MarkupContainer.textField(
     onConfig = onConfig,
     label = label,
     isRequired = isRequired,
-    validator = validator,
-    validators = validators,
+    //validator = validator,
+    //validators = validators,
     postInit = postInit
 ))
