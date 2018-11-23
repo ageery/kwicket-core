@@ -8,13 +8,13 @@ import org.apache.wicket.validation.IValidator
 
 interface IDropDownChoiceConfig<T> : IFormComponentConfig<DropDownChoice<T>, T> {
     var choices: IModel<out List<T>>?
-    var choiceRenderer: IChoiceRenderer<T>?
+    var choiceRenderer: IChoiceRenderer<in T>?
 }
 
 class DropDownChoiceConfig<T>(
     model: IModel<T>? = null,
     override var choices: IModel<out List<T>>? = null,
-    override var choiceRenderer: IChoiceRenderer<T>? = null,
+    override var choiceRenderer: IChoiceRenderer<in T>? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
     validator: IValidator<T>? = null,

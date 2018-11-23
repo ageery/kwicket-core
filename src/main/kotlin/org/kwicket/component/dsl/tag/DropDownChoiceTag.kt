@@ -16,8 +16,8 @@ import org.kwicket.component.factory.invoke
 
 fun <T> HTMLTag.dropDownChoice(
     id: String? = null,
-    choices: IModel<List<T>>,
-    choiceRenderer: IChoiceRenderer<T>? = null,
+    choices: IModel<out List<T>>,
+    choiceRenderer: IChoiceRenderer<in T>? = null,
     tagName: String = "select",
     label: IModel<String>? = null,
     validator: IValidator<T>? = null,
@@ -69,7 +69,7 @@ open class DropDownChoiceTag<T>(
     initialAttributes: Map<String, String> = emptyMap(),
     consumer: TagConsumer<*>,
     config: IDropDownChoiceConfig<T>,
-    factory: (String, IDropDownChoiceConfig<T>) -> DropDownChoice<T> = { cid, c -> c(cid) }
+    factory: (String, IDropDownChoiceConfig<T>) -> DropDownChoice<T> = { cid, c -> c.invoke(cid) }
 ) : IDropDownChoiceConfig<T> by config,
     ConfigurableComponentTag<T, DropDownChoice<T>, IDropDownChoiceConfig<T>>(
         id = id,

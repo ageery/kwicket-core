@@ -1,8 +1,6 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.markup.html.form.DropDownChoice
-import org.apache.wicket.markup.html.form.IChoiceRenderer
-import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.IDropDownChoiceConfig
 
@@ -38,6 +36,6 @@ operator fun <T> IDropDownChoiceConfig<T>.invoke(id: String): DropDownChoice<T> 
         }
 
     } else {
-        DropDownChoice<T>(id, model, choices, choiceRenderer)
+        DropDownChoice(id, model, choices, choiceRenderer)
     }.config(this)
 }
