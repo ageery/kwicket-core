@@ -9,20 +9,26 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.form.FormComponent
-import org.apache.wicket.markup.html.form.LabeledWebMarkupContainer
 import org.apache.wicket.markup.html.image.Image
 import org.apache.wicket.markup.html.link.Link
 import org.apache.wicket.markup.html.media.MediaComponent
+import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.IModel
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.validation.IValidator
+import org.kwicket.component.config.FormConfig
 import org.kwicket.component.config.IAbstractButtonConfig
 import org.kwicket.component.config.IAbstractFormConfig
 import org.kwicket.component.config.IAbstractLinkConfig
 import org.kwicket.component.config.IComponentConfig
 import org.kwicket.component.config.IFormComponentConfig
 import org.kwicket.component.config.IImageConfig
+import org.kwicket.component.config.ILabelConfig
 import org.kwicket.component.config.IMediaComponentConfig
+import org.kwicket.component.config.LabelConfig
+import org.kwicket.component.config.WebMarkupContainerConfig
+import org.kwicket.component.factory.invoke
+import org.kwicket.model.model
 import kotlin.reflect.KClass
 
 /**
@@ -312,3 +318,31 @@ fun <C: Component, T, I: IComponentConfig<C, T>> MarkupContainer.q(
     block: (I.() -> Unit)? = null,
     factory: (String, I) -> C
 ) = q(factory.invoke(id, config.apply { block?.invoke(this) }))
+
+// FIXME: below is an experiment in adding components by their configuration
+
+fun <C: KClass<I>, I: IComponentConfig<*, *>> findFactory(config: C): ((String, I) -> C)? = { id, config -> (config as ILabelConfig<*>).invoke(id) as C}
+
+inline fun <C: Component, T, reified I: IComponentConfig<C, T>> MarkupContainer.x(id: String, config: I, block: I.() -> Unit = {}): C {
+    //return config.also{ block?.invoke(it) }.findFactory()?.invoke(id) ?: throw RuntimeException("No factory!")
+    val x = findFactory(I::class)!!
+    //val config = I::class.primaryConstructor?.call()!!
+    block.invoke(config)
+    return x.invoke(id, config) as C
+}
+
+class Andrew() : Panel("test") {
+
+    init {
+        val y = x("test", LabelConfig(model = "hi".model())) {
+            onConfig = {
+                isVisible = false
+            }
+        }
+        val z = x("container", WebMarkupContainerConfig<Unit>())
+        val form = x("container", FormConfig<String>()) {
+            model = "Hi".model()
+        }
+    }
+
+}
