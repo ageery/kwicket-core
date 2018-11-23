@@ -8,8 +8,6 @@ import org.apache.wicket.model.IModel
 
 interface IListViewConfig<T, L: List<T>> : IComponentConfig<ListView<T>, L> {
     var populateItem: (ListItem<T>.() -> Unit)?
-    override val requiresSubclass: Boolean
-        get() = true
 }
 
 class ListViewConfig<T, L: List<T>>(

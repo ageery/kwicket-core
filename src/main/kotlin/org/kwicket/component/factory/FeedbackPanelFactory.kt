@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.panel.FeedbackPanel
 import org.kwicket.component.config
 import org.kwicket.component.config.IFeedbackPanelConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [FeedbackPanel] component based on the configuration and with a Wicket identifier of [id].

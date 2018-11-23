@@ -4,6 +4,7 @@ import org.apache.wicket.extensions.markup.html.form.datetime.ZonedDateTimeField
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.IIZonedDateTimeFieldConfig
+import org.kwicket.component.config.requiresSubclass
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime

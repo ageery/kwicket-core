@@ -4,6 +4,7 @@ import org.apache.wicket.markup.html.form.StatelessForm
 import org.apache.wicket.markup.html.image.Image
 import org.kwicket.component.config
 import org.kwicket.component.config.IStatelessFormConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [StatelessForm] component based on the configuration and with a Wicket identifier of [id].

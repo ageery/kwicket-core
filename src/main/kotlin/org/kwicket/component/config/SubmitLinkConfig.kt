@@ -9,8 +9,6 @@ interface ISubmitLinkConfig<T> : IComponentConfig<SubmitLink, T> {
     var form: Form<*>?
     var onSubmit: (SubmitLink.() -> Unit)?
     var onError: (SubmitLink.() -> Unit)?
-    override val requiresSubclass: Boolean
-        get() = true
 }
 
 class SubmitLinkConfig<T>(

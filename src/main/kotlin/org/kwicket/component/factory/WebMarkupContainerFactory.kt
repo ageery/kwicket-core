@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.kwicket.component.config
 import org.kwicket.component.config.IWebMarkupContainerConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates a [WebMarkupContainer] component with the Wicket identifier set to [id] and configured using [config].

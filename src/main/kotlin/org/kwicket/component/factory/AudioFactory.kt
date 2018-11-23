@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.media.audio.Audio
 import org.kwicket.component.config
 import org.kwicket.component.config.IAudioConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [Audio] component with the Wicket identifier set to [id] and configured using [config].

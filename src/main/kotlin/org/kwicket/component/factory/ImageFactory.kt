@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.image.Image
 import org.kwicket.component.config
 import org.kwicket.component.config.IImageConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [Image] component based on the configuration and with a Wicket identifier of [id].

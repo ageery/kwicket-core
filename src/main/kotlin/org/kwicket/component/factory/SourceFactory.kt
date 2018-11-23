@@ -4,6 +4,7 @@ import org.apache.wicket.extensions.markup.html.form.select.Select
 import org.apache.wicket.markup.html.image.Source
 import org.kwicket.component.config
 import org.kwicket.component.config.ISourceConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates a [Source] component based on the configuration and with a Wicket identifier of [id].

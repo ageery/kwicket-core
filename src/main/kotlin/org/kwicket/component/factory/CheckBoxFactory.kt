@@ -4,6 +4,7 @@ import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.markup.html.form.CheckBox
 import org.kwicket.component.config
 import org.kwicket.component.config.ICheckBoxConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [CheckBox] component based on the configuration and with a Wicket identifier of [id].

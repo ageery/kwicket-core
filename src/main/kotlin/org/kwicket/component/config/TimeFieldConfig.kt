@@ -5,10 +5,11 @@ import org.apache.wicket.extensions.markup.html.form.datetime.TimeField
 import org.apache.wicket.model.IModel
 import java.time.LocalTime
 
+internal val ITimeFieldConfig.requiresSubclass: Boolean
+    get() = (this as IComponentConfig<*, *>).requiresSubclass || use12HourFormat != null
+
 interface ITimeFieldConfig : IComponentConfig<TimeField, LocalTime> {
     var use12HourFormat: Boolean?
-    override val requiresSubclass: Boolean
-        get() = super.requiresSubclass || use12HourFormat != null
 }
 
 class TimeFieldConfig(

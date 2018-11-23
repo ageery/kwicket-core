@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.form.CheckGroup
 import org.kwicket.component.config
 import org.kwicket.component.config.ICheckGroupConfig
+import org.kwicket.component.config.requiresSubclass
 
 // FIXME: the problem is that checkGroup should extend FormComponentFactory but it doesn't...
 // FIXME: probably better to fix it at the source than here...

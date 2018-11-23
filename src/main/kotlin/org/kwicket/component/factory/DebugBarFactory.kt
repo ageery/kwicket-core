@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.devutils.debugbar.DebugBar
 import org.kwicket.component.config
 import org.kwicket.component.config.IDebugBarConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [DebugBar] component based on the configuration and with a Wicket identifier of [id].

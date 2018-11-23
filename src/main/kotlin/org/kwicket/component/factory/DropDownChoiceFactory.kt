@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.form.DropDownChoice
 import org.kwicket.component.config
 import org.kwicket.component.config.IDropDownChoiceConfig
+import org.kwicket.component.config.requiresSubclass
 
 // .resM() -- resource model, .strM() -- string resource model, litM() -- literal model
 // val myLabel: Label = LabelConfig(model = "test".m()) + "myLabel"

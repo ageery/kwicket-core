@@ -8,12 +8,13 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+internal val IILocalDateTimeFieldConfig<*>.requiresSubclass: Boolean
+    get() = (this as IComponentConfig<*, *>).requiresSubclass || toLocalDate != null || toLocalTime != null || defaultTime != null
+
 interface IILocalDateTimeFieldConfig<T: LocalDateTime?> : IFormComponentConfig<LocalDateTimeField, T> {
     var toLocalDate: ((LocalDateTime) -> LocalDate)?
     var toLocalTime: ((LocalDateTime) -> LocalTime)?
     var defaultTime: (() -> LocalTime)?
-    override val requiresSubclass: Boolean
-        get() = super.requiresSubclass || toLocalDate != null || toLocalTime != null || defaultTime != null
 }
 
 class LocalDateTimeFieldConfig<T: LocalDateTime?>(

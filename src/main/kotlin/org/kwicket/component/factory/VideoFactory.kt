@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.media.video.Video
 import org.kwicket.component.config
 import org.kwicket.component.config.IVideoConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates a [Video] component with the Wicket identifier set to [id] and configured using [config].

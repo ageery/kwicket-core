@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.extensions.markup.html.form.select.Select
 import org.kwicket.component.config
 import org.kwicket.component.config.ISelectConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates a [Select] component based on the configuration and with a Wicket identifier of [id].

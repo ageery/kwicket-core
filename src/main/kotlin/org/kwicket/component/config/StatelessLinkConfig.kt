@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.link.StatelessLink
 
 interface IStatelessLinkConfig<T> : IAbstractLinkConfig<StatelessLink<T>, T> {
     var onClick: (StatelessLink<T>.() -> Unit)?
-    override val requiresSubclass: Boolean get() = true
 }
 
 class StatelessLinkConfig<T>(

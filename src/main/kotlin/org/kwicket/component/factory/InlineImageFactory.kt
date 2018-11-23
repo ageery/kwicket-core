@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.image.InlineImage
 import org.kwicket.component.config
 import org.kwicket.component.config.IInlineImageConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [InlineImage] component based on the configuration and with a Wicket identifier of [id].

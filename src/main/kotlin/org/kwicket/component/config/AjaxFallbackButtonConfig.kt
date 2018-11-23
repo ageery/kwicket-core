@@ -10,8 +10,6 @@ import org.apache.wicket.model.IModel
 interface IAjaxFallbackButtonConfig : IAbstractButtonConfig<AjaxFallbackButton> {
     var onSubmit: (AjaxFallbackButton.(AjaxRequestTarget?) -> Unit)?
     var onError: (AjaxFallbackButton.(AjaxRequestTarget?) -> Unit)?
-    override val requiresSubclass: Boolean
-        get() = true
 }
 
 class AjaxFallbackButtonConfig(

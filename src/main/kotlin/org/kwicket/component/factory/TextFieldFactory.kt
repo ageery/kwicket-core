@@ -1,10 +1,9 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.markup.html.form.TextField
-import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.ITextFieldConfig
-import org.kwicket.toJavaType
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates a [TextField] component with the Wicket identifier set to [id] and configured using [config].

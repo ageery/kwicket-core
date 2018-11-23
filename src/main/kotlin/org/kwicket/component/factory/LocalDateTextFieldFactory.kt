@@ -4,6 +4,7 @@ import org.apache.wicket.extensions.markup.html.form.datetime.LocalDateTextField
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.ILocalDateTextFieldConfig
+import org.kwicket.component.config.requiresSubclass
 import java.time.LocalDate
 
 /**

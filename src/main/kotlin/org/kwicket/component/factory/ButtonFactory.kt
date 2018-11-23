@@ -4,6 +4,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.apache.wicket.markup.html.form.Button
 import org.kwicket.component.config
 import org.kwicket.component.config.IButtonConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [Button] component based on the configuration and with a Wicket identifier of [id].

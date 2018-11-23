@@ -4,6 +4,7 @@ import org.apache.wicket.markup.html.form.RadioChoice
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config
 import org.kwicket.component.config.IRadioChoiceConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates a [RadioChoice] component based on the configuration and with a Wicket identifier of [id].

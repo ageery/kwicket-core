@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.form.Radio
 import org.kwicket.component.config
 import org.kwicket.component.config.IRadioConfig
+import org.kwicket.component.config.requiresSubclass
 
 //  FIXME: should radio config extend labelcomponent should there be a generic method for that?
 

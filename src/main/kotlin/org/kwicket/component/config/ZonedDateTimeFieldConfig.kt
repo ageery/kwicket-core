@@ -8,12 +8,13 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
+internal val IIZonedDateTimeFieldConfig<*>.requiresSubclass: Boolean
+    get() = (this as IComponentConfig<*, *>).requiresSubclass || toZonedDate != null || toZonedTime != null || defaultTime != null
+
 interface IIZonedDateTimeFieldConfig<T: ZonedDateTime?> : IFormComponentConfig<ZonedDateTimeField, T> {
     var toZonedDate: ((ZonedDateTime) -> LocalDate)?
     var toZonedTime: ((ZonedDateTime) -> LocalTime)?
     var defaultTime: (() -> LocalTime)?
-    override val requiresSubclass: Boolean
-        get() = super.requiresSubclass || toZonedDate != null || toZonedTime != null || defaultTime != null
 }
 
 class ZonedDateTimeFieldConfig<T: ZonedDateTime?>(

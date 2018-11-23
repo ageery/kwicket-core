@@ -4,6 +4,7 @@ import org.apache.wicket.markup.html.form.SubmitLink
 import org.apache.wicket.markup.html.link.StatelessLink
 import org.kwicket.component.config
 import org.kwicket.component.config.ISubmitLinkConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [SubmitLink] component based on the configuration and with a Wicket identifier of [id].

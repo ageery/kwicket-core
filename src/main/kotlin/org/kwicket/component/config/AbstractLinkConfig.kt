@@ -7,8 +7,6 @@ import org.apache.wicket.model.IModel
 
 interface IAbstractLinkConfig<C: Link<T>, T> : IComponentConfig<C, T> {
     var popupSettings: PopupSettings?
-    override val requiresSubclass: Boolean
-        get() = true
 }
 
 abstract class AbstractLinkConfig<C: Link<T>, T>(

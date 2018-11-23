@@ -9,8 +9,6 @@ import org.apache.wicket.model.IModel
 interface IAjaxButtonConfig : IAbstractButtonConfig<AjaxButton> {
     var onSubmit: (AjaxButton.(AjaxRequestTarget) -> Unit)?
     var onError: (AjaxButton.(AjaxRequestTarget) -> Unit)?
-    override val requiresSubclass: Boolean
-        get() = true
 }
 
 class AjaxButtonConfig(

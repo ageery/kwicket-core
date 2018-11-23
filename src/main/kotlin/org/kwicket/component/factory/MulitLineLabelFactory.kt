@@ -3,6 +3,7 @@ package org.kwicket.component.factory
 import org.apache.wicket.markup.html.basic.MultiLineLabel
 import org.kwicket.component.config
 import org.kwicket.component.config.IMultiLineLabelConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates a [MultiLineLabel] component based on the configuration and with a Wicket identifier of [id].

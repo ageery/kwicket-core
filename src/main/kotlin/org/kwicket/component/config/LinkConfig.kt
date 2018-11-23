@@ -7,7 +7,6 @@ import org.apache.wicket.model.IModel
 
 interface ILinkConfig<T> : IAbstractLinkConfig<Link<T>, T> {
     var onClick: (Link<T>.() -> Unit)?
-    override val requiresSubclass: Boolean get() = true
 }
 
 open class LinkConfig<T>(

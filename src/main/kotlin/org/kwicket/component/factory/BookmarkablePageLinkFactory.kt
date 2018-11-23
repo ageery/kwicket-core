@@ -4,6 +4,7 @@ import org.apache.wicket.Page
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.kwicket.component.config
 import org.kwicket.component.config.IBookmarkablePageLinkConfig
+import org.kwicket.component.config.requiresSubclass
 
 /**
  * Creates an [BookmarkablePageLink] component with the Wicket identifier set to [id] and configured using [config].

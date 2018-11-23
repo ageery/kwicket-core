@@ -10,8 +10,6 @@ interface IAjaxSubmitLinkConfig<T> : IComponentConfig<AjaxSubmitLink, T> {
     var onSubmit: (AjaxSubmitLink.(AjaxRequestTarget) -> Unit)?
     var onError: (AjaxSubmitLink.(AjaxRequestTarget) -> Unit)?
     var form: Form<*>?
-    override val requiresSubclass: Boolean
-        get() = true
 }
 
 class AjaxSubmitLinkConfig<T>(

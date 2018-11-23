@@ -4,6 +4,7 @@ import org.apache.wicket.extensions.markup.html.form.datetime.TimeField
 import org.apache.wicket.markup.html.form.TextField
 import org.kwicket.component.config
 import org.kwicket.component.config.ITimeFieldConfig
+import org.kwicket.component.config.requiresSubclass
 
 // FIXME: it feels like there should be a generic parameter...
 /**

@@ -5,6 +5,9 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.model.IModel
 import java.io.Serializable
 
+internal val IComponentConfig<*, *>.requiresSubclass: Boolean
+    get() = onConfig != null || stateless != null
+
 interface IComponentConfig<C : Component, T> {
     val model: IModel<T>?
     var markupId: String?
@@ -20,10 +23,10 @@ interface IComponentConfig<C : Component, T> {
     var stateless: Boolean?
     var onConfig: (C.() -> Unit)?
     var postInit: (C.() -> Unit)?
-    val requiresSubclass: Boolean
-        get() = onConfig != null || stateless != null
-    val isValid: Boolean
-        get() = true
+//    val requiresSubclass: Boolean
+//        get() = onConfig != null || stateless != null
+//    val isValid: Boolean
+//        get() = true
 }
 
 open class ComponentConfig<C : Component, T>(

@@ -5,14 +5,15 @@ import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
 import org.kwicket.FileSize
 
+internal val IAbstractFormConfig<*, *>.requiresSubclass: Boolean
+    get() = (this as IComponentConfig<*, *>).requiresSubclass || onSubmit != null || onError != null
+
 interface IAbstractFormConfig<C: Form<T>, T> : IComponentConfig<C, T> {
     var onSubmit: (C.() -> Unit)?
     var onError: (C.() -> Unit)?
     var isMultiPart: Boolean?
     var maxSize: FileSize?
     var fileMaxSize: FileSize?
-    override val requiresSubclass: Boolean
-        get() = super.requiresSubclass || onSubmit != null || onError != null
 }
 
 open class AbstractFormConfig<C: Form<T>, T>(
