@@ -2,18 +2,25 @@ package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.extensions.markup.html.form.datetime.TimeField
+import org.apache.wicket.markup.html.media.video.Video
 import org.apache.wicket.model.IModel
 import java.time.LocalTime
 
-internal val ITimeFieldConfig.requiresSubclass: Boolean
+internal val ITimeFieldConfig<*>.requiresSubclass: Boolean
     get() = (this as IComponentConfig<*, *>).requiresSubclass || use12HourFormat != null
 
-interface ITimeFieldConfig : IComponentConfig<TimeField, LocalTime> {
+/**
+ * Configuration for creating a [TimeField] component.
+ *
+ * @param T type of the model
+ * @property use12HourFormat whether to use 12-hour formatting for the time
+ */
+interface ITimeFieldConfig<T: LocalTime?> : IComponentConfig<TimeField, T> {
     var use12HourFormat: Boolean?
 }
 
-class TimeFieldConfig(
-    model: IModel<LocalTime>? = null,
+class TimeFieldConfig<T: LocalTime?>(
+    model: IModel<T>? = null,
     override var use12HourFormat: Boolean? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -28,8 +35,8 @@ class TimeFieldConfig(
     stateless: Boolean? = null,
     onConfig: (TimeField.() -> Unit)? = null,
     postInit: (TimeField.() -> Unit)? = null
-) : ITimeFieldConfig,
-    ComponentConfig<TimeField, LocalTime>(
+) : ITimeFieldConfig<T>,
+    ComponentConfig<TimeField, T>(
         model = model,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

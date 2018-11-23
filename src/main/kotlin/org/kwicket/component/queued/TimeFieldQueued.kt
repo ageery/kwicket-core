@@ -10,9 +10,9 @@ import org.kwicket.component.factory.invoke
 import org.kwicket.component.q
 import java.time.LocalTime
 
-fun MarkupContainer.timeField(
+fun <T: LocalTime?> MarkupContainer.timeField(
     id: String,
-    model: IModel<LocalTime>? = null,
+    model: IModel<T>? = null,
     use12HourFormat: Boolean? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -26,7 +26,7 @@ fun MarkupContainer.timeField(
     behaviors: List<Behavior>? = null,
     onConfig: (TimeField.() -> Unit)? = null,
     postInit: (TimeField.() -> Unit)? = null,
-    block: (ITimeFieldConfig.() -> Unit)? = null
+    block: (ITimeFieldConfig<T>.() -> Unit)? = null
 ): TimeField = q(
     id = id, block = block, factory = { cid, config -> config(cid) }, config = TimeFieldConfig(
         model = model,
