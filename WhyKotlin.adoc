@@ -31,3 +31,8 @@ the component is created. Some of the properties have to be used in the process 
 
 Unanswered questions:
 * Does the config have to be serializable -- does it end up being serialized?
+
+Changes
+* remove isVisible, isEnabled and isVisibilityAllowed and replace with:
+- visibleWhen: Component.() -> Boolean
+* change factory to builder?
