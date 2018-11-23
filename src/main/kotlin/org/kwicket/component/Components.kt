@@ -305,3 +305,10 @@ fun Component.target(target: AjaxRequestTarget? = null): AjaxRequestTarget =
         .orElseThrow { WicketRuntimeException("No AjaxRequestTarget found in the request cycle") }
 
 fun Component.refresh(target: AjaxRequestTarget? = null) = target(target).add(this)
+
+fun <C: Component, T, I: IComponentConfig<C, T>> MarkupContainer.q(
+    id: String,
+    config: I,
+    block: (I.() -> Unit)? = null,
+    factory: (String, I) -> C
+) = q(factory.invoke(id, config.apply { block?.invoke(this) }))

@@ -9,6 +9,7 @@ import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.IMediaSourceConfig
 import org.kwicket.component.config.MediaSourceConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 fun MarkupContainer.mediaSource(
     id: String,

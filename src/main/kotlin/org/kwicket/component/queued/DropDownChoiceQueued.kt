@@ -10,6 +10,7 @@ import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.DropDownChoiceConfig
 import org.kwicket.component.config.IDropDownChoiceConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.

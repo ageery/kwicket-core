@@ -9,6 +9,7 @@ import org.apache.wicket.request.resource.PackageResourceReference
 import org.kwicket.component.config.IInlineImageConfig
 import org.kwicket.component.config.InlineImageConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Picture] into the parent container.

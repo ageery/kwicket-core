@@ -9,6 +9,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IListViewConfig
 import org.kwicket.component.config.ListViewConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.

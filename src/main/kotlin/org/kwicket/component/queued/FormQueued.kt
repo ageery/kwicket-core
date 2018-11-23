@@ -9,6 +9,7 @@ import org.kwicket.FileSize
 import org.kwicket.component.config.FormConfig
 import org.kwicket.component.config.IFormConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.

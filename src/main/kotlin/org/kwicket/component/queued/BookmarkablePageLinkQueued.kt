@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.link.PopupSettings
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.kwicket.component.config.BookmarkablePageLinkConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 import kotlin.reflect.KClass
 
 /**

@@ -10,6 +10,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxFallbackButtonConfig
 import org.kwicket.component.config.IAjaxFallbackButtonConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [AjaxButton] into the parent container.

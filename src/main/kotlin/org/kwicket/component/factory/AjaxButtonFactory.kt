@@ -12,6 +12,9 @@ import org.kwicket.component.config.IAjaxButtonConfig
  * @receiver configuration for creating the [AjaxButton]
  * @return [AjaxButton] component based on the configuration and with a Wicket identifier of [id]
  */
+
+// FIXME: move the sub-class decision function into _this_ function
+
 operator fun IAjaxButtonConfig.invoke(id: String): AjaxButton {
     val onConfig = this.onConfig
     val model = this.model

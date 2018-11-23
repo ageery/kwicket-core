@@ -11,6 +11,7 @@ import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.ISourceConfig
 import org.kwicket.component.config.SourceConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.

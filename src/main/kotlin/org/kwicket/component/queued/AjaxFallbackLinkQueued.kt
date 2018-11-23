@@ -8,6 +8,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxFallbackLinkConfig
 import org.kwicket.component.config.IAjaxFallbackLinkConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 fun MarkupContainer.ajaxFallbackLink(
     id: String,

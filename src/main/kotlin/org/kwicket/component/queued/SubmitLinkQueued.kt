@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.form.SubmitLink
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.SubmitLinkConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.

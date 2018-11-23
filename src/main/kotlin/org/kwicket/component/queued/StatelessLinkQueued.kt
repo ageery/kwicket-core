@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.link.StatelessLink
 import org.kwicket.component.config.IStatelessLinkConfig
 import org.kwicket.component.config.StatelessLinkConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 fun MarkupContainer.statelessLink(
     id: String,

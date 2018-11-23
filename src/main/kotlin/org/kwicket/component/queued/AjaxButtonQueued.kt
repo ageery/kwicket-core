@@ -9,6 +9,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxButtonConfig
 import org.kwicket.component.config.IAjaxButtonConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [AjaxButton] into the parent container.

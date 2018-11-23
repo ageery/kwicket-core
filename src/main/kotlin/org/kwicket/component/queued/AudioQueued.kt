@@ -10,6 +10,7 @@ import org.apache.wicket.request.resource.ResourceReference
 import org.kwicket.component.config.AudioConfig
 import org.kwicket.component.config.IAudioConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 fun MarkupContainer.audio(
     id: String,

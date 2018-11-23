@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.FeedbackPanel
 import org.kwicket.component.config.FeedbackPanelConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.

@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.basic.MultiLineLabel
 import org.apache.wicket.model.IModel
 import org.kwicket.component.config.MultiLineLabelConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.

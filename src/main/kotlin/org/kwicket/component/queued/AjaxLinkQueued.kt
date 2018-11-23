@@ -9,6 +9,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.AjaxLinkConfig
 import org.kwicket.component.config.IAjaxLinkConfig
 import org.kwicket.component.factory.ajaxLinkFactory
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.

@@ -7,6 +7,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IPictureConfig
 import org.kwicket.component.config.PictureConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Picture] into the parent container.

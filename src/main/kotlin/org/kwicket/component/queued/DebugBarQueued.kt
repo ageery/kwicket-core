@@ -6,6 +6,7 @@ import org.apache.wicket.devutils.debugbar.DebugBar
 import org.apache.wicket.markup.html.basic.Label
 import org.kwicket.component.config.DebugBarConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [Label] into the parent container.
@@ -44,7 +45,7 @@ fun MarkupContainer.debugBar(
     postInit: (DebugBar.() -> Unit)? = null,
     block: (DebugBarConfig.() -> Unit)? = null
 ): DebugBar = q(
-    id = id, block = block, factory = { cid, config -> config.invoke(cid) }, config = DebugBarConfig(
+    id = id, block = block, factory = { cid, config -> config(cid) }, config = DebugBarConfig(
         markupId = markupId,
         isInitiallyExpanded = isInitiallyExpanded,
         outputMarkupId = outputMarkupId,

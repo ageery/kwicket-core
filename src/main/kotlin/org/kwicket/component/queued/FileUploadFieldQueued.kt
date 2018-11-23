@@ -9,6 +9,7 @@ import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 import org.kwicket.component.config.FileUploadFieldConfig
 import org.kwicket.component.factory.fileUploadFieldFactory
+import org.kwicket.component.q
 
 /**
  * Creates and queues a [TextField<T>] into the parent container.

@@ -7,6 +7,7 @@ import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IStatelessFormConfig
 import org.kwicket.component.config.StatelessFormConfig
 import org.kwicket.component.factory.invoke
+import org.kwicket.component.q
 
 fun MarkupContainer.statelessForm(
     id: String,
