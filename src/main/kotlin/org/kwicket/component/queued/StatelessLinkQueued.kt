@@ -3,13 +3,15 @@ package org.kwicket.component.queued
 import org.apache.wicket.MarkupContainer
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.link.StatelessLink
+import org.apache.wicket.model.IModel
 import org.kwicket.component.config.IStatelessLinkConfig
 import org.kwicket.component.config.StatelessLinkConfig
 import org.kwicket.component.factory.invoke
 import org.kwicket.component.q
 
-fun MarkupContainer.statelessLink(
+fun <T> MarkupContainer.statelessLink(
     id: String,
+    model: IModel<T>?,
     onClick: (StatelessLink<*>.() -> Unit)? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
@@ -23,9 +25,10 @@ fun MarkupContainer.statelessLink(
     behaviors: List<Behavior>? = null,
     onConfig: (StatelessLink<*>.() -> Unit)? = null,
     postInit: (StatelessLink<*>.() -> Unit)? = null,
-    block: (IStatelessLinkConfig<*>.() -> Unit)? = null
+    block: (IStatelessLinkConfig<T>.() -> Unit)? = null
 ): StatelessLink<*> = q(
-    id = id, block = block, factory = {cid, config -> config(cid)}, config = StatelessLinkConfig<Unit>(
+    id = id, block = block, factory = {cid, config -> config(cid)}, config = StatelessLinkConfig(
+        model = model,
         onClick = onClick,
         markupId = markupId,
         outputMarkupId = outputMarkupId,

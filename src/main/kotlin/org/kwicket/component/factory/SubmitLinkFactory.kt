@@ -1,7 +1,6 @@
 package org.kwicket.component.factory
 
 import org.apache.wicket.markup.html.form.SubmitLink
-import org.apache.wicket.markup.html.link.StatelessLink
 import org.kwicket.component.config
 import org.kwicket.component.config.ISubmitLinkConfig
 import org.kwicket.component.config.requiresSubclass
@@ -19,7 +18,10 @@ operator fun <T> ISubmitLinkConfig<T>.invoke(id: String): SubmitLink =
         val onConfig = onConfig
         val stateless = stateless
         val model = model
-        object : SubmitLink(id, model) {
+        val onSubmit = onSubmit
+        val onError = onError
+        val form = form
+        object : SubmitLink(id, model, form) {
 
             override fun onConfigure() {
                 super.onConfigure()
@@ -28,7 +30,16 @@ operator fun <T> ISubmitLinkConfig<T>.invoke(id: String): SubmitLink =
 
             override fun getStatelessHint(): Boolean = stateless ?: super.getStatelessHint()
 
+            override fun onSubmit() {
+                super.onSubmit()
+                onSubmit?.invoke(this)
+            }
+
+            override fun onError() {
+                super.onError()
+                onError?.invoke(this)
+            }
         }
     } else {
-        SubmitLink(id, model)
+        SubmitLink(id, model, form)
     }.config(this)

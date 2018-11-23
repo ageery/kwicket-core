@@ -2,20 +2,17 @@ package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.WebMarkupContainer
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.form.Check
-import org.apache.wicket.markup.html.form.CheckGroup
 import org.apache.wicket.model.IModel
 
 /**
- * Configuration for creating a [WebMarkupContainer].
+ * Configuration for creating a [WebMarkupContainer] component.
  *
  * @param T type of the model
  */
 interface IWebMarkupContainerConfig<T> : IComponentConfig<WebMarkupContainer, T>
 
 /**
- * Configuration for creating a [WebMarkupContainer].
+ * Configuration for creating a [WebMarkupContainer] component.
  *
  * @param T type of the model
  * @param model model for the component
