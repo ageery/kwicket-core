@@ -47,7 +47,7 @@ fun <T, V: T> MarkupContainer.textField(
     postInit: (TextField<T>.() -> Unit)? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
-    validator: IValidator<V>? = null,
+    validator: IValidator<in T>? = null,
     validators: List<IValidator<in T>>? = null,
     block: (TextFieldConfig<T>.() -> Unit)? = null
 ): TextField<T> = q(id = id, block = block, factory = {cid, config -> config(cid) }, config = TextFieldConfig(
@@ -66,7 +66,7 @@ fun <T, V: T> MarkupContainer.textField(
     onConfig = onConfig,
     label = label,
     isRequired = isRequired,
-    //validator = validator,
-    //validators = validators,
+    validator = validator,
+    validators = validators,
     postInit = postInit
 ))
