@@ -6,19 +6,19 @@ import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
 // FIXME: we should be able form component -- can't figure out why it doesn't work...
-interface ICheckGroupConfig<T, L: Collection<T>> : IComponentConfig<CheckGroup<T>, L> {
-    var label: IModel<String>?
-    var isRequired: Boolean?
-    var validator: IValidator<in L>?
-    var validators: List<IValidator<in L>>?
-}
+interface ICheckGroupConfig<T, L: Collection<T>> : IFormComponentConfig<CheckGroup<T>, L> //{
+//    var label: IModel<String>?
+//    var isRequired: Boolean?
+//    var validator: IValidator<in L>?
+//    var validators: List<IValidator<in L>>?
+//}
 
 class CheckGroupConfig<T, L: Collection<T>>(
     model: IModel<L>? = null,
-    override var label: IModel<String>? = null,
-    override var isRequired: Boolean? = null,
-    override var validator: IValidator<in L>? = null,
-    override var validators: List<IValidator<in L>>? = null,
+    label: IModel<String>? = null,
+    isRequired: Boolean? = null,
+    validator: IValidator<in L>? = null,
+    validators: List<IValidator<in L>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -33,8 +33,12 @@ class CheckGroupConfig<T, L: Collection<T>>(
     onConfig: (CheckGroup<T>.() -> Unit)? = null,
     postInit: (CheckGroup<T>.() -> Unit)? = null
 ) : ICheckGroupConfig<T, L>,
-    ComponentConfig<CheckGroup<T>, L>(
+    FormComponentConfig<CheckGroup<T>, L>(
         model = model,
+        label = label,
+        isRequired = isRequired,
+        validator = validator,
+        validators = validators,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
