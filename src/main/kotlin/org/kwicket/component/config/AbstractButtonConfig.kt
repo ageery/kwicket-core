@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.IModel
 
 /**
- * Configuration for creating a [Button].
+ * Configuration for creating a sub-class of [Button].
  *
  * @property defaultFormProcessing whether the button submits the data
  * @property form the form associated with the button
