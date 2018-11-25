@@ -10,11 +10,6 @@ import org.apache.wicket.model.IModel
 internal val IComponentConfig<*, *>.requiresSubclass: Boolean
     get() = onConfig != null || stateless != null
 
-// FIXME: I think that the config interface should also have the default tag -- this would reduce the code around tags a little
-// FIXME: the config is already being passed into the tag class; the tag class needs a tag name
-// FIXME: or maybe there is some other lookup mechanism...
-// FIXME: I think it should be configured at run-time -- e.g., labels
-
 /**
  * Configuration for creating a Wicket [Component].
  *
@@ -72,7 +67,7 @@ interface IComponentConfig<C : Component, T> {
  * @property onConfig optional lambda to execute in the onConfigure lifecycle method
  * @property postInit optional lambda to execute after the component has been created
  */
-open class ComponentConfig<C : Component, T>(
+abstract class ComponentConfig<C : Component, T>(
     override var model: IModel<T>? = null,
     override var markupId: String? = null,
     override var outputMarkupId: Boolean? = null,
