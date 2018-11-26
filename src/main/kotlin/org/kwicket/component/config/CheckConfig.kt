@@ -3,12 +3,12 @@ package org.kwicket.component.config
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Check
 import org.apache.wicket.markup.html.form.CheckGroup
-import org.apache.wicket.markup.html.panel.FeedbackPanel
 import org.apache.wicket.model.IModel
 
 /**
- * Configuration for creating a [Check].
+ * Configuration for creating a [Check] component.
  *
+ * @param T type of the backing model of the component
  * @property group the [CheckGroup] the [Check] belongs to
  */
 interface ICheckConfig<T> : IComponentConfig<Check<T>, T> {
@@ -16,9 +16,10 @@ interface ICheckConfig<T> : IComponentConfig<Check<T>, T> {
 }
 
 /**
- * Configuration for creating a [Check].
+ * Configuration for creating a [Check] component.
  *
- * @property group the [CheckGroup] the [Check] belongs to
+ * @param T type of the backing model
+ * @param model backing model of the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -33,10 +34,10 @@ interface ICheckConfig<T> : IComponentConfig<Check<T>, T> {
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @property group the [CheckGroup] the [Check] belongs to
  */
 class CheckConfig<T>(
     model: IModel<T>? = null,
-    override var group: CheckGroup<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -49,7 +50,8 @@ class CheckConfig<T>(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (Check<T>.() -> Unit)? = null,
-    postInit: (Check<T>.() -> Unit)? = null
+    postInit: (Check<T>.() -> Unit)? = null,
+    override var group: CheckGroup<T>? = null
 ) : ICheckConfig<T>,
     ComponentConfig<Check<T>, T>(
         model = model,

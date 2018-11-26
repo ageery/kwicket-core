@@ -2,12 +2,10 @@ package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.Button
-import org.apache.wicket.markup.html.form.Check
-import org.apache.wicket.markup.html.form.CheckGroup
 import org.apache.wicket.model.IModel
 
 /**
- * Configuration for creating a [Button].
+ * Configuration for creating a [Button] component.
  *
  * @property onSubmit lambda to call when the form is successfully submitted
  * @property onError lambda to call when the form has a validation error
@@ -18,10 +16,9 @@ interface IButtonConfig : IAbstractButtonConfig<Button> {
 }
 
 /**
- * Configuration for creating a [Button].
+ * Configuration for creating a [Button] component.
  *
- * @property onSubmit lambda to call when the form is successfully submitted
- * @property onError lambda to call when the form has a validation error
+ * @param model backing model of the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -36,12 +33,12 @@ interface IButtonConfig : IAbstractButtonConfig<Button> {
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @param defaultFormProcessing whether the button submits the data in the form
+ * @property onSubmit lambda to call when the form is successfully submitted
+ * @property onError lambda to call when the form has a validation error
  */
 class ButtonConfig(
     model: IModel<String>? = null,
-    override var onSubmit: (Button.() -> Unit)? = null,
-    override var onError: (Button.() -> Unit)? = null,
-    defaultFormProcessing: Boolean? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -54,11 +51,13 @@ class ButtonConfig(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (Button.() -> Unit)? = null,
-    postInit: (Button.() -> Unit)? = null
+    postInit: (Button.() -> Unit)? = null,
+    defaultFormProcessing: Boolean? = null,
+    override var onSubmit: (Button.() -> Unit)? = null,
+    override var onError: (Button.() -> Unit)? = null
 ) : IButtonConfig,
     AbstractButtonConfig<Button>(
         model = model,
-        defaultFormProcessing = defaultFormProcessing,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -71,5 +70,6 @@ class ButtonConfig(
         behaviors = behaviors,
         stateless = stateless,
         onConfig = onConfig,
-        postInit = postInit
+        postInit = postInit,
+        defaultFormProcessing = defaultFormProcessing
     )

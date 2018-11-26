@@ -1,24 +1,23 @@
 package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.extensions.markup.html.form.datetime.TimeField
-import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.markup.html.form.CheckGroup
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
 /**
- * Configuration for creating a [CheckGroup].
+ * Configuration for creating a [CheckGroup] component.
  *
  * @param T type of the model
  * @param L type of the [Collection] containing the model objects
  */
-interface ICheckGroupConfig<T, L: Collection<T>> : IFormComponentConfig<CheckGroup<T>, L>
+interface ICheckGroupConfig<T, L : Collection<T>> : IFormComponentConfig<CheckGroup<T>, L>
 
 /**
  * Configuration for creating a [CheckGroup] component.
  *
- * @param T type of the model
+ * @param T type of the backing model of the component
+ * @param L type of the [Collection] containing the choices for the check group
  * @param model model for the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
@@ -34,8 +33,12 @@ interface ICheckGroupConfig<T, L: Collection<T>> : IFormComponentConfig<CheckGro
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @param label associated label of the form component
+ * @param isRequired whether a value of the form component is required
+ * @param validator how to determine whether the value is valid
+ * @param validators list of validation checks
  */
-class CheckGroupConfig<T, L: Collection<T>>(
+class CheckGroupConfig<T, L : Collection<T>>(
     model: IModel<L>? = null,
     label: IModel<String>? = null,
     isRequired: Boolean? = null,
@@ -57,10 +60,6 @@ class CheckGroupConfig<T, L: Collection<T>>(
 ) : ICheckGroupConfig<T, L>,
     FormComponentConfig<CheckGroup<T>, L>(
         model = model,
-        label = label,
-        isRequired = isRequired,
-        validator = validator,
-        validators = validators,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -73,5 +72,9 @@ class CheckGroupConfig<T, L: Collection<T>>(
         behaviors = behaviors,
         stateless = stateless,
         onConfig = onConfig,
-        postInit = postInit
+        postInit = postInit,
+        label = label,
+        isRequired = isRequired,
+        validator = validator,
+        validators = validators
     )

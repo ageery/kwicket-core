@@ -2,10 +2,9 @@ package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.devutils.debugbar.DebugBar
-import org.apache.wicket.markup.html.panel.FeedbackPanel
 
 /**
- * Configuration for creating a [FeedbackPanel].
+ * Configuration for creating a [DebugBar] component.
  *
  * @property isInitiallyExpanded whether the debug bar starts expanded
  */
@@ -14,9 +13,8 @@ interface IDebugBarConfig : IComponentConfig<DebugBar, Unit> {
 }
 
 /**
- * Configuration for creating a [DebugBar].
+ * Configuration for creating a [DebugBar] component.
  *
- * @property isInitiallyExpanded whether the debug bar starts expanded
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -31,6 +29,7 @@ interface IDebugBarConfig : IComponentConfig<DebugBar, Unit> {
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @property isInitiallyExpanded whether the debug bar starts expanded
  */
 class DebugBarConfig(
     override var isInitiallyExpanded: Boolean? = null,

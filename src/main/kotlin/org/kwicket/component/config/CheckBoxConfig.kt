@@ -1,19 +1,19 @@
 package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
 /**
- * Configuration for creating a [CheckBox].
+ * Configuration for creating a [CheckBox] component.
  */
 interface ICheckBoxConfig : IFormComponentConfig<CheckBox, Boolean>
 
 /**
- * Configuration for creating a [CheckBox].
+ * Configuration for creating a [CheckBox] component.
  *
+ * @param model backing model of the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -28,13 +28,13 @@ interface ICheckBoxConfig : IFormComponentConfig<CheckBox, Boolean>
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @param label associated label of the form component
+ * @param isRequired whether a value of the form component is required
+ * @param validator how to determine whether the value is valid
+ * @param validators list of validation checks
  */
 class CheckBoxConfig(
     model: IModel<Boolean>? = null,
-    label: IModel<String>? = null,
-    isRequired: Boolean? = null,
-    validator: IValidator<Boolean>? = null,
-    validators: List<IValidator<Boolean>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -47,14 +47,14 @@ class CheckBoxConfig(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (CheckBox.() -> Unit)? = null,
-    postInit: (CheckBox.() -> Unit)? = null
+    postInit: (CheckBox.() -> Unit)? = null,
+    label: IModel<String>? = null,
+    isRequired: Boolean? = null,
+    validator: IValidator<Boolean>? = null,
+    validators: List<IValidator<Boolean>>? = null
 ) : ICheckBoxConfig,
     FormComponentConfig<CheckBox, Boolean>(
         model = model,
-        label = label,
-        isRequired = isRequired,
-        validator = validator,
-        validators = validators,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -67,5 +67,9 @@ class CheckBoxConfig(
         behaviors = behaviors,
         stateless = stateless,
         onConfig = onConfig,
-        postInit = postInit
+        postInit = postInit,
+        label = label,
+        isRequired = isRequired,
+        validator = validator,
+        validators = validators
     )
