@@ -1,37 +1,31 @@
 package org.kwicket.component.config
 
 import org.apache.wicket.Page
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.form.Button
-import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.model.IModel
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import kotlin.reflect.KClass
 
 /**
- * Configuration for creating a sub-class of [BookmarkablePageLink].
+ * Configuration for creating a [BookmarkablePageLink] component.
  *
- * @param T type of the model
+ * @param T type of the component model
  * @param P type of the page
  * @property page class of the page the link points to
  * @property pageParams parameters to add to the link
  */
-interface IBookmarkablePageLinkConfig<T, P: Page> : IAbstractLinkConfig<BookmarkablePageLink<T>, T> {
+interface IBookmarkablePageLinkConfig<T, P : Page> : IAbstractLinkConfig<BookmarkablePageLink<T>, T> {
     var page: KClass<P>?
     var pageParams: PageParameters?
 }
 
 /**
- * Configuration for creating a sub-class of a [BookmarkablePageLink].
+ * Configuration for creating a [BookmarkablePageLink] component.
  *
  * @param T type of the model
  * @param P type of the page
- * @property page class of the page the link points to
- * @property pageParams parameters to add to the link
- * @property form [Form] that the link is submitting
+ * @param model backing model of the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -46,8 +40,10 @@ interface IBookmarkablePageLinkConfig<T, P: Page> : IAbstractLinkConfig<Bookmark
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @property page class of the page the link points to
+ * @property pageParams parameters to add to the link
  */
-class BookmarkablePageLinkConfig<T, P: Page>(
+class BookmarkablePageLinkConfig<T, P : Page>(
     model: IModel<T>? = null,
     override var page: KClass<P>? = null,
     override var pageParams: PageParameters? = null,

@@ -38,7 +38,7 @@ interface IAjaxFallbackLinkConfig<T> : IAbstractLinkConfig<AjaxFallbackLink<T>, 
  * @param popupSettings how to open the link
  * @property onClick lambda that is executed when the link is clicked
  */
-open class AjaxFallbackLinkConfig<T>(
+class AjaxFallbackLinkConfig<T>(
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,

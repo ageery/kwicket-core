@@ -55,7 +55,7 @@ interface IAbstractFormConfig<C : Form<T>, T> : IComponentConfig<C, T> {
  * @property maxSize maximum amount of data that can be submitted via the form
  * @property fileMaxSize maximum size of a file that can be submitted as part of the form
  */
-open class AbstractFormConfig<C : Form<T>, T>(
+abstract class AbstractFormConfig<C : Form<T>, T>(
     model: IModel<T>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,

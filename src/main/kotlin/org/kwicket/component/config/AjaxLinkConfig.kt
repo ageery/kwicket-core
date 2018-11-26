@@ -1,16 +1,14 @@
 package org.kwicket.component.config
 
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.core.request.mapper.AbstractComponentMapper
-import org.apache.wicket.markup.html.link.PopupSettings
 import org.apache.wicket.model.IModel
 
 /**
  * Configuration for creating an [AjaxLink].
  *
+ * @param T type of the model of the component
  * @property onClick lambda that is executed when the link is clicked
  */
 interface IAjaxLinkConfig<T> : IComponentConfig<AjaxLink<T>, T> {
@@ -19,7 +17,9 @@ interface IAjaxLinkConfig<T> : IComponentConfig<AjaxLink<T>, T> {
 
 /**
  * Configuration for creating a sub-class of a [AjaxLink].
- * @property onClick lambda that is executed when the link is clicked
+ *
+ * @param T type of the backing model of the component
+ * @param model backing model of the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -34,10 +34,10 @@ interface IAjaxLinkConfig<T> : IComponentConfig<AjaxLink<T>, T> {
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @property onClick lambda that is executed when the link is clicked
  */
 class AjaxLinkConfig<T>(
     model: IModel<T>? = null,
-    override var onClick: (AjaxLink<T>.(AjaxRequestTarget) -> Unit)? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -50,7 +50,8 @@ class AjaxLinkConfig<T>(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (AjaxLink<T>.() -> Unit)? = null,
-    postInit: (AjaxLink<T>.() -> Unit)? = null
+    postInit: (AjaxLink<T>.() -> Unit)? = null,
+    override var onClick: (AjaxLink<T>.(AjaxRequestTarget) -> Unit)? = null
 ) : IAjaxLinkConfig<T>,
     ComponentConfig<AjaxLink<T>, T>(
         model = model,
