@@ -22,6 +22,8 @@ interface IVideoConfig<T> : IMediaComponentConfig<Video, T> {
     var poster: ResourceReference?
 }
 
+// FIXME: Add missing properties
+
 /**
  * Configuration for creating a [ZonedDateTimeField] component.
  *

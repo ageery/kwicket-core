@@ -5,6 +5,9 @@ import org.apache.wicket.extensions.markup.html.form.datetime.TimeField
 import org.apache.wicket.model.IModel
 import java.time.LocalTime
 
+/**
+ * Whether the configuration requires a subclass to implement.f
+ */
 internal val ITimeFieldConfig<*>.requiresSubclass: Boolean
     get() = (this as IComponentConfig<*, *>).requiresSubclass || use12HourFormat != null
 

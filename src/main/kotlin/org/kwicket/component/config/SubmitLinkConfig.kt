@@ -5,6 +5,9 @@ import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.form.SubmitLink
 import org.apache.wicket.model.IModel
 
+/**
+ * Whether a sub-class is needed to implement the configuration.
+ */
 internal val ISubmitLinkConfig<*>.requiresSubclass: Boolean
     get() = (this as IComponentConfig<*, *>).requiresSubclass || onSubmit != null || onError != null
 

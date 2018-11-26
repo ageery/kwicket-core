@@ -57,7 +57,7 @@ class AjaxButtonConfig(
     onConfig: (AjaxButton.() -> Unit)? = null,
     postInit: (AjaxButton.() -> Unit)? = null
 ) : IAjaxButtonConfig,
-    AbstractButtonConfig<AjaxButton, String>(
+    AbstractButtonConfig<AjaxButton>(
         model = model,
         defaultFormProcessing = defaultFormProcessing,
         form = form,

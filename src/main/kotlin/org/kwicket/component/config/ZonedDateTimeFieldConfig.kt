@@ -8,6 +8,9 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
+/**
+ * Whether the [IIZonedDateTimeFieldConfig] requires a sub-class to implement its properties.
+ */
 internal val IIZonedDateTimeFieldConfig<*>.requiresSubclass: Boolean
     get() = (this as IComponentConfig<*, *>).requiresSubclass || toZonedDate != null || toZonedTime != null || defaultTime != null
 

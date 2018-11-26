@@ -57,7 +57,7 @@ class AjaxFallbackButtonConfig(
     onConfig: (AjaxFallbackButton.() -> Unit)? = null,
     postInit: (AjaxFallbackButton.() -> Unit)? = null
 ) : IAjaxFallbackButtonConfig,
-    AbstractButtonConfig<AjaxFallbackButton, String>(
+    AbstractButtonConfig<AjaxFallbackButton>(
         model = model,
         defaultFormProcessing = defaultFormProcessing,
         form = form,

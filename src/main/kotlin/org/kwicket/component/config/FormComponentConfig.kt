@@ -1,10 +1,21 @@
 package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
+import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.form.FormComponent
+import org.apache.wicket.markup.html.image.Image
 import org.apache.wicket.model.IModel
 import org.apache.wicket.validation.IValidator
 
+/**
+ * Configuration for creating a sub-class [FormComponent] component.
+ *
+ * @param T type of the model
+ * @property label associated label of the form component
+ * @property isRequired whether a value of the form component is required
+ * @property validator how to determine whether the value is valid
+ * @property validators list of validation checks
+ */
 interface IFormComponentConfig<F : FormComponent<in T>, T> : IComponentConfig<F, T> {
     var label: IModel<String>?
     var isRequired: Boolean?
@@ -12,6 +23,28 @@ interface IFormComponentConfig<F : FormComponent<in T>, T> : IComponentConfig<F,
     var validators: List<IValidator<in T>>?
 }
 
+/**
+ * Configuration for creating a [FormComponent].
+ *
+ * @property label associated label of the form component
+ * @property isRequired whether a value of the form component is required
+ * @property validator how to determine whether the value is valid
+ * @property validators list of validation checks
+ * @param markupId optional unique id to use in the associated markup
+ * @param outputMarkupId whether to include an HTML id for the component in the markup
+ * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
+ * component is not visible
+ * @param isVisible whether the component is initially visible
+ * @param isEnabled whether the component is initially enabled
+ * @param isVisibilityAllowed whether the component is allowed to be visible
+ * @param escapeModelStrings whether model strings should be escaped
+ * @param renderBodyOnly whether the tag associated with the component should be included in the markup
+ * @param behavior optional [Behavior] to add to the component
+ * @param behaviors optional List of [Behavior]s to add to the component
+ * @param stateless whether to include a hint that the component is stateless
+ * @param onConfig optional lambda to execute in the onConfigure lifecycle method
+ * @param postInit optional lambda to execute after the component has been created
+ */
 abstract class FormComponentConfig<F : FormComponent<in T>, T>(
     override var label: IModel<String>? = null,
     override var isRequired: Boolean? = null,

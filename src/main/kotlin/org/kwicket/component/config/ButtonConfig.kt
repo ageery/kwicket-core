@@ -56,7 +56,7 @@ class ButtonConfig(
     onConfig: (Button.() -> Unit)? = null,
     postInit: (Button.() -> Unit)? = null
 ) : IButtonConfig,
-    AbstractButtonConfig<Button, String>(
+    AbstractButtonConfig<Button>(
         model = model,
         defaultFormProcessing = defaultFormProcessing,
         markupId = markupId,
