@@ -14,6 +14,8 @@ internal val IAbstractFormConfig<*, *>.requiresSubclass: Boolean
 /**
  * Configuration for creating a sub-class of [Form].
  *
+ * @param C type of [Form] component
+ * @param T type of the model
  * @property onSubmit lambda to execute when the form is successfully submitted
  * @property onError lambda to execute when there are validation errors in the form
  * @property isMultiPart whether the form is multi-part
@@ -30,11 +32,9 @@ interface IAbstractFormConfig<C : Form<T>, T> : IComponentConfig<C, T> {
 
 /**
  * Configuration for creating a sub-class of [Form].
- * @property onSubmit lambda to execute when the form is successfully submitted
- * @property onError lambda to execute when there are validation errors in the form
- * @property isMultiPart whether the form is multi-part
- * @property maxSize maximum amount of data that can be submitted via the form
- * @property fileMaxSize maximum size of a file that can be submitted as part of the form
+ *
+ * @param C type of [Form] component
+ * @param T type of the model
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -49,14 +49,14 @@ interface IAbstractFormConfig<C : Form<T>, T> : IComponentConfig<C, T> {
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @property onSubmit lambda to execute when the form is successfully submitted
+ * @property onError lambda to execute when there are validation errors in the form
+ * @property isMultiPart whether the form is multi-part
+ * @property maxSize maximum amount of data that can be submitted via the form
+ * @property fileMaxSize maximum size of a file that can be submitted as part of the form
  */
 open class AbstractFormConfig<C : Form<T>, T>(
     model: IModel<T>? = null,
-    override var onSubmit: (C.() -> Unit)? = null,
-    override var onError: (C.() -> Unit)? = null,
-    override var isMultiPart: Boolean? = null,
-    override var maxSize: FileSize? = null,
-    override var fileMaxSize: FileSize? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -69,7 +69,12 @@ open class AbstractFormConfig<C : Form<T>, T>(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (C.() -> Unit)? = null,
-    postInit: (C.() -> Unit)? = null
+    postInit: (C.() -> Unit)? = null,
+    override var onSubmit: (C.() -> Unit)? = null,
+    override var onError: (C.() -> Unit)? = null,
+    override var isMultiPart: Boolean? = null,
+    override var maxSize: FileSize? = null,
+    override var fileMaxSize: FileSize? = null
 ) : IAbstractFormConfig<C, T>,
     ComponentConfig<C, T>(
         model = model,

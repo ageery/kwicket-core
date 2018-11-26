@@ -20,8 +20,7 @@ interface IAjaxButtonConfig : IAbstractButtonConfig<AjaxButton> {
 /**
  * Configuration for creating an [AjaxButton].
  *
- * @property onSubmit lambda that is called when the form is successfully submitted
- * @property onError lambda that is called when the form has validation errors
+ * @param model model of the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -36,13 +35,13 @@ interface IAjaxButtonConfig : IAbstractButtonConfig<AjaxButton> {
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @param defaultFormProcessing whether the data is submitted by the button
+ * @param form the form the button is associated with
+ * @property onSubmit lambda that is called when the form is successfully submitted
+ * @property onError lambda that is called when the form has validation errors
  */
 class AjaxButtonConfig(
     model: IModel<String>? = null,
-    override var onSubmit: (AjaxButton.(AjaxRequestTarget) -> Unit)? = null,
-    override var onError: (AjaxButton.(AjaxRequestTarget) -> Unit)? = null,
-    defaultFormProcessing: Boolean? = null,
-    form: Form<*>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -55,12 +54,14 @@ class AjaxButtonConfig(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (AjaxButton.() -> Unit)? = null,
-    postInit: (AjaxButton.() -> Unit)? = null
+    postInit: (AjaxButton.() -> Unit)? = null,
+    defaultFormProcessing: Boolean? = null,
+    form: Form<*>? = null,
+    override var onSubmit: (AjaxButton.(AjaxRequestTarget) -> Unit)? = null,
+    override var onError: (AjaxButton.(AjaxRequestTarget) -> Unit)? = null
 ) : IAjaxButtonConfig,
     AbstractButtonConfig<AjaxButton>(
         model = model,
-        defaultFormProcessing = defaultFormProcessing,
-        form = form,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -73,5 +74,7 @@ class AjaxButtonConfig(
         behaviors = behaviors,
         stateless = stateless,
         onConfig = onConfig,
-        postInit = postInit
+        postInit = postInit,
+        defaultFormProcessing = defaultFormProcessing,
+        form = form
     )

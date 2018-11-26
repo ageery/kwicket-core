@@ -3,13 +3,13 @@ package org.kwicket.component.config
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.link.Link
 import org.apache.wicket.markup.html.link.PopupSettings
 import org.apache.wicket.model.IModel
 
 /**
  * Configuration for creating an [AjaxFallbackLink].
  *
+ * @param T type of the component model
  * @property onClick lambda that is executed when the link is clicked
  */
 interface IAjaxFallbackLinkConfig<T> : IAbstractLinkConfig<AjaxFallbackLink<T>, T> {
@@ -18,7 +18,9 @@ interface IAjaxFallbackLinkConfig<T> : IAbstractLinkConfig<AjaxFallbackLink<T>, 
 
 /**
  * Configuration for creating a sub-class of a [AjaxFallbackLink].
- * @property onClick lambda that is executed when the link is clicked
+ *
+ * @param T type of the component model
+ * @param model backing model for the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -33,11 +35,11 @@ interface IAjaxFallbackLinkConfig<T> : IAbstractLinkConfig<AjaxFallbackLink<T>, 
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @param popupSettings how to open the link
+ * @property onClick lambda that is executed when the link is clicked
  */
 open class AjaxFallbackLinkConfig<T>(
     model: IModel<T>? = null,
-    override var onClick: (AjaxFallbackLink<T>.(AjaxRequestTarget?) -> Unit)? = null,
-    popupSettings: PopupSettings? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -50,11 +52,12 @@ open class AjaxFallbackLinkConfig<T>(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (AjaxFallbackLink<T>.() -> Unit)? = null,
-    postInit: (AjaxFallbackLink<T>.() -> Unit)? = null
+    postInit: (AjaxFallbackLink<T>.() -> Unit)? = null,
+    popupSettings: PopupSettings? = null,
+    override var onClick: (AjaxFallbackLink<T>.(AjaxRequestTarget?) -> Unit)? = null
 ) : IAjaxFallbackLinkConfig<T>,
     AbstractLinkConfig<AjaxFallbackLink<T>, T>(
         model = model,
-        popupSettings = popupSettings,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -67,5 +70,6 @@ open class AjaxFallbackLinkConfig<T>(
         behaviors = behaviors,
         stateless = stateless,
         onConfig = onConfig,
-        postInit = postInit
+        postInit = postInit,
+        popupSettings = popupSettings
     )
