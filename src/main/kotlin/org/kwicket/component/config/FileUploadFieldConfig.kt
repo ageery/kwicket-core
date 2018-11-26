@@ -1,8 +1,6 @@
 package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.form.CheckBox
-import org.apache.wicket.markup.html.form.FormComponent
 import org.apache.wicket.markup.html.form.upload.FileUpload
 import org.apache.wicket.markup.html.form.upload.FileUploadField
 import org.apache.wicket.model.IModel
@@ -16,10 +14,7 @@ interface IFileUploadFieldConfig : IFormComponentConfig<FileUploadField, Mutable
 /**
  * Configuration for creating a [FileUploadField] component.
  *
- * @param label associated label of the form component
- * @param isRequired whether a value of the form component is required
- * @param validator how to determine whether the value is valid
- * @param validators list of validation checks
+ * @param model backing model of the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -34,13 +29,13 @@ interface IFileUploadFieldConfig : IFormComponentConfig<FileUploadField, Mutable
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @param label associated label of the form component
+ * @param isRequired whether a value of the form component is required
+ * @param validator how to determine whether the value is valid
+ * @param validators list of validation checks
  */
 class FileUploadFieldConfig(
     model: IModel<MutableList<FileUpload>>? = null,
-    label: IModel<String>? = null,
-    isRequired: Boolean? = null,
-    validator: IValidator<in MutableList<FileUpload>>? = null,
-    validators: List<IValidator<in MutableList<FileUpload>>>? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -53,14 +48,14 @@ class FileUploadFieldConfig(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (FileUploadField.() -> Unit)? = null,
-    postInit: (FileUploadField.() -> Unit)? = null
+    postInit: (FileUploadField.() -> Unit)? = null,
+    label: IModel<String>? = null,
+    isRequired: Boolean? = null,
+    validator: IValidator<in MutableList<FileUpload>>? = null,
+    validators: List<IValidator<in MutableList<FileUpload>>>? = null
 ) : IFileUploadFieldConfig,
     FormComponentConfig<FileUploadField, MutableList<FileUpload>>(
         model = model,
-        label = label,
-        isRequired = isRequired,
-        validator = validator,
-        validators = validators,
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,
@@ -73,5 +68,9 @@ class FileUploadFieldConfig(
         behaviors = behaviors,
         stateless = stateless,
         onConfig = onConfig,
-        postInit = postInit
+        postInit = postInit,
+        label = label,
+        isRequired = isRequired,
+        validator = validator,
+        validators = validators
     )

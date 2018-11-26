@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.link.PopupSettings
 import org.apache.wicket.model.IModel
 
 /**
- * Configuration for creating an [ExternalLink].
+ * Configuration for creating an [ExternalLink] component.
  *
  * @property label text for the link
  * @property popupSettings how the link will be opened
@@ -17,10 +17,9 @@ interface IExternalLinkConfig : IComponentConfig<ExternalLink, String> {
 }
 
 /**
- * Configuration for creating a [ExternalLink].
+ * Configuration for creating an [ExternalLink] component.
  *
- * @property label text for the link
- * @property popupSettings how the link will be opened
+ * @param model backing model of the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -35,11 +34,11 @@ interface IExternalLinkConfig : IComponentConfig<ExternalLink, String> {
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @property label text for the link
+ * @property popupSettings how the link will be opened
  */
 class ExternalLinkConfig(
     model: IModel<String>? = null,
-    override var label: IModel<*>? = null,
-    override var popupSettings: PopupSettings? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -52,7 +51,9 @@ class ExternalLinkConfig(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (ExternalLink.() -> Unit)? = null,
-    postInit: (ExternalLink.() -> Unit)? = null
+    postInit: (ExternalLink.() -> Unit)? = null,
+    override var label: IModel<*>? = null,
+    override var popupSettings: PopupSettings? = null
 ) : IExternalLinkConfig,
     ComponentConfig<ExternalLink, String>(
         model = model,

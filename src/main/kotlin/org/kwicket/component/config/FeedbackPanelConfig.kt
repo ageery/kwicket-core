@@ -5,7 +5,7 @@ import org.apache.wicket.feedback.IFeedbackMessageFilter
 import org.apache.wicket.markup.html.panel.FeedbackPanel
 
 /**
- * Configuration for creating a [FeedbackPanel].
+ * Configuration for creating a [FeedbackPanel] component.
  *
  * @property filter determines what messages are displayed in the panel
  */
@@ -14,9 +14,8 @@ interface IFeedbackPanelConfig : IComponentConfig<FeedbackPanel, Unit> {
 }
 
 /**
- * Configuration for creating a [FeedbackPanel].
+ * Configuration for creating a [FeedbackPanel] component.
  *
- * @property filter determines what messages are displayed in the panel
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
  * @param outputMarkupPlaceholderTag whether to include a placeholder tag for the component in the markup when the
@@ -31,9 +30,9 @@ interface IFeedbackPanelConfig : IComponentConfig<FeedbackPanel, Unit> {
  * @param stateless whether to include a hint that the component is stateless
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
+ * @property filter determines what messages are displayed in the panel
  */
 class FeedbackPanelConfig(
-    override var filter: IFeedbackMessageFilter? = null,
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -46,7 +45,8 @@ class FeedbackPanelConfig(
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
     onConfig: (FeedbackPanel.() -> Unit)? = null,
-    postInit: (FeedbackPanel.() -> Unit)? = null
+    postInit: (FeedbackPanel.() -> Unit)? = null,
+    override var filter: IFeedbackMessageFilter? = null
 ) : IFeedbackPanelConfig,
     ComponentConfig<FeedbackPanel, Unit>(
         markupId = markupId,
