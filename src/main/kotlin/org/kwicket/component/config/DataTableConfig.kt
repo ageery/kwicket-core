@@ -1,24 +1,31 @@
 package org.kwicket.component.config
 
 import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.markup.html.link.StatelessLink
-import org.apache.wicket.model.IModel
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.ISortStateLocator
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractToolbar
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn
+import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider
+import org.apache.wicket.markup.html.basic.Label
 
 /**
- * Configuration for creating a [StatelessLink].
+ * Configuration for creating a [Label].
  *
- * @param T type of the model
- * @property onClick lambda to call when the link is clicked
+ * @param T type of a row in the table
+ * @param S type of the column sorts
  */
-interface IStatelessLinkConfig<T> : IAbstractLinkConfig<StatelessLink<T>, T> {
-    var onClick: (StatelessLink<T>.() -> Unit)?
+interface IDataTableConfig<T, S> : IComponentConfig<DataTable<T, S>, T> {
+    var columns: List<IColumn<T, S>>?
+    var dataProvider: ISortableDataProvider<T, S>?
+    var topToolbars: (DataTable<T, S>.(ISortStateLocator<S>) -> List<AbstractToolbar>)?
+    var bottomToolbars: (DataTable<T, S>.(ISortStateLocator<S>) -> List<AbstractToolbar>)?
+    var rowsPerPage: Long
 }
 
 /**
- * Configuration for creating a [StatelessLink] component.
+ * Configuration for creating a [Label].
  *
  * @param T type of the model
- * @property onClick lambda to call when the link is clicked
  * @param model model for the component
  * @param markupId optional unique id to use in the associated markup
  * @param outputMarkupId whether to include an HTML id for the component in the markup
@@ -35,9 +42,7 @@ interface IStatelessLinkConfig<T> : IAbstractLinkConfig<StatelessLink<T>, T> {
  * @param onConfig optional lambda to execute in the onConfigure lifecycle method
  * @param postInit optional lambda to execute after the component has been created
  */
-class StatelessLinkConfig<T>(
-    model: IModel<T>? = null,
-    override var onClick: (StatelessLink<T>.() -> Unit)? = null,
+class DataTableConfig<T, S>(
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -49,11 +54,15 @@ class StatelessLinkConfig<T>(
     behavior: Behavior? = null,
     behaviors: List<Behavior>? = null,
     stateless: Boolean? = null,
-    onConfig: (StatelessLink<T>.() -> Unit)? = null,
-    postInit: (StatelessLink<T>.() -> Unit)? = null
-) : IStatelessLinkConfig<T>,
-    AbstractLinkConfig<StatelessLink<T>, T>(
-        model = model,
+    onConfig: (DataTable<T, S>.() -> Unit)? = null,
+    postInit: (DataTable<T, S>.() -> Unit)? = null,
+    override var columns: List<IColumn<T, S>>? = null,
+    override var dataProvider: ISortableDataProvider<T, S>? = null,
+    override var topToolbars: (DataTable<T, S>.(ISortStateLocator<S>) -> List<AbstractToolbar>)? = null,
+    override var bottomToolbars: (DataTable<T, S>.(ISortStateLocator<S>) -> List<AbstractToolbar>)? = null,
+    override var rowsPerPage: Long = 10
+) : IDataTableConfig<T, S>,
+    ComponentConfig<DataTable<T, S>, T>(
         markupId = markupId,
         outputMarkupId = outputMarkupId,
         outputMarkupPlaceholderTag = outputMarkupPlaceholderTag,

@@ -1,9 +1,10 @@
 package org.kwicket.component.factory
 
-import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.Link
 import org.kwicket.component.config
 import org.kwicket.component.config.ILinkConfig
+
+// FIXME: should stateless also override getURL()?
 
 /**
  * Creates an [Link] component based on the configuration and with a Wicket identifier of [id].
