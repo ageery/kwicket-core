@@ -23,12 +23,9 @@ group = "org.kwicket"
 version = "1.0.0-M1-SNAPSHOT"
 
 repositories {
+    mavenLocal()
     mavenCentral()
     jcenter()
-}
-
-dependencies {
-    compile(kotlin("stdlib-jdk8"))
 }
 
 tasks.withType<KotlinCompile> {
@@ -44,6 +41,8 @@ tasks.withType<Test> {
 }
 
 dependencies {
+    compile(kotlin("stdlib-jdk8"))
+
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
 
