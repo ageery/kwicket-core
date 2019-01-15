@@ -12,7 +12,7 @@ class EnabledWhen(private val isEnabledModel: IModel<Boolean>) : Behavior() {
 
     override fun onConfigure(component: Component) {
         super.onConfigure(component)
-        component.isVisible = isEnabledModel.obj
+        component.isEnabled = isEnabledModel.obj
     }
 
     override fun detach(component: Component?) {

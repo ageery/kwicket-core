@@ -9,7 +9,7 @@ import org.kwicket.core.component.dsl.RegionDescriptor
 import org.kwicket.core.component.dsl.wicket
 import org.kwicket.core.wicketNamespacePrefix
 
-fun RegionDescriptor.panel(id: String) =
+fun RegionDescriptor.create(id: String) =
     BuilderPanel(id = id, body = this)
 
 fun <T, C : TagConsumer<T>> C.panel(block: PANEL.() -> Unit = {}): T = PANEL(

@@ -18,6 +18,7 @@ operator fun <T, L: List<T>> IListViewConfig<T, L>.invoke(id: String): ListView<
     val onConfig = onConfig
     val stateless = stateless
     val populateItem = populateItem
+    val model = model
     return object : ListView<T>(id, model) {
 
         override fun onConfigure() {

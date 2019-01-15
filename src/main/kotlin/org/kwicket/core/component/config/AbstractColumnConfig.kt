@@ -14,14 +14,14 @@ interface IAbstractColumnConfig<T, S> {
     var populateItem: (Item<ICellPopulator<T>>.(String, IModel<T>) -> Unit)?
     var header: ((String) -> Component)?
     var cssClasses: List<String>?
-    var rowFunction: ((T) -> Any?)? // FIXME: should we make this a sub-class?
+    var value: ((T) -> Any?)? // FIXME: should we make this a sub-class?
 }
 
 open class AbstractColumnConfig<T, S>(
-    var displayModel: IModel<String>? = null,
-    var sortProperty: S? = null,
-    var header: ((String) -> Component)? = null,
-    var cssClasses: List<String>? = null,
-    var rowFunction: ((T) -> Any?)?,
-    var populateItem: (Item<ICellPopulator<T>>.(String, IModel<T>) -> Unit)? = null
-)
+    override var displayModel: IModel<String>? = null,
+    override var sortProperty: S? = null,
+    override var header: ((String) -> Component)? = null,
+    override var cssClasses: List<String>? = null,
+    override var value: ((T) -> Any?)? = null,
+    override var populateItem: (Item<ICellPopulator<T>>.(String, IModel<T>) -> Unit)? = null
+): IAbstractColumnConfig<T, S>

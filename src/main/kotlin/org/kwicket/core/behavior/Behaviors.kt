@@ -34,7 +34,8 @@ val hideWhenEmpty: Behavior = object : Behavior() {
             val v = component.defaultModelObject
             component.isVisible = when (v) {
                 is Collection<*> -> v.isNotEmpty()
-                else -> v == null || component.defaultModelObjectAsString.isNullOrEmpty()
+                is String -> !v.isBlank()
+                else -> v != null
             }
         }
     }

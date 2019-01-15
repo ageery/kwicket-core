@@ -99,7 +99,7 @@ internal fun <C : Component> C.config(
     return this
 }
 
-internal fun <C : Component> C.config(config: IComponentConfig<C, *>): C {
+fun <C : Component> C.config(config: IComponentConfig<C, *>): C {
     config(
         markupId = config.markupId,
         outputMarkupId = config.outputMarkupId,
@@ -116,7 +116,7 @@ internal fun <C : Component> C.config(config: IComponentConfig<C, *>): C {
     return this
 }
 
-internal fun <F : FormComponent<T>, T> F.config(config: IFormComponentConfig<F, T>): F {
+fun <F : FormComponent<T>, T> F.config(config: IFormComponentConfig<F, T>): F {
     this.config(config as IComponentConfig<F, T>)
     config.isRequired?.let { isRequired = it }
     config.label?.let { label = it }
@@ -125,19 +125,19 @@ internal fun <F : FormComponent<T>, T> F.config(config: IFormComponentConfig<F, 
     return this
 }
 
-internal fun <C : Button> C.config(config: IAbstractButtonConfig<C>): C {
+fun <C : Button> C.config(config: IAbstractButtonConfig<C>): C {
     this.config(config as IComponentConfig<C, *>)
     config.defaultFormProcessing?.let { defaultFormProcessing = it }
     return this
 }
 
-internal fun <C : Link<T>, T> C.config(config: IAbstractLinkConfig<C, T>): C {
+fun <C : Link<T>, T> C.config(config: IAbstractLinkConfig<C, T>): C {
     this.config(config as IComponentConfig<C, *>)
     config.popupSettings?.let { popupSettings = it }
     return this
 }
 
-internal fun <C : MediaComponent, T> C.config(config: IMediaComponentConfig<C, T>): C {
+fun <C : MediaComponent, T> C.config(config: IMediaComponentConfig<C, T>): C {
     this.config(config as IComponentConfig<C, *>)
     config.isMuted?.let { isMuted = it }
     config.hasControls?.let { setControls(it) }
@@ -152,7 +152,7 @@ internal fun <C : MediaComponent, T> C.config(config: IMediaComponentConfig<C, T
     return this
 }
 
-internal fun <C : Image, T> C.config(config: IImageConfig<T>): C {
+fun <C : Image, T> C.config(config: IImageConfig<T>): C {
     this.config(config as IComponentConfig<Image, T>)
     config.resRef?.let { setImageResourceReference(it, config.resParams) }
     config.resRefs?.let { setImageResourceReferences(config.resParams, *it.toTypedArray()) }
@@ -164,7 +164,7 @@ internal fun <C : Image, T> C.config(config: IImageConfig<T>): C {
     return this
 }
 
-internal fun <C : Form<T>, T> C.config(config: IAbstractFormConfig<C, T>): C {
+fun <C : Form<T>, T> C.config(config: IAbstractFormConfig<C, T>): C {
     this.config(config as IComponentConfig<C, T>)
     config.isMultiPart?.let { isMultiPart = it }
     config.maxSize?.let { maxSize = it.bytes }

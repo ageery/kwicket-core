@@ -7,7 +7,7 @@ import org.apache.wicket.model.IModel
 /**
  * Whether the [IComponentConfig] requires a subclass to create using standard Wicket components
  */
-internal val IComponentConfig<*, *>.requiresSubclass: Boolean
+val IComponentConfig<*, *>.requiresSubclass: Boolean
     get() = onConfig != null || stateless != null
 
 /**
