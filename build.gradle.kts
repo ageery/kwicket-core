@@ -46,11 +46,14 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
 
+    compile("javax.validation:validation-api:2.0.1.Final") // FIXME: why doesn't bean-validation pull this in?
+
     compile("org.apache.wicket:wicket-core:$wicketVersion")
     compile("org.apache.wicket:wicket-devutils:$wicketVersion")
     compile("org.apache.wicket:wicket-bean-validation:$wicketVersion")
     compile("org.apache.wicket:wicket-spring:$wicketVersion")
     compile("org.apache.wicket:wicket-native-websocket-core:$wicketVersion")
+    compile("org.apache.wicket:wicket-guice:$wicketVersion")
 
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testCompile("org.junit.jupiter:junit-jupiter-params:$junitVersion")

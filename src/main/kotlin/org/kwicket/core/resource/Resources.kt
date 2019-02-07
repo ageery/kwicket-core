@@ -4,8 +4,6 @@ import org.apache.wicket.markup.head.CssHeaderItem
 import org.apache.wicket.markup.head.HeaderItem
 import org.apache.wicket.markup.head.JavaScriptHeaderItem
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem
-import org.apache.wicket.protocol.ws.api.WebSocketBehavior
-import org.apache.wicket.protocol.ws.api.WebSocketResource
 import org.apache.wicket.protocol.ws.api.WicketWebSocketJQueryResourceReference
 import org.apache.wicket.request.Url
 import org.apache.wicket.request.cycle.RequestCycle
@@ -42,3 +40,5 @@ fun wsJQueryHeaderItem() = JavaScriptHeaderItem.forReference(wsJQueryResRef)
 fun String.urlResRef() = UrlResourceReference(Url.parse(this))
 
 fun String.urlJsHeaderItem() = JavaScriptHeaderItem.forReference(this.urlResRef())
+
+fun String.scriptHeaderItem(id: String) = JavaScriptHeaderItem.forScript(this, id)
