@@ -7,7 +7,7 @@ import org.apache.wicket.model.IModel
 
 /**
  * Configuration for creating an [ExternalLink] component.
- *
+ *A
  * @property label text for the link
  * @property popupSettings how the link will be opened
  */

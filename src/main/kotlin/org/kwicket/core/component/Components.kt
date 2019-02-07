@@ -6,6 +6,9 @@ import org.apache.wicket.Page
 import org.apache.wicket.WicketRuntimeException
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.behavior.Behavior
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab
+import org.apache.wicket.extensions.markup.html.tabs.ITab
+import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.form.Button
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.form.FormComponent
@@ -345,4 +348,13 @@ class Andrew() : Panel("test") {
         }
     }
 
+}
+
+operator fun <C: Component> C.plus(behavior: Behavior): C {
+    this.add(behavior)
+    return this
+}
+
+fun tab(model: IModel<String>, panel: (String) -> WebMarkupContainer) = object : AbstractTab(model) {
+    override fun getPanel(id: String): WebMarkupContainer = panel(id)
 }

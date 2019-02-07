@@ -3,6 +3,7 @@ package org.kwicket.core.behavior
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.form.FormComponentUpdatingBehavior
 
@@ -38,5 +39,11 @@ val hideWhenEmpty: Behavior = object : Behavior() {
                 else -> v != null
             }
         }
+    }
+}
+
+fun ((AjaxRequestTarget) -> Unit).onChange() = object : OnChangeAjaxBehavior() {
+    override fun onUpdate(target: AjaxRequestTarget) {
+        this@onChange.invoke(target)
     }
 }

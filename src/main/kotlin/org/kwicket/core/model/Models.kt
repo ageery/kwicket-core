@@ -128,3 +128,26 @@ operator fun <C, T> IModel<C?>.plus(property: KProperty1<C, T>): PropertyModel<T
  */
 infix operator fun <C, T> IModel<C>.plus(property: KProperty1<C, T>): IModel<T> =
     KPropertyModel(this, property)
+
+fun <T> ldm(setObj: LoadableDetachableModel<T>.(T) -> Unit = { obj = it }, load: () -> T): IModel<T> =
+    object : LoadableDetachableModel<T>() {
+        override fun load(): T = load.invoke()
+        override fun setObject(obj: T) {
+            setObj.invoke(this, obj)
+        }
+    }
+
+fun <T, U> ldm(
+    wrappedModel: IModel<U>,
+    setObj: LoadableDetachableModel<T>.(Pair<T, IModel<U>>) -> Unit = { (newVal, _) -> obj = newVal }, load: IModel<U>.() -> T
+): IModel<T> = object : LoadableDetachableModel<T>() {
+    override fun load(): T = load.invoke(wrappedModel)
+    override fun setObject(obj: T) {
+        setObj.invoke(this, Pair(obj, wrappedModel))
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        wrappedModel.detach()
+    }
+}
