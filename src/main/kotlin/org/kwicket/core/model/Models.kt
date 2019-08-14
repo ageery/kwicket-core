@@ -84,6 +84,18 @@ var <T> IModel<T>.obj: T
     }
 
 /**
+ * Read/Write extension property alias for [IModel.getObject].
+ *
+ * @param T type of the model
+ * @receiver model of type [T]
+ */
+var <T> IModel<T>.value: T
+    get() = `object`
+    set(value) {
+        `object` = value
+    }
+
+/**
  * [PropertyModel] created from a Kotlin property reference where the object of the `parent` model is _nullable_.
  *
  * @param C type of the (nullable) object of the `parent` model and the type of the class the property is associated with

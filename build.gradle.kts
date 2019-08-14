@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.URL
 
-val wicketVersion = "8.1.0"
+val wicketVersion = "8.5.0"
 val junitVersion = "5.3.1"
 val servletApiVersion = "3.1.0"
 val kotlinxHtmlVersion = "0.6.10"
@@ -20,7 +20,7 @@ plugins {
 //plugins.apply("org.jetbrains.dokka")
 
 group = "org.kwicket"
-version = "1.0.0-M1-SNAPSHOT"
+
 
 repositories {
     mavenLocal()
