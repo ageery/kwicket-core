@@ -1,30 +1,31 @@
 import com.jfrog.bintray.gradle.BintrayExtension
-import org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig
 import groovy.lang.GroovyObject
 import org.gradle.jvm.tasks.Jar
 import org.jetbrains.dokka.DokkaConfiguration
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.dokka.gradle.DokkaTask
-import java.net.URL
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig
 import javax.xml.ws.Endpoint.publish
+import java.net.URL
 
-val wicketVersion = "8.5.0"
-val junitVersion = "5.3.1"
-val servletApiVersion = "3.1.0"
-val kotlinxHtmlVersion = "0.6.10"
 val publicationName = "maven"
+
+val wicketVersion: String by project
+val junitVersion: String by project
+val servletApiVersion: String by project
+val kotlinxHtmlVersion: String by project
 
 val bintrayUser: String? by project
 val bintrayKey: String? by project
 
 plugins {
-    kotlin("jvm") version "1.3.10"
+    kotlin("jvm")
     `maven-publish`
     id("jacoco")
-    id("org.jetbrains.dokka") version "0.9.16"
-    id("com.jfrog.bintray") version "1.8.4"
-    id("com.jfrog.artifactory") version "4.7.5"
-    id("net.researchgate.release") version "2.8.1"
+    id("org.jetbrains.dokka")
+    id("com.jfrog.bintray")
+    id("com.jfrog.artifactory")
+    id("net.researchgate.release")
 }
 
 group = "org.kwicket"
