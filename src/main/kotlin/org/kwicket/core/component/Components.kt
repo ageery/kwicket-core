@@ -74,7 +74,7 @@ fun <C : Component, M : MarkupContainer> M.q(component: C): C = component.also {
  * @receiver the [Component] to configure
  * @return the configured [Component]
  */
-internal fun <C : Component> C.config(
+fun <C : Component> C.config(
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
@@ -204,7 +204,7 @@ fun <C : Form<T>, T> C.config(config: IAbstractFormConfig<C, T>): C {
  * @receiver the [FormComponent] to configure
  * @return the configured [FormComponent]
  */
-internal fun <T, C : FormComponent<T>> C.config(
+fun <T, C : FormComponent<T>> C.config(
     markupId: String? = null,
     outputMarkupId: Boolean? = null,
     outputMarkupPlaceholderTag: Boolean? = null,
