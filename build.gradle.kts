@@ -5,7 +5,6 @@ import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jfrog.gradle.plugin.artifactory.dsl.PublisherConfig
-import javax.xml.ws.Endpoint.publish
 import java.net.URL
 
 val publicationName = "maven"
@@ -109,14 +108,14 @@ bintray {
     publish = true
     pkg(delegateClosureOf<BintrayExtension.PackageConfig> {
         repo = "maven"
-        name = "kwicket"
+        name = "kwicket-core"
         setLicenses("Apache-2.0")
-        vcsUrl = "https://github.com/ageery/kwicket.git"
-        githubRepo = "ageery/kwicket"
-        githubReleaseNotesFile = "README.md"
+        vcsUrl = "https://github.com/ageery/kwicket-core.git"
+        githubRepo = "ageery/kwicket-core"
+        githubReleaseNotesFile = "README.adoc"
         version(delegateClosureOf<BintrayExtension.VersionConfig> {
             name = "$version"
-            vcsTag = "kwicket-$version"
+            vcsTag = "kwicket-core-$version"
         })
     })
 }
