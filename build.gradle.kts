@@ -108,7 +108,7 @@ bintray {
     publish = true
     pkg(delegateClosureOf<BintrayExtension.PackageConfig> {
         repo = "maven"
-        name = "kwicket-core"
+        name = "kwicket"
         setLicenses("Apache-2.0")
         vcsUrl = "https://github.com/ageery/kwicket-core.git"
         githubRepo = "ageery/kwicket-core"
